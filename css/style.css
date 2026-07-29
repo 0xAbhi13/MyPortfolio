@@ -754,6 +754,126 @@ textarea:focus-visible {
 .project-card.is-placeholder { border-style: dashed; opacity: 0.9; }
 .project-card.is-placeholder .project-body h3 { color: var(--text-secondary); }
 
+/* ---------- Certificates ---------- */
+.cert-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 32px;
+}
+
+.cert-card { perspective: 1200px; }
+
+.cert-card-inner {
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform: rotateX(0deg) rotateY(0deg);
+  transition: transform 0.5s var(--ease), border-color 0.35s var(--ease), box-shadow 0.35s var(--ease);
+  box-shadow: var(--shadow-soft);
+  will-change: transform;
+}
+.cert-card-inner.is-tilting { transition: transform 0.08s linear; }
+.cert-card-inner:hover,
+.cert-card-inner.is-tilting {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-lift);
+}
+
+/* Cursor-tracked holographic shine, driven by --mx/--my set in main.js */
+.cert-shine {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s var(--ease);
+  background: radial-gradient(
+    circle at var(--mx, 50%) var(--my, 50%),
+    rgba(255,255,255,0.16),
+    rgba(0,229,255,0.08) 32%,
+    transparent 60%
+  );
+  mix-blend-mode: screen;
+}
+.cert-card-inner:hover .cert-shine { opacity: 1; }
+
+.cert-ribbon {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 6px 12px 6px 10px;
+  border-radius: 999px;
+  color: var(--bg);
+  background: linear-gradient(120deg, var(--accent), var(--accent-2), var(--accent));
+  background-size: 220% 100%;
+  animation: borderShift 4s linear infinite;
+  box-shadow: 0 0 18px rgba(0,229,255,0.4);
+  transform: translateZ(40px);
+}
+.cert-ribbon svg { width: 13px; height: 13px; }
+
+.cert-media {
+  position: relative;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  background: var(--bg-elevated);
+  transform: translateZ(20px);
+}
+.cert-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  transition: transform 0.6s var(--ease);
+}
+.cert-card-inner:hover .cert-media img { transform: scale(1.05); }
+.cert-media-placeholder { display: flex; align-items: center; justify-content: center; }
+
+.cert-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  transform: translateZ(30px);
+}
+.cert-body h3 { margin: 0; font-size: 19px; font-weight: 700; }
+.cert-issuer { margin: 0; color: var(--accent-2); font-size: 13.5px; font-weight: 600; }
+.cert-desc { margin: 0; color: var(--text-secondary); font-size: 14.5px; flex: 1; }
+.cert-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.cert-meta .k { color: var(--text); opacity: 0.6; margin-right: 6px; }
+.cert-links { display: flex; gap: 12px; margin-top: 4px; }
+.cert-links .btn { flex: 1; justify-content: center; }
+
+.cert-card.is-placeholder .cert-card-inner { border-style: dashed; opacity: 0.9; }
+.cert-card.is-placeholder .cert-body h3 { color: var(--text-secondary); }
+
+@media (prefers-reduced-motion: reduce) {
+  .cert-card-inner { transform: none !important; transition: none !important; }
+  .cert-ribbon { animation: none; }
+}
+
 /* ---------- GitHub ---------- */
 .github-grid {
   display: grid;
@@ -941,5 +1061,52 @@ textarea:focus-visible {
 @media (max-width: 620px) {
   .navbar { padding: 8px 14px; }
   .nav-logo { font-size: 13px; }
+}
+
+/* ---------- Desktop-only 1cm page safe-zone ----------
+   Ensures no element sits closer than 1cm to the edge of the
+   browser viewport on PC/desktop screens. Mobile/tablet layouts
+   (max-width: 980px, handled above) are untouched. */
+@media (min-width: 981px) {
+  :root { --page-margin: 1cm; }
+
+  .container {
+    padding-left: max(24px, var(--page-margin));
+    padding-right: max(24px, var(--page-margin));
+  }
+
+  .navbar { top: max(16px, var(--page-margin)); }
+
+  .back-to-top {
+    bottom: max(28px, var(--page-margin));
+    right: max(28px, var(--page-margin));
+  }
+
+  .skip-link { left: max(12px, var(--page-margin)); }
+  .skip-link:focus { top: var(--page-margin); }
+}
+
+/* ---------- Phone-only page safe-zone ----------
+   Separate from the desktop block above so tablets/PC are never
+   affected by this rule. Targets phones only (max-width: 600px).
+   Uses min(1cm, 6vw) so the margin scales down gracefully on very
+   narrow screens instead of eating too much of the viewport. */
+@media (max-width: 600px) {
+  :root { --page-margin-phone: min(1cm, 6vw); }
+
+  .container {
+    padding-left: max(18px, var(--page-margin-phone));
+    padding-right: max(18px, var(--page-margin-phone));
+  }
+
+  .navbar { top: max(12px, var(--page-margin-phone)); }
+
+  .back-to-top {
+    bottom: max(16px, var(--page-margin-phone));
+    right: max(16px, var(--page-margin-phone));
+  }
+
+  .skip-link { left: max(12px, var(--page-margin-phone)); }
+  .skip-link:focus { top: var(--page-margin-phone); }
 }
 

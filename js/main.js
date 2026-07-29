@@ -266,6 +266,43 @@
   };
 
   /* ------------------------------------------------------------------
+     8c. Certificate cards — pointer-tracked 3D tilt + holographic shine
+  ------------------------------------------------------------------ */
+  const CertTilt = {
+    cards: document.querySelectorAll('[data-tilt]'),
+    enabled: window.matchMedia('(hover: hover) and (pointer: fine)').matches,
+    init() {
+      if (!this.cards.length || !this.enabled || prefersReducedMotion) return;
+
+      this.cards.forEach((card) => {
+        const maxTilt = 8; // degrees
+
+        const onMove = (e) => {
+          const rect = card.getBoundingClientRect();
+          const px = (e.clientX - rect.left) / rect.width;  // 0 -> 1
+          const py = (e.clientY - rect.top) / rect.height;  // 0 -> 1
+
+          const rotateY = (px - 0.5) * (maxTilt * 2);
+          const rotateX = (0.5 - py) * (maxTilt * 2);
+
+          card.classList.add('is-tilting');
+          card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+          card.style.setProperty('--mx', `${px * 100}%`);
+          card.style.setProperty('--my', `${py * 100}%`);
+        };
+
+        const onLeave = () => {
+          card.classList.remove('is-tilting');
+          card.style.transform = 'rotateX(0deg) rotateY(0deg)';
+        };
+
+        card.addEventListener('mousemove', onMove);
+        card.addEventListener('mouseleave', onLeave);
+      });
+    }
+  };
+
+  /* ------------------------------------------------------------------
      9. Navbar: scrolled state + active link highlighting + smooth scroll
   ------------------------------------------------------------------ */
   const Navigation = {
@@ -394,6 +431,7 @@
     TerminalLines.init();
     ScrollReveal.init();
     SkillBars.init();
+    CertTilt.init();
     Navigation.init();
     BackToTop.init();
     ContributionGraph.init();
