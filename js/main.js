@@ -266,7 +266,42 @@
   };
 
   /* ------------------------------------------------------------------
-     8c. Certificate cards — pointer-tracked 3D tilt + holographic shine
+     8c. Certificate marquee — clone track for a seamless right-to-left
+     scroll, then pause on hover / touch so people can actually read a card.
+  ------------------------------------------------------------------ */
+  (function setupCertMarquee() {
+    const track = document.getElementById('certTrack');
+    if (!track) return;
+
+    // Duplicate the cards once so the track can loop from 0 -> -50%
+    // without a visible jump. Runs before CertTilt below queries
+    // [data-tilt], so the clones get tilt + shine too.
+    const originalCards = Array.from(track.children);
+    originalCards.forEach((card) => {
+      const clone = card.cloneNode(true);
+      clone.setAttribute('aria-hidden', 'true');
+      clone.querySelectorAll('a, button').forEach((el) => el.setAttribute('tabindex', '-1'));
+      track.appendChild(clone);
+    });
+
+    if (prefersReducedMotion) return;
+
+    // Pause on hover (CSS already handles mouse via :hover) and on
+    // touch/focus, so the scroll stops long enough to interact with.
+    const marquee = track.closest('.cert-marquee');
+    if (!marquee) return;
+
+    const pause = () => track.classList.add('is-paused');
+    const resume = () => track.classList.remove('is-paused');
+
+    marquee.addEventListener('touchstart', pause, { passive: true });
+    marquee.addEventListener('touchend', resume, { passive: true });
+    marquee.addEventListener('focusin', pause);
+    marquee.addEventListener('focusout', resume);
+  })();
+
+  /* ------------------------------------------------------------------
+     8d. Certificate cards — pointer-tracked 3D tilt + holographic shine
   ------------------------------------------------------------------ */
   const CertTilt = {
     cards: document.querySelectorAll('[data-tilt]'),
