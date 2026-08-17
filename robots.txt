@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://0xabhi13.github.io/MyPortfolio/sitemap.xml
