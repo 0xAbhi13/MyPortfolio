@@ -275,8 +275,7 @@
 
     // Duplicate the cards once so the track can loop from 0 -> -50%
     // without a visible jump. Runs before CertTilt below queries
-    // [data-tilt], so the clones get tilt + shine too. Runs on every
-    // device — the marquee auto-scrolls on phone and PC alike.
+    // [data-tilt], so the clones get tilt + shine too.
     const originalCards = Array.from(track.children);
     originalCards.forEach((card) => {
       const clone = card.cloneNode(true);
@@ -413,7 +412,39 @@
   };
 
   /* ------------------------------------------------------------------
-     11. Footer year
+     11. GitHub contribution graph (illustrative placeholder data)
+     Deterministic pseudo-random so the pattern looks intentional,
+     not actually pulled from the GitHub API (no backend in this project).
+  ------------------------------------------------------------------ */
+  const ContributionGraph = {
+    el: document.getElementById('contrib-graph'),
+    init() {
+      if (!this.el) return;
+      const totalCells = 52 * 7;
+      let seed = 42;
+      const rand = () => {
+        seed = (seed * 9301 + 49297) % 233280;
+        return seed / 233280;
+      };
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < totalCells; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        const roll = rand();
+        let level = 0;
+        if (roll > 0.55) level = 1;
+        if (roll > 0.72) level = 2;
+        if (roll > 0.86) level = 3;
+        if (roll > 0.95) level = 4;
+        cell.setAttribute('data-level', String(level));
+        frag.appendChild(cell);
+      }
+      this.el.appendChild(frag);
+    }
+  };
+
+  /* ------------------------------------------------------------------
+     12. Footer year
   ------------------------------------------------------------------ */
   const FooterYear = {
     init() {
@@ -438,6 +469,7 @@
     CertTilt.init();
     Navigation.init();
     BackToTop.init();
+    ContributionGraph.init();
     FooterYear.init();
   });
 })();
