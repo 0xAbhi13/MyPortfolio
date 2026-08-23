@@ -10,9 +10,10 @@
 
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
-  /* ---------- Lenis smooth scroll ---------- */
+  /* ---------- Lenis smooth scroll — disabled on phone to prevent hang ---------- */
   let lenis;
-  if (!prefersReduced && typeof Lenis !== 'undefined') {
+  const isPhone = window.matchMedia('(max-width: 600px)').matches;
+  if (!prefersReduced && !isPhone && !isTouch && typeof Lenis !== 'undefined' && window.innerWidth > 768) {
     lenis = new Lenis({
       duration: 1.1,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -25,58 +26,77 @@
     gsap.ticker.lagSmoothing(0);
   }
 
-  /* ---------- Loader cinematic ---------- */
+  /* ---------- Preloader — premium cinematic ONLY ---------- */
   const Loader = (() => {
     const el = document.getElementById('loader');
-    const bar = document.getElementById('loader-bar');
     const countEl = document.getElementById('loader-count');
-    const statusEl = document.getElementById('loader-status');
-    const chars = document.querySelectorAll('.loader-type .l-char');
-    if (!el || !bar || !countEl) return { init() {} };
+    const lineEl = document.querySelector('.preloader-line-el');
+    if (!el || !countEl) return { init() {} };
     function init() {
       document.body.style.overflow = 'hidden';
-      const statuses = ['initialising', 'compiling shaders', 'loading assets', 'ready'];
-      let s = 0;
-      const statusInt = setInterval(() => {
-        s = Math.min(s + 1, statuses.length - 1);
-        if (statusEl) statusEl.textContent = statuses[s];
-      }, 380);
-      if (!prefersReduced && chars.length) {
-        gsap.set(chars, { yPercent: 110, opacity: 0 });
-        gsap.to(chars, { yPercent: 0, opacity: 1, duration: 0.8, ease: 'expo.out', stagger: 0.04, delay: 0.15 });
-      }
+      // initial states — black screen
+      gsap.set('.preloader-counter', { y: 8, opacity: 0 });
+      gsap.set('.preloader-word', { yPercent: 110, clipPath: 'inset(0 0 100% 0)', letterSpacing: '0.14em', opacity: 0 });
+      gsap.set('.preloader-roles span', { yPercent: 100, opacity: 0 });
+      gsap.set('.preloader-line-wrap', { scaleX: 0, opacity: 0, transformOrigin: 'center' });
+      gsap.set(lineEl, { xPercent: -100 });
+      gsap.set('.loader-curtain.top', { yPercent: 0 });
+      gsap.set('.loader-curtain.bottom', { yPercent: 0 });
+
+      const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
+
+      // 1. percentage 0 -> 100 (minimal)
+      tl.to('.preloader-counter', { y: 0, opacity: 1, duration: 0.4, ease: 'power3.out' }, 0.22);
+
       let p = 0;
-      const target = 100;
       const doCount = () => {
-        p += Math.random() * 18 + 6;
-        if (p > target) p = target;
+        p += Math.random() * 7 + 4;
+        if (p > 100) p = 100;
         countEl.textContent = String(Math.floor(p)).padStart(2, '0');
-        bar.style.width = p + '%';
-        if (p < target) setTimeout(doCount, 80 + Math.random() * 90);
-        else {
-          clearInterval(statusInt);
-          if (statusEl) statusEl.textContent = 'ready';
-          setTimeout(hide, 520);
+        if (p < 100) setTimeout(doCount, 55 + Math.random() * 45);
+      };
+      setTimeout(doCount, 280);
+
+      // 2. ABHISHEK JADHAV mask/clip + tracking
+      tl.to('.preloader-word', {
+        yPercent: 0, clipPath: 'inset(0 0 0% 0)', letterSpacing: '-0.04em', opacity: 1,
+        duration: 0.95, stagger: 0.09, ease: 'expo.out'
+      }, 0.45)
+        .to('.preloader-roles span', { yPercent: 0, opacity: 1, duration: 0.55, stagger: 0.07, ease: 'expo.out' }, 0.62)
+      // 3. subtle line/light sweep
+        .to('.preloader-line-wrap', { scaleX: 1, opacity: 1, duration: 0.5, ease: 'expo.out' }, 0.72)
+        .to(lineEl, { xPercent: 100, duration: 1.15, ease: 'power3.inOut' }, 0.82);
+
+      // 5. hold after 100% then 6. cinematic exit
+      const hide = () => {
+        if (el.classList.contains('is-hidden')) return;
+        el.classList.add('is-hidden');
+        const out = gsap.timeline({
+          onComplete: () => {
+            el.style.display = 'none';
+            document.body.style.overflow = '';
+            ScrollTrigger.refresh();
+            window.dispatchEvent(new CustomEvent('loaderDone'));
+          }
+        });
+        if (prefersReduced) {
+          out.to(el, { opacity: 0, duration: 0.35 }, 0);
+        } else {
+          out.to('.preloader-word', { yPercent: -110, clipPath: 'inset(0 0 100% 0)', letterSpacing: '0.08em', opacity: 0, duration: 0.5, stagger: 0.06, ease: 'expo.in' }, 0)
+            .to('.preloader-counter, .preloader-roles span', { y: -8, opacity: 0, duration: 0.32, stagger: 0.03, ease: 'power2.in' }, 0.05)
+            .to('.preloader-line-wrap', { scaleX: 0, opacity: 0, duration: 0.35, ease: 'power2.in' }, 0.07)
+            .to(el, { yPercent: -100, duration: 0.85, ease: 'expo.inOut' }, 0.12);
+          // fallback clipPath for browsers not supporting inset animation fully
+          gsap.set(el, { clipPath: 'inset(0 0 0% 0)' });
         }
       };
-      setTimeout(doCount, 180);
-      setTimeout(() => { if (!el.classList.contains('is-hidden')) hide(); }, 3800);
-      window.addEventListener('load', () => setTimeout(() => { if (p >= 100) hide(); }, 400));
+
+      // 3s total — as requested
+      setTimeout(hide, 3000);
+      setTimeout(() => { if (!el.classList.contains('is-hidden') && p >= 100) hide(); }, 3400);
+      window.addEventListener('load', () => setTimeout(() => { if (p >= 100) hide(); }, 420));
     }
-    function hide() {
-      if (el.classList.contains('is-hidden')) return;
-      el.classList.add('is-hidden');
-      const tl = gsap.timeline({
-        onComplete: () => {
-          el.style.display = 'none';
-          document.body.style.overflow = '';
-          ScrollTrigger.refresh();
-          window.dispatchEvent(new CustomEvent('loaderDone'));
-        }
-      });
-      tl.to(el, { yPercent: -100, duration: prefersReduced ? 0.4 : 0.9, ease: 'expo.inOut' }, 0);
-      tl.to(bar, { opacity: 0, duration: 0.3 }, 0);
-    }
+    function hide() {} // not used externally
     return { init };
   })();
 
@@ -120,10 +140,10 @@
     };
   })();
 
-  /* ---------- Particles — lightweight ---------- */
+  /* ---------- Particles — lightweight, off on phone to prevent hang ---------- */
   const Particles = (() => {
     const canvas = document.getElementById('particles-canvas');
-    if (!canvas || prefersReduced) return { init() {} };
+    if (!canvas || prefersReduced || isPhone) return { init() {} };
     return {
       init() {
         const ctx = canvas.getContext('2d', { alpha: true });
@@ -370,6 +390,43 @@
           } else {
             window.addEventListener('loaderDone', heroTl, { once: true });
             setTimeout(() => { if (gsap.getTweensOf('.hero-word')[0] === undefined) heroTl(); }, 4200);
+          }
+
+          // PHONE: lightweight — no scrub, perfect look, ensure stats visible
+          if (isPhone) {
+            document.querySelectorAll('.section-head').forEach(head => {
+              const eyebrow = head.querySelector('.eyebrow');
+              const line = head.querySelector('.head-line');
+              if (eyebrow) gsap.from(eyebrow, { x: -10, opacity: 0, duration: 0.45, scrollTrigger: { trigger: head, start: 'top 92%' } });
+              if (line) gsap.from(line, { scaleX: 0, transformOrigin: 'left', duration: 0.6, scrollTrigger: { trigger: head, start: 'top 92%' } });
+            });
+            // ensure about stats + other cards are visible immediately (no hidden until scroll) — fixes phone not showing
+            gsap.set('.a-stat, .t-item, .skill, .project, .cert-inner, .edu-item, .c-card', { clearProps: 'all' });
+            document.querySelectorAll('.a-stat, .t-item, .skill, .project, .cert-inner, .edu-item, .c-card').forEach(el => { el.style.opacity = '1'; el.style.transform = 'none'; });
+            gsap.from('.about-title .clip span', { yPercent: 30, opacity: 0, duration: 0.6, stagger: 0.06, scrollTrigger: { trigger: '.about-title', start: 'top 90%' } });
+            // phone hero — lightweight scroll (no heavy hang)
+            gsap.to('.hero-visual', { y: -10, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 0.5 } });
+            gsap.to('.hero-title', { y: -8, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 0.5 } });
+            // phone marquee for stack — requested: marquee on scroll
+            const kl = document.querySelector('.kinetic-track:not(.reverse)');
+            const kr = document.querySelector('.kinetic-track.reverse');
+            if (kl) gsap.to(kl, { xPercent: -8, ease: 'none', scrollTrigger: { trigger: '.stack-kinetic', start: 'top bottom', end: 'bottom top', scrub: 0.6 } });
+            if (kr) gsap.fromTo(kr, { xPercent: -8 }, { xPercent: 0, ease: 'none', scrollTrigger: { trigger: '.stack-kinetic', start: 'top bottom', end: 'bottom top', scrub: 0.6 } });
+            document.querySelectorAll('.skill-bar .fill').forEach(b => {
+              const lvl = b.closest('.skill')?.getAttribute('data-level');
+              if (lvl) ScrollTrigger.create({ trigger: b.closest('.skill'), start: 'top 92%', once: true, onEnter: () => b.style.width = lvl + '%' });
+            });
+            document.querySelectorAll('.a-stat .num[data-count]').forEach(el => {
+              const target = +el.getAttribute('data-count');
+              const obj = { v: 0 };
+              ScrollTrigger.create({
+                trigger: el,
+                start: 'top 95%',
+                once: true,
+                onEnter: () => gsap.to(obj, { v: target, duration: 1, ease: 'power3.out', onUpdate: () => el.textContent = Math.round(obj.v) + (el.textContent.includes('+') || target===3 ? '+' : '') })
+              });
+            });
+            return;
           }
 
           /* Global progress + every section-head draws */
