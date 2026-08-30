@@ -26,15 +26,39 @@ const experience = []; // removed — kept as empty to avoid reference errors
 const projects = [
   {
     id: "developer-portfolio",
-    name: "Developer Portfolio",
+    name: "Developer Portfolio — Abhishek OS",
     status: "Live",
-    category: "Web • Editorial",
-    purpose: "This website — fully responsive, dark, editorial portfolio built from scratch with plain HTML, CSS and JavaScript. No frameworks, no build tools — just solid fundamentals and cinematic motion.",
-    github: "https://github.com/0xAbhi13",
+    category: "Web • OS • Editorial",
+    purpose: "This portfolio itself — a macOS-inspired desktop OS built as a fully interactive operating system. Vanilla HTML/CSS/JS only — no frameworks, no build — featuring draggable single-window manager, Spotlight (Ctrl+K), Ask Abhi offline AI, Wavecont 2:24 music bar (file:// + http://), and universal responsive phone 390×780. Every pixel is cinematic motion with zero dependencies.",
+    github: "https://github.com/0xAbhi13/MyPortfolio",
     demo: "https://0xabhi13.github.io/MyPortfolio/",
-    stack: ["HTML5","CSS3","JavaScript","GSAP","Lenis"],
-    facts: ["Responsive editorial layout — hero left vs visual centered","Cinematic loader, grain, particles, magnetic buttons","ScrollTrigger choreography in every section","No frameworks — CDN GSAP + Lenis","Deployed on GitHub Pages"],
-    screenshots: [{label:"Hero", src:"assets/projects/developer-portfolio/hero.png"}, {label:"Overview", src:"assets/projects/developer-portfolio/overview.png"}]
+    stack: ["HTML5","CSS3","JavaScript","Tailwind CDN","GSAP 3.12.5","Lottie","Lucide","Web Audio API"],
+    facts: ["Desktop OS: ABHISHEK centered + 0xAbhi13 menu + Unsplash wallpaper + particleCanvas 56 + GSAP parallax","Single-window manager: drag/resize/zIndex/traffic (close/min/max) + windowIn 0.38s spring — 1 at a time","Ask Abhi Pro: avatar Online, 6 starters, local searchIndex 45, offline — no API","MusicBar: Wavecont 2:24 assets/audio/wavecont.mp3 5.7MB — preload metadata, crossOrigin='', file:// + http:// both, View→GitHub","Professional icons: 14× 96×96 SVG linearGradient #8b5cf6→#4f46e5 — iconPulseGlow 2.8s + gradientShift 8s","7 projects (BeatForge/PDFForge/MyPortfolio + 4 AI/CV) • Spotlight Ctrl+K • Terminal • Photos masonry • Resume Coming Soon 85%","Fully vanilla — CDN Tailwind + lucide + lottie-player + gsap — deployed on GitHub Pages (no build)"],
+    screenshots: [{label:"Hero — Desktop OS", src:"assets/projects/developer-portfolio/hero.png"}, {label:"Overview — Window Manager", src:"assets/projects/developer-portfolio/overview.png"}]
+  },
+  {
+    id: "0xbeatforge",
+    name: "0xBeatForge",
+    status: "Live",
+    category: "Web Audio • Music",
+    purpose: "A cinematic browser-based beat sequencer where music is built layer by layer using the Web Audio API. Craft patterns, stack layers, and shape rhythms in a tactile, studio-inspired interface.",
+    github: "https://github.com/0xAbhi13/0xBeatForge",
+    demo: "",
+    stack: ["JavaScript","Web Audio API","HTML5","CSS3","Python"],
+    facts: ["Layer-by-layer beat construction","Web Audio API timing & scheduling","Cinematic studio-inspired UI","Browser-based — no install","Sequencer grid with real-time playback"],
+    screenshots: [{label:"Hero", src:"assets/projects/0xbeatforge/hero.png"}, {label:"Overview", src:"assets/projects/0xbeatforge/overview.png"}]
+  },
+  {
+    id: "0xpdfforge",
+    name: "0xPDFForge",
+    status: "Live",
+    category: "PDF • Automation",
+    purpose: "A creative PDF generation platform that transforms web projects and content into beautifully designed PDF documents using customizable templates and automated analysis. Ideal for portfolios, reports, and docs.",
+    github: "https://github.com/0xAbhi13/0xPDFForge",
+    demo: "",
+    stack: ["Python","JavaScript","HTML","Docker","Shell"],
+    facts: ["Web → PDF with custom templates","Automated content analysis","Beautiful typography & layout","Batch generation support","Docker ready"],
+    screenshots: [{label:"Hero", src:"assets/projects/0xpdfforge/hero.png"}, {label:"Overview", src:"assets/projects/0xpdfforge/overview.png"}]
   },
   {
     id: "0xemotion",
@@ -101,7 +125,9 @@ const certifications = [
 ];
 
 const playlist = [
-  { id: "wavecont-local", title: "Wavecont - Uplifting And Inspiring Acoustic Corporate", artist: "Pro Tunes - Copyright Safe Music", src: "assets/audio/Wavecont - Uplifting And Inspiring Acoustic Corporate [Copyright Safe Background Music] - Pro Tunes - Copyright Safe Music.mp3", artwork: "assets/audio/wavecont-artwork.jpg", icon: "assets/icons/wavecont.svg", youtubeId: "yNXkRYhcH3c", youtubeEmbed: "https://www.youtube.com/embed/yNXkRYhcH3c", duration: "2:24" }
+  // Local MP3 — same audio as https://youtu.be/yNXkRYhcH3c — works on file:// and http://
+  // Original long file copied to wavecont.mp3 to avoid spaces/brackets encoding (kept both)
+  { id: "wavecont-local", title: "Wavecont - Uplifting And Inspiring Acoustic Corporate", artist: "Pro Tunes - Copyright Safe Music", src: "assets/audio/wavecont.mp3", artwork: "assets/audio/wavecont-artwork.jpg", icon: "assets/icons/wavecont.svg", youtubeId: "yNXkRYhcH3c", youtubeEmbed: "https://www.youtube.com/embed/yNXkRYhcH3c", duration: "2:24" }
 ];
 
 const galleryImages = [
