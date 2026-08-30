@@ -1,0 +1,40 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="0xAbhi13">
+  <defs>
+    <!-- Netlify-like gradient — violet → indigo for 0xAbhi13 brand -->
+    <linearGradient id="brandGrad" x1="8%" y1="8%" x2="92%" y2="92%">
+      <stop offset="0%" stop-color="#a78bfa"/>
+      <stop offset="45%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#4f46e5"/>
+    </linearGradient>
+    <linearGradient id="innerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#ede9fe"/>
+    </linearGradient>
+    <filter id="brandShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="6" stdDeviation="7" flood-color="#4f46e5" flood-opacity="0.35"/>
+      <feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="white" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+  <!-- Brand mark — Netlify-style geometric triangle, premium -->
+  <!-- Outer triangle — like Netlify, but for 0xAbhi13 -->
+  <g filter="url(#brandShadow)">
+    <path d="M 32 7.5 L 54.5 50.2 Q 55.8 52.8 53.2 54.1 Q 52.1 54.7 32 54.7 Q 11.9 54.7 10.8 54.1 Q 8.2 52.8 9.5 50.2 Z" fill="url(#brandGrad)" stroke="white" stroke-opacity="0.10" stroke-width="1.2" stroke-linejoin="round"/>
+    <!-- inner highlight edge -->
+    <path d="M 32 7.5 L 54.5 50.2 Q 55.8 52.8 53.2 54.1 L 32 54.7 Z" fill="white" opacity="0.08"/>
+  </g>
+  <!-- Inner cut — white triangle like Netlify's negative space, but with code -->
+  <g>
+    <path d="M 32 19.5 L 43.2 41.2 Q 43.9 42.6 42.6 43.3 Q 42 43.6 32 43.6 Q 22 43.6 21.4 43.3 Q 20.1 42.6 20.8 41.2 Z" fill="url(#innerGrad)" opacity="0.97"/>
+    <!-- code brackets 0x -->
+    <g font-family="'JetBrains Mono', 'Consolas', monospace" text-anchor="middle" font-weight="800">
+      <text x="32" y="36.5" font-size="9.5" fill="#4f46e5" letter-spacing="0.6">0×</text>
+      <text x="32" y="42" font-size="4.2" fill="#6d28d9" opacity="0.75" letter-spacing="1.2" style="font-family: 'Inter', sans-serif; font-weight: 700;">ABHI13</text>
+    </g>
+  </g>
+  <!-- tiny premium dot like Netlify's live indicator -->
+  <circle cx="50.5" cy="14.5" r="1.7" fill="#10b981" stroke="white" stroke-width="0.9" opacity="0.95">
+    <animate attributeName="opacity" values="1;0.55;1" dur="1.8s" repeatCount="indefinite"/>
+  </circle>
+  <!-- subtle corner shine like Netlify -->
+  <path d="M 32 7.5 L 33.5 12 L 30.5 12 Z" fill="white" opacity="0.18"/>
+</svg>

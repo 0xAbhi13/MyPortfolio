@@ -1,0 +1,23 @@
+<svg width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Resume">
+  <defs>
+    <linearGradient id="g-resume" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ef4444"/>
+      <stop offset="100%" stop-color="#dc2626"/>
+    </linearGradient>
+    <filter id="shadow-resume" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#dc2626" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <rect width="96" height="96" rx="22" fill="url(#g-resume)" filter="url(#shadow-resume)"/>
+  <!-- subtle inner highlight -->
+  <rect x="1" y="1" width="94" height="94" rx="21" fill="none" stroke="white" stroke-opacity="0.12"/>
+  <g transform="translate(24 24)">
+    <g transform="scale(2)">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z M14 2v6h6 M10 13H8 M16 17H8 M10 9H8" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.96"/>
+    </g>
+  </g>
+  <!-- professional badge: small 0x -->
+  <g font-family="JetBrains Mono, monospace" font-size="7" font-weight="700" fill="white" opacity="0.0">
+    <text x="48" y="88" text-anchor="middle">0x</text>
+  </g>
+</svg>

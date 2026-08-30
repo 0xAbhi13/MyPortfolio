@@ -3,747 +3,210 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>0xAbhi13 | Abhishek Jadhav — Creative Developer</title>
-  <meta name="description" content="Abhishek Jadhav (0xAbhi13) — Creative Developer from Baramati, Maharashtra. BCA student building immersive digital experiences with C++, Python and JavaScript. View selected work, skills and contact." />
-  <meta name="author" content="Abhishek Jadhav" />
-  <meta name="keywords" content="Abhishek Jadhav, 0xAbhi13, creative developer, BCA student, portfolio, C++ Python JavaScript, Baramati developer" />
-  <meta name="theme-color" content="#08080A" />
-  <meta name="robots" content="index, follow" />
-  <meta name="google-site-verification" content="Ee0G7DdpL4pVp7dNyB_QCGomsP9eAc5G1E86WBuHoeY" />
-  <link rel="canonical" href="https://0xabhi13.github.io/MyPortfolio/" />
+  <title>Abhishek Jadhav — 0xAbhi13 | Creative Developer Portfolio</title>
+  <meta name="description" content="Interactive desktop portfolio of Abhishek Jadhav (0xAbhi13) — Creative Developer from Baramati, BCA student building digital experiences with C++, Python, JavaScript." />
+  <meta name="keywords" content="Abhishek Jadhav, 0xAbhi13, Creative Developer, Portfolio, BCA, C++, Python, JavaScript, Baramati" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="assets/icons/favicon-32.png" sizes="32x32" type="image/png" />
+  <link rel="icon" href="assets/icons/favicon-16.png" sizes="16x16" type="image/png" />
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" sizes="180x180" />
+  <meta name="theme-color" content="#0a0a1a" />
+  <meta property="og:title" content="Abhishek Jadhav — 0xAbhi13 | Creative Developer" />
+  <meta property="og:description" content="5 shipped projects • Cinematic web craft • Building in public — Baramati → World" />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="0xAbhi13 | Abhishek Jadhav" />
-  <meta property="og:title" content="0xAbhi13 — Creative Developer Portfolio" />
-  <meta property="og:description" content="Creative developer portfolio of Abhishek Jadhav — building cinematic digital experiences, one project at a time." />
-  <meta property="og:url" content="https://0xabhi13.github.io/MyPortfolio/" />
-  <meta property="og:image" content="https://0xabhi13.github.io/MyPortfolio/assets/profile.jpg" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="0xAbhi13 — Creative Developer" />
-  <meta name="twitter:description" content="Portfolio of Abhishek Jadhav — projects, skills and source code." />
-  <meta name="twitter:image" content="https://0xabhi13.github.io/MyPortfolio/assets/profile.jpg" />
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/animations.css" />
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [{
-      "@type": "Person",
-      "@id": "https://0xabhi13.github.io/MyPortfolio/#person",
-      "name": "Abhishek Jadhav",
-      "alternateName": "0xAbhi13",
-      "url": "https://0xabhi13.github.io/MyPortfolio/",
-      "image": "https://0xabhi13.github.io/MyPortfolio/assets/profile.jpg",
-      "description": "Creative developer and BCA student from Baramati, building digital experiences with C++, Python and JavaScript.",
-      "jobTitle": "Creative Developer",
-      "email": "mailto:contact.0xabhi13@gmail.com",
-      "sameAs": ["https://github.com/0xAbhi13","https://linkedin.com/in/0xAbhi13"]
-    }]
-  }
-  </script>
 </head>
-<body>
-  <a class="skip-link" href="#main-content">Skip to main content</a>
-
-  <!-- Preloader — premium cinematic — split up/down + new name style -->
-  <div id="loader" aria-hidden="true">
-    <div class="loader-curtain top" aria-hidden="true"></div>
-    <div class="loader-curtain bottom" aria-hidden="true"></div>
-    <div class="preloader-inner">
-      <div class="preloader-counter" aria-hidden="true"><span id="loader-count">00</span><span class="pct">%</span></div>
-      <h1 class="preloader-title" aria-label="Abhishek Jadhav">
-        <span class="preloader-line"><span class="preloader-word">ABHISHEK</span></span>
-        <span class="preloader-line"><span class="preloader-word outline">JADHAV</span></span>
-      </h1>
-      <div class="preloader-roles" aria-hidden="true">
-        <span>Developer,</span>
-        <span>Designer,</span>
-        <span>Hustler</span>
+<body class="bg-[#050510] text-white antialiased overflow-hidden select-none">
+  <!-- Boot Screen — with online Lottie -->
+  <div id="bootScreen" class="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center font-mono overflow-hidden">
+    <div class="absolute inset-0 opacity-20">
+      <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop" alt="" class="w-full h-full object-cover">
+      <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+    </div>
+    <div class="relative z-10 flex flex-col items-center">
+      <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_2cwDXD.json" background="transparent" speed="1" style="width: 120px; height: 120px;" loop autoplay></lottie-player>
+      <h1 class="text-4xl md:text-6xl font-bold tracking-[0.2em] mt-2 font-[Syne]">ABHISHEK</h1>
+      <p class="text-[11px] tracking-[0.2em] text-violet-300 mt-1">0xAbhi13 • BARAMATI → WORLD</p>
+      <p id="bootText" class="text-sm text-gray-400 h-6 mt-4">Initializing workspace...</p>
+      <div class="w-56 h-1 bg-white/10 rounded-full mt-4 overflow-hidden backdrop-blur">
+        <div id="bootBar" class="h-full bg-gradient-to-r from-violet-600 to-indigo-600 w-0 relative overflow-hidden">
+          <div class="absolute inset-0 bg-white/20 animate-[shimmer_1s_infinite]"></div>
+        </div>
       </div>
-      <div class="preloader-line-wrap" aria-hidden="true"><div class="preloader-line-el"></div></div>
+      <p class="text-[10px] opacity-30 mt-3">Online graphics • GSAP • Lottie • Tailwind</p>
     </div>
   </div>
 
-  <!-- Progress -->
-  <div id="progress-wrap" aria-hidden="true"><div id="progress-bar"></div></div>
+  <!-- Wallpaper — Online Graphics -->
+  <div id="wallpaper" class="fixed inset-0 -z-10 overflow-hidden bg-[#050510]">
+    <!-- Online Unsplash + gradient -->
+    <img src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=2020&auto=format&fit=crop" alt="" class="absolute inset-0 w-full h-full object-cover opacity-[0.22] scale-105 animate-[wallpaperPan_30s_ease-in-out_infinite_alternate]">
+    <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop" alt="" class="absolute inset-0 w-full h-full object-cover opacity-[0.12] mix-blend-screen">
+    <div class="absolute inset-0 bg-gradient-to-br from-[#050510]/90 via-[#0a0a1a]/70 to-[#1a0a2e]/80"></div>
+    <!-- Animated mesh — online gradient feel -->
+    <div class="absolute -top-1/2 -right-1/2 w-[800px] h-[800px] bg-gradient-to-br from-violet-600/20 via-indigo-600/15 to-transparent rounded-full blur-[80px] animate-[float_12s_ease-in-out_infinite]"></div>
+    <div class="absolute -bottom-1/2 -left-1/2 w-[700px] h-[700px] bg-gradient-to-tr from-blue-600/15 via-cyan-500/10 to-transparent rounded-full blur-[80px] animate-[float_14s_ease-in-out_infinite_reverse]"></div>
+    <div class="absolute inset-0 opacity-[0.04]" style="background-image:url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22n%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/%3E%3C/svg%3E')"></div>
+    <canvas id="particleCanvas" class="absolute inset-0 opacity-40"></canvas>
+  </div>
 
-
-
-  <!-- Noise / grain -->
-  <div id="grain" aria-hidden="true"></div>
-  <canvas id="particles-canvas" aria-hidden="true"></canvas>
-
-  <!-- Navigation — minimal floating -->
-  <header>
-    <nav class="nav" aria-label="Primary">
-      <a href="#hero" class="nav-logo" aria-label="Home — Abhishek Jadhav">
-        <span class="logo-mark">[0x]</span> ABHI<span class="logo-light">13</span>
-        <span class="logo-sub">BARAMATI — 2026</span>
-      </a>
-      <ul class="nav-links" role="list">
-        <li><a href="#about" data-nav="about">About</a></li>
-        <li><a href="#stack" data-nav="stack">Stack</a></li>
-        <li><a href="#work" data-nav="work">Work</a></li>
-        <li><a href="#contact" data-nav="contact">Contact</a></li>
-      </ul>
-      <div class="nav-right">
-        <span class="nav-avail"><span class="dot"></span> Available</span>
-        <a href="#contact" class="nav-cta magnetic" data-magnetic><span>Let's talk —</span><span class="cta-arrow">↗</span></a>
-        <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
-          <span></span><span></span>
-        </button>
-      </div>
-    </nav>
-    <!-- Fullscreen mobile menu -->
-    <div class="menu-overlay" id="menu-overlay" aria-hidden="true">
-      <div class="menu-bg"></div>
-      <div class="menu-content">
-        <div class="menu-top">
-          <span>MENU</span>
-          <button class="menu-close" aria-label="Close menu">✕</button>
-        </div>
-        <nav class="menu-links" aria-label="Mobile">
-          <a href="#about" class="menu-link"><span>01</span> About <em>Identity & story</em></a>
-          <a href="#stack" class="menu-link"><span>02</span> Stack <em>Tools & craft</em></a>
-          <a href="#work" class="menu-link"><span>03</span> Work <em>Selected 2026—2026</em></a>
-          <a href="#certificates" class="menu-link"><span>04</span> Certificates <em>Proof of reps</em></a>
-          <a href="#education" class="menu-link"><span>05</span> Education <em>BCA Journey</em></a>
-          <a href="#contact" class="menu-link"><span>06</span> Contact <em>Let's build</em></a>
-        </nav>
-        <div class="menu-foot">
-          <a href="mailto:contact.0xabhi13@gmail.com">contact.0xabhi13@gmail.com</a>
-          <div class="menu-socials">
-            <a href="https://github.com/0xAbhi13" target="_blank" rel="noopener">GitHub ↗</a>
-            <a href="https://linkedin.com/in/0xAbhi13" target="_blank" rel="noopener">LinkedIn ↗</a>
-          </div>
+  <!-- Menu Bar -->
+  <header id="menuBar" class="fixed top-0 left-0 right-0 h-7 bg-black/40 backdrop-blur-xl border-b border-white/10 flex items-center justify-between px-3 text-xs z-50">
+    <div class="flex items-center gap-3">
+      <div class="relative group">
+        <button class="px-2 py-1 hover:bg-white/10 rounded font-bold">0xAbhi13</button>
+        <div class="absolute top-full left-0 mt-1 w-44 bg-[#1e1b4b]/95 backdrop-blur-xl border border-white/10 rounded-lg py-1 hidden group-hover:block">
+          <button class="w-full text-left px-3 py-1.5 hover:bg-white/10 text-xs" onclick="openApp('askabhi')">Ask Abhi</button>
+          <button class="w-full text-left px-3 py-1.5 hover:bg-white/10 text-xs" onclick="openApp('about')">About Abhishek</button>
         </div>
       </div>
+      <nav class="hidden md:flex items-center gap-1">
+        <button class="px-2 py-1 hover:bg-white/10 rounded" onclick="openApp('finder')">File</button>
+        <button class="px-2 py-1 hover:bg-white/10 rounded" onclick="openApp('finder')">Go</button>
+        <button class="px-2 py-1 hover:bg-white/10 rounded" id="windowMenuBtn">Window</button>
+        <button class="px-2 py-1 hover:bg-white/10 rounded" onclick="openApp('contact')">Help</button>
+      </nav>
+    </div>
+    <div class="flex items-center gap-2 text-white/80">
+      <button class="p-1.5 hover:bg-white/10 rounded" onclick="toggleSpotlight()" title="Search (Ctrl+K)"><i data-lucide="search" class="w-3.5 h-3.5"></i></button>
+      <button class="p-1.5 hover:bg-white/10 rounded" onclick="openApp('about')"><i data-lucide="info" class="w-3.5 h-3.5"></i></button>
+      <span id="menuTime" class="hidden sm:block tabular-nums"></span>
+      <i data-lucide="wifi" class="w-3.5 h-3.5 hidden sm:block"></i>
     </div>
   </header>
 
-  <main id="main-content">
-
-    <!-- HERO — cinematic opening title sequence -->
-    <section id="hero" class="hero">
-      <div class="hero-grid-lines" aria-hidden="true"></div>
-      <div class="container hero-container">
-        <div class="hero-kicker">
-          <span class="kicker-left">[ 01 — INTRODUCTION ] • CREATIVE DEVELOPER</span>
-          <span class="kicker-right">BARAMATI, MAHARASHTRA • EST 2026</span>
-        </div>
-
-        <div class="hero-bottom">
-          <div class="hero-left">
-            <div class="hero-title-wrap">
-              <h1 class="hero-title" aria-label="Abhishek Jadhav">
-                <span class="hero-line clip"><span class="hero-word" data-word>ABHISHEK</span></span>
-                <span class="hero-line clip outline-line"><span class="hero-word outline" data-word>JADHAV</span><span class="hero-year">©26</span></span>
-                <span class="hero-line subline clip"><span class="hero-sub"><span class="sub-accent">CREATIVE</span> <span class="sub-mute">—</span> DEVELOPER</span></span>
-              </h1>
-
-            </div>
-            <div class="hero-desc-col">
-            <p class="hero-desc">
-              BCA student from Baramati learning the craft from the ground up — <em>C++</em> for fundamentals,
-              <em>Python</em> for shipping, <em>JavaScript</em> for the web. Building small, real products in public.
-            </p>
-            <div class="hero-actions">
-              <a href="#work" class="btn btn-primary magnetic" data-magnetic>
-                <span>View selected work</span>
-                <span class="btn-icon">⟶</span>
-              </a>
-              <a href="https://github.com/0xAbhi13" target="_blank" rel="noopener" class="btn btn-ghost">
-                GitHub — @0xAbhi13 <span>↗</span>
-              </a>
-            </div>
-            <div class="hero-stats">
-              <div class="stat"><strong>07</strong><span>Tools &<br>languages</span></div>
-              <div class="stat"><strong>BCA</strong><span>Currently<br>studying</span></div>
-              <div class="stat"><strong>05</strong><span>Shipped<br>projects</span></div>
-            </div>
-            </div>
-          </div>
-
-          <div class="hero-visual-col hero-visual-col--center">
-            <div class="hero-visual" data-tilt>
-              <div class="visual-frame">
-                <div class="visual-topbar">
-                  <span class="dots"><i></i><i></i><i></i></span>
-                  <span class="visual-title">~/0xAbhi13/portfolio — zsh</span>
-                  <span class="visual-live">● LIVE</span>
-                </div>
-                <div class="visual-media">
-                  <img src="assets/profile.jpg" alt="Abhishek Jadhav portrait" width="520" height="640" loading="eager" />
-                  <div class="visual-overlay" aria-hidden="true">
-                    <div class="overlay-grid"></div>
-                    <div class="overlay-vignette"></div>
-                  </div>
-
-                </div>
-                <div class="visual-term">
-                  <span><b>➜</b> whoami — <em>aspiring software developer</em></span>
-                  <span><b>#</b> learning: C++ • Python • JavaScript • Git</span>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          <div class="hero-side">
-            <div class="side-label">SCROLL — EXPLORE</div>
-            <div class="side-line"></div>
-            <div class="side-num">01 / 06</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="hero-marquee" aria-hidden="true">
-        <div class="marquee-track">
-          <span>BUILDING DIGITAL EXPERIENCES —</span>
-          <span>CRAFTING INTERFACES —</span>
-          <span>LEARNING IN PUBLIC —</span>
-          <span>BUILDING DIGITAL EXPERIENCES —</span>
-          <span>CRAFTING INTERFACES —</span>
-          <span>LEARNING IN PUBLIC —</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- STRIP — editorial divider -->
-    <div class="strip" aria-hidden="true">
-      <span>SELECTED WORK — 05 PROJECTS — BARAMATI → WORLD — EXPERIMENT • LEARN • SHIP —</span>
-      <span>SELECTED WORK — 05 PROJECTS — BARAMATI → WORLD — EXPERIMENT • LEARN • SHIP —</span>
+  <!-- Desktop -->
+  <main id="desktop" class="fixed inset-0 pt-7 pb-20 overflow-hidden">
+    <!-- Center Identity — static ABHISHEK -->
+    <div id="desktopIdentity" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none">
+      <p class="text-white/60 text-sm font-light mb-1 tracking-wide">Hey, I'm</p>
+      <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight drop-shadow-2xl">ABHISHEK</h1>
+      <p class="text-[11px] md:text-xs text-white/60 uppercase tracking-[0.18em] mt-2 font-medium">CREATIVE DEVELOPER • C++ • PYTHON • JAVASCRIPT • BCA • BARAMATI</p>
+      <p class="text-xs text-white/40 mt-3 hidden md:block">Double-click icons → open apps • Drag windows • Dock at bottom • <span class="text-violet-300">Ctrl+K</span> to search</p>
     </div>
 
-    <!-- ABOUT — editorial composition -->
-    <section id="about" class="about">
-      <div class="container">
-        <div class="section-head">
-          <span class="eyebrow"><span>01</span> — About — Identity</span>
-          <div class="head-line"></div>
-        </div>
-
-        <div class="about-layout">
-          <div class="about-left">
-            <h2 class="about-title">
-              <span class="clip"><span>BUILDING</span></span>
-              <span class="clip"><span>DIGITAL</span></span>
-              <span class="clip"><span class="outline-text">EXPERI-</span></span>
-              <span class="clip"><span>ENCES<span class="dot-yellow">.</span></span></span>
-            </h2>
-            <div class="about-meta">
-              <span class="mono">Baramati, Maharashtra — BCA Student</span>
-              <span class="mono">Est. 2026 — Still early, still building</span>
-            </div>
-          </div>
-
-          <div class="about-right">
-            <div class="about-paras">
-              <p class="lead">I'm a <strong>BCA student</strong> based in Baramati — not chasing shortcuts, just putting in the hours to understand how programming actually works.</p>
-              <p>How memory moves in <em>C++</em>, how Python automates the boring bits, how JavaScript brings a page to life. I pick a small problem, build something that solves it, get it wrong a few times, read the errors properly, and ship a version I'm proud of.</p>
-              <div class="about-tags">
-                <span>currently learning: DSA</span>
-                <span>building: side projects</span>
-                <span>open to: internships</span>
-              </div>
-            </div>
-
-            <div class="about-stats-grid">
-              <div class="a-stat">
-                <span class="num" data-count="3">0+</span>
-                <span class="label">years<br>learning</span>
-              </div>
-              <div class="a-stat">
-                <span class="num" data-count="5">0</span>
-                <span class="label">shipped<br>projects</span>
-              </div>
-              <div class="a-stat">
-                <span class="num" data-count="3">0</span>
-                <span class="label">certified<br>courses</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="timeline-wrap">
-          <div class="timeline-line"></div>
-          <div class="timeline-grid">
-            <article class="t-item">
-              <h3>First lines of code</h3>
-              <p>Started with C++ — variables, loops, functions and how a computer actually executes a program.</p>
-            </article>
-            <article class="t-item">
-              <h3>Web fundamentals</h3>
-              <p>HTML & CSS to structure and style real pages, then JavaScript to make them interactive.</p>
-            </article>
-            <article class="t-item">
-              <h3>Python & version control</h3>
-              <p>Python for scripting and problem solving, Git & GitHub to track every project properly.</p>
-            </article>
-            <article class="t-item is-now">
-              <h3>Building in public — BCA</h3>
-              <p>Studying core CS fundamentals while shipping projects, learning DSA and getting comfortable with production code.</p>
-              <span class="now-badge">● Current</span>
-            </article>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div id="skills" aria-hidden="true" style="position:relative;top:-72px"></div>
-    <!-- STACK — interactive horizontal -->
-    <section id="stack" class="stack">
-      <div class="container">
-        <div class="section-head">
-          <span class="eyebrow"><span>02</span> — Stack — Tools of the craft</span>
-          <div class="head-line"></div>
-        </div>
-        <div class="stack-intro">
-          <h2 class="stack-title">Technologies <span class="mono">/ 07 core</span></h2>
-          <p>What I work with daily — and what I'm levelling up next. No buzzword bingo, just the stack behind the work.</p>
-        </div>
-      </div>
-
-      <!-- kinetic typography marquee -->
-      <div class="stack-kinetic" aria-hidden="true">
-        <div class="kinetic-track" data-dir="left">
-          <span class="k-big">C++</span><span class="k-dot">•</span>
-          <span class="k-big outline">PYTHON</span><span class="k-dot">•</span>
-          <span class="k-big">JAVASCRIPT</span><span class="k-dot">•</span>
-          <span class="k-big outline">HTML5</span><span class="k-dot">•</span>
-          <span class="k-big">CSS3</span><span class="k-dot">•</span>
-          <span class="k-big outline">GIT</span><span class="k-dot">•</span>
-          <span class="k-big">GITHUB</span><span class="k-dot">•</span>
-          <span class="k-big outline">FLASK</span><span class="k-dot">•</span>
-        </div>
-        <div class="kinetic-track reverse" data-dir="right">
-          <span class="k-big outline">OpenCV</span><span class="k-dot yellow">•</span>
-          <span class="k-big">MediaPipe</span><span class="k-dot yellow">•</span>
-          <span class="k-big outline">NumPy</span><span class="k-dot yellow">•</span>
-          <span class="k-big">YOLOv4-tiny</span><span class="k-dot yellow">•</span>
-          <span class="k-big outline">Web Speech API</span><span class="k-dot yellow">•</span>
-          <span class="k-big">Openverse</span><span class="k-dot yellow">•</span>
-        </div>
-      </div>
-
-      <div class="container">
-        <div class="skills-grid">
-          <div class="skill" data-level="70">
-            <div class="skill-top">
-              <span class="skill-name">C++</span>
-              <span class="skill-pct">70%</span>
-            </div>
-            <div class="skill-bar"><span class="fill" style="width:0%"></span></div>
-            <span class="skill-meta">Fundamentals • DSA • Problem solving</span>
-          </div>
-          <div class="skill" data-level="75">
-            <div class="skill-top">
-              <span class="skill-name">Python</span>
-              <span class="skill-pct">75%</span>
-            </div>
-            <div class="skill-bar"><span class="fill" style="width:0%"></span></div>
-            <span class="skill-meta">Scripting • OpenCV • Flask</span>
-          </div>
-          <div class="skill highlight" data-level="95">
-            <div class="skill-top">
-              <span class="skill-name">HTML5</span>
-              <span class="skill-pct">95%</span>
-            </div>
-            <div class="skill-bar"><span class="fill" style="width:0%"></span></div>
-            <span class="skill-meta">Semantic • Accessible • Editorial</span>
-          </div>
-          <div class="skill highlight" data-level="90">
-            <div class="skill-top">
-              <span class="skill-name">CSS3</span>
-              <span class="skill-pct">90%</span>
-            </div>
-            <div class="skill-bar"><span class="fill" style="width:0%"></span></div>
-            <span class="skill-meta">Layout • Motion • Responsive</span>
-          </div>
-          <div class="skill" data-level="68">
-            <div class="skill-top">
-              <span class="skill-name">JavaScript</span>
-              <span class="skill-pct">68%</span>
-            </div>
-            <div class="skill-bar"><span class="fill" style="width:0%"></span></div>
-            <span class="skill-meta">Vanilla • GSAP • Interactions</span>
-          </div>
-          <div class="skill" data-level="78">
-            <div class="skill-top">
-              <span class="skill-name">Git</span>
-              <span class="skill-pct">78%</span>
-            </div>
-            <div class="skill-bar"><span class="fill" style="width:0%"></span></div>
-            <span class="skill-meta">Version control • Workflow</span>
-          </div>
-          <div class="skill" data-level="80">
-            <div class="skill-top">
-              <span class="skill-name">GitHub</span>
-              <span class="skill-pct">80%</span>
-            </div>
-            <div class="skill-bar"><span class="fill" style="width:0%"></span></div>
-            <span class="skill-meta">Shipping in public — @0xAbhi13</span>
-          </div>
-          <div class="skill future">
-            <div class="skill-top">
-              <span class="skill-name">Next —</span>
-              <span class="skill-pct">↗</span>
-            </div>
-            <div class="skill-bar"><span class="fill yellow" style="width:100%"></span></div>
-            <span class="skill-meta">React • GSAP • Node • Deeper DSA</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div id="projects" aria-hidden="true" style="position:relative;top:-72px"></div>
-    <!-- WORK — cinematic project showcase (pinned narrative) -->
-    <section id="work" class="work">
-      <div class="container">
-        <div class="section-head">
-          <span class="eyebrow"><span>03</span> — Work — Selected 2026—2026</span>
-          <div class="head-line"></div>
-        </div>
-        <div class="work-intro">
-          <h2 class="work-title">
-            <span>SELECTED</span>
-            <span class="outline-text">WORK</span>
-            <span class="mono">/ 05 PROJECTS — SCROLL TO EXPLORE</span>
-          </h2>
-        </div>
-      </div>
-
-      <!-- Projects pinned container -->
-      <div class="projects-wrap">
-        <!-- Project 01 -->
-        <article class="project" data-index="01">
-          <div class="project-bg-num" aria-hidden="true">01</div>
-          <div class="container project-inner">
-            <div class="project-media">
-              <div class="media-frame">
-                <img src="assets/portfolio.png" alt="Developer Portfolio — responsive dark portfolio built with HTML CSS JavaScript" loading="lazy" width="800" height="450" />
-                <span class="media-tag">Featured — 01</span>
-                <div class="media-corner"></div>
-              </div>
-            </div>
-            <div class="project-info">
-              <span class="p-eyebrow">[01] — HTML5 / CSS3 / JavaScript — 2026</span>
-              <h3 class="p-title">Developer<br>Portfolio</h3>
-              <p class="p-desc">This website — fully responsive, dark, editorial portfolio built from scratch with plain HTML, CSS and JavaScript. No frameworks, no build tools — just solid fundamentals and cinematic motion.</p>
-              <div class="p-tech">
-                <span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>GSAP</span>
-              </div>
-              <div class="p-links">
-                <a href="https://github.com/0xAbhi13" target="_blank" rel="noopener" class="p-link ghost">GitHub <span>↗</span></a>
-                <a href="#hero" class="p-link solid magnetic" data-magnetic>Live Demo <span>⟶</span></a>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <!-- Project 02 -->
-        <article class="project alt" data-index="02">
-          <div class="project-bg-num" aria-hidden="true">02</div>
-          <div class="container project-inner">
-            <div class="project-media">
-              <div class="media-frame">
-                <img src="assets/projects/0xemotion.png" alt="0xEmotion — AI facial expression recognition running offline with Flask and OpenCV" loading="lazy" width="800" height="450" />
-                <span class="media-tag">AI • Vision — 02</span>
-                <div class="media-corner yellow"></div>
-              </div>
-            </div>
-            <div class="project-info">
-              <span class="p-eyebrow">[02] — Python / Flask / OpenCV / NumPy</span>
-              <h3 class="p-title">0xEmotion</h3>
-              <p class="p-desc">AI facial expression recognition that runs entirely offline. Flask + OpenCV detect faces from webcam or upload and classify the visible expression — transparent fallback when no trained model is present.</p>
-              <div class="p-tech">
-                <span>Python</span><span>Flask</span><span>OpenCV</span><span>NumPy</span>
-              </div>
-              <div class="p-links">
-                <a href="https://github.com/0xAbhi13/0xEmotion" target="_blank" rel="noopener" class="p-link solid magnetic" data-magnetic>View on GitHub <span>↗</span></a>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <!-- Project 03 -->
-        <article class="project" data-index="03">
-          <div class="project-bg-num" aria-hidden="true">03</div>
-          <div class="container project-inner">
-            <div class="project-media">
-              <div class="media-frame">
-                <img src="assets/projects/0xmagicsearch.png" alt="0xMagicSearch — YOLOv4-tiny object detection scanner with local knowledge base" loading="lazy" width="800" height="450" />
-                <span class="media-tag">Vision • Real-time — 03</span>
-                <div class="media-corner"></div>
-              </div>
-            </div>
-            <div class="project-info">
-              <span class="p-eyebrow">[03] — Python / Flask / OpenCV / YOLOv4-tiny</span>
-              <h3 class="p-title">0xMagic<br>Search</h3>
-              <p class="p-desc">Local AI object detection that turns your webcam into a scanner. Lightweight YOLOv4-tiny via OpenCV identifies objects in real time and enriches each result with a local knowledge base — no cloud API.</p>
-              <div class="p-tech">
-                <span>Python</span><span>Flask</span><span>OpenCV</span><span>YOLOv4-tiny</span>
-              </div>
-              <div class="p-links">
-                <a href="https://github.com/0xAbhi13/0xMagicSearch" target="_blank" rel="noopener" class="p-link solid magnetic" data-magnetic>View on GitHub <span>↗</span></a>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <!-- Project 04 -->
-        <article class="project alt" data-index="04">
-          <div class="project-bg-num" aria-hidden="true">04</div>
-          <div class="container project-inner">
-            <div class="project-media">
-              <div class="media-frame">
-                <img src="assets/projects/0xaircanvas.png" alt="0xAirCanvas — draw in air with hand tracking via MediaPipe and OpenCV" loading="lazy" width="800" height="450" />
-                <span class="media-tag">Interaction — 04</span>
-                <div class="media-corner yellow"></div>
-              </div>
-            </div>
-            <div class="project-info">
-              <span class="p-eyebrow">[04] — Python / Flask / OpenCV / MediaPipe</span>
-              <h3 class="p-title">0xAir<br>Canvas</h3>
-              <p class="p-desc">Draw in thin air. OpenCV and MediaPipe track your hand through the webcam, turning your fingertip into a smooth digital pen with gesture-based controls — no stylus needed.</p>
-              <div class="p-tech">
-                <span>Python</span><span>Flask</span><span>OpenCV</span><span>MediaPipe</span>
-              </div>
-              <div class="p-links">
-                <a href="https://github.com/0xAbhi13/0xAirCanvas" target="_blank" rel="noopener" class="p-link solid magnetic" data-magnetic>View on GitHub <span>↗</span></a>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <!-- Project 05 -->
-        <article class="project" data-index="05">
-          <div class="project-bg-num" aria-hidden="true">05</div>
-          <div class="container project-inner">
-            <div class="project-media">
-              <div class="media-frame">
-                <img src="assets/projects/0xvoicevision.png" alt="0xVoiceVision — voice-controlled visual search with Web Speech API and Openverse" loading="lazy" width="800" height="450" />
-                <span class="media-tag">Voice • Search — 05</span>
-                <div class="media-corner"></div>
-              </div>
-            </div>
-            <div class="project-info">
-              <span class="p-eyebrow">[05] — Python / Flask / Web Speech API / Openverse</span>
-              <h3 class="p-title">0xVoice<br>Vision</h3>
-              <p class="p-desc">Speak a word and see it. Web Speech API transcribes your voice, Flask cleans the query, and a matching image is pulled from the free Openverse API with an animated reveal — no API key required.</p>
-              <div class="p-tech">
-                <span>Python</span><span>Flask</span><span>Web Speech</span><span>Openverse</span>
-              </div>
-              <div class="p-links">
-                <a href="https://github.com/0xAbhi13/0xVoiceVision" target="_blank" rel="noopener" class="p-link solid magnetic" data-magnetic>View on GitHub <span>↗</span></a>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <!-- NEXT -->
-        <article class="project next">
-          <div class="container project-inner next-inner">
-            <div class="next-left">
-              <span class="p-eyebrow">Next — brewing</span>
-              <h3>Something new is<br><span class="outline-text">always</span> in the works.</h3>
-              <p>Follow the commits — the next experiment is already being sketched, tested and broken.</p>
-              <a href="https://github.com/0xAbhi13" target="_blank" rel="noopener" class="p-link solid magnetic" data-magnetic>Follow progress <span>↗</span></a>
-            </div>
-            <div class="next-right">
-              <span class="next-big">06</span>
-              <span class="next-label">COMING SOON — TBD • 2026</span>
-            </div>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- CERTIFICATES — marquee editorial -->
-    <section id="certificates" class="certs">
-      <div class="container">
-        <div class="section-head">
-          <span class="eyebrow"><span>04</span> — Certificates — Proof of reps</span>
-          <div class="head-line"></div>
-        </div>
-        <div class="certs-intro">
-          <h2>Proof of the <span class="yellow-text">reps.</span></h2>
-          <p>Verified courses completed — tilt a card or pause the scroll to look closer.</p>
-        </div>
-      </div>
-      <div class="cert-marquee">
-        <div class="cert-track" id="certTrack">
-          <div class="cert-card">
-            <div class="cert-inner" data-tilt>
-              <span class="cert-ribbon">✓ Verified</span>
-              <div class="cert-shine"></div>
-              <div class="cert-media"><img src="assets/certificate-cpp.jpg" alt="Certificate — Complete C++ Language, Sheryians Coding School — Abhishek Jadhav" loading="lazy" width="700" height="540" /></div>
-              <div class="cert-body">
-                <h3>Complete C++ Language</h3>
-                <span class="issuer">Sheryians Coding School</span>
-                <p>Real-world applications, problem-solving and job-ready technical skills.</p>
-                <div class="cert-meta"><span><b>issued</b> Jul 2026</span><span><b>id</b> 48344…b619</span></div>
-                <div class="cert-links">
-                  <a href="https://sheryians.com/certificate/4834427359730082f339b619" target="_blank" rel="noopener" class="btn btn-ghost btn-sm">Verify ↗</a>
-                  <a href="assets/certificate-cpp.jpg" target="_blank" rel="noopener" class="btn btn-primary btn-sm">View</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="cert-card">
-            <div class="cert-inner" data-tilt>
-              <span class="cert-ribbon">✓ Verified</span>
-              <div class="cert-shine"></div>
-              <div class="cert-media"><img src="assets/certificate-html-css-js.jpg" alt="Certificate — HTML CSS JavaScript from Scratch, Educative" loading="lazy" width="700" height="466" /></div>
-              <div class="cert-body">
-                <h3>HTML, CSS &amp; JavaScript from Scratch</h3>
-                <span class="issuer">Educative</span>
-                <p>Core web fundamentals — semantic markup, styling and interactive scripting.</p>
-                <div class="cert-meta"><span><b>issued</b> Jul 2026</span><span><b>id</b> FD9G69XC5T</span></div>
-                <div class="cert-links">
-                  <a href="https://www.educative.io/verify-certificate/FD9G69XC5T" target="_blank" rel="noopener" class="btn btn-ghost btn-sm">Verify ↗</a>
-                  <a href="assets/certificate-html-css-js.jpg" target="_blank" rel="noopener" class="btn btn-primary btn-sm">View</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="cert-card">
-            <div class="cert-inner" data-tilt>
-              <span class="cert-ribbon">✓ Verified</span>
-              <div class="cert-shine"></div>
-              <div class="cert-media"><img src="assets/certificate-python.jpg" alt="Certificate — Learn Python 3, Educative" loading="lazy" width="700" height="466" /></div>
-              <div class="cert-body">
-                <h3>Learn Python 3</h3>
-                <span class="issuer">Educative</span>
-                <p>Hands-on Python 3 fundamentals and core programming concepts.</p>
-                <div class="cert-meta"><span><b>issued</b> Jul 2026</span><span><b>id</b> 7HYRJKNF2B</span></div>
-                <div class="cert-links">
-                  <a href="https://www.educative.io/verify-certificate/7HYRJKNF2B" target="_blank" rel="noopener" class="btn btn-ghost btn-sm">Verify ↗</a>
-                  <a href="assets/certificate-python.jpg" target="_blank" rel="noopener" class="btn btn-primary btn-sm">View</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- EDUCATION — minimal editorial -->
-    <section id="education" class="education">
-      <div class="container">
-        <div class="section-head">
-          <span class="eyebrow"><span>05</span> — Education — Academic background</span>
-          <div class="head-line"></div>
-        </div>
-        <div class="edu-layout">
-          <div class="edu-left">
-            <h2>LEARNING<br>NEVER<br><span class="outline-text">STOPS</span><span class="dot-yellow">.</span></h2>
-            <p class="edu-desc">Theory in the classroom, practice in the editor. The degree gives me the map — the projects are the territory.</p>
-          </div>
-          <div class="edu-right">
-            <article class="edu-item current">
-              <span class="edu-tag">Currently enrolled</span>
-              <h3>Bachelor of Computer Applications (BCA)</h3>
-              <p>Core CS fundamentals — programming, data structures, databases and software development — applied daily through side projects and consistent shipping.</p>
-              <span class="edu-when">2026</span>
-            </article>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACT — final cinematic scene -->
-    <section id="contact" class="contact">
-      <div class="container">
-        <div class="contact-label">
-          <span class="eyebrow"><span>06</span> — Contact — Final scene</span>
-          <div class="head-line"></div>
-        </div>
-        <div class="contact-layout">
-          <h2 class="contact-title">
-            <span class="clip"><span>LET'S</span></span>
-            <span class="clip"><span>BUILD</span></span>
-            <span class="clip"><span class="outline-text">SOME-</span></span>
-            <span class="clip"><span>THING<span class="dot-yellow">.</span></span></span>
-          </h2>
-          <div class="contact-right">
-            <p class="contact-intro">Open to internships, junior roles and collaboration on interesting products. If you're building something thoughtful and a little ambitious — let's talk.</p>
-
-            <div class="contact-cards">
-              <a href="mailto:contact.0xabhi13@gmail.com" class="c-card primary">
-                <span class="c-icon">✉</span>
-                <div>
-                  <span class="c-label">Email</span>
-                  <span class="c-value">contact.0xabhi13@gmail.com</span>
-                </div>
-                <span class="c-arrow">↗</span>
-              </a>
-              <a href="https://github.com/0xAbhi13" target="_blank" rel="noopener" class="c-card">
-                <span class="c-icon">◇</span>
-                <div>
-                  <span class="c-label">GitHub</span>
-                  <span class="c-value">github.com/0xAbhi13</span>
-                </div>
-                <span class="c-arrow">↗</span>
-              </a>
-              <a href="https://linkedin.com/in/0xAbhi13" target="_blank" rel="noopener" class="c-card">
-                <span class="c-icon">◎</span>
-                <div>
-                  <span class="c-label">LinkedIn</span>
-                  <span class="c-value">linkedin.com/in/0xAbhi13</span>
-                </div>
-                <span class="c-arrow">↗</span>
-              </a>
-              <div class="c-card static">
-                <span class="c-icon">◐</span>
-                <div>
-                  <span class="c-label">Location</span>
-                  <span class="c-value">Baramati, Maharashtra, India</span>
-                </div>
-              </div>
-            </div>
-
-            <a href="mailto:contact.0xabhi13@gmail.com" class="contact-cta magnetic" data-magnetic>
-              <span>Start a project</span>
-              <span class="cta-circle">⟶</span>
-            </a>
-            <span class="cta-note">Typically replies within 24 hours • No recruiters spam, just real work</span>
-          </div>
-        </div>
-      </div>
-      <div class="contact-bg-text" aria-hidden="true">0xAbhi13</div>
-    </section>
+    <!-- Desktop Icons -->
+    <div id="desktopIcons" class="absolute top-8 left-3 md:left-4 flex flex-col flex-wrap gap-1 md:gap-3 h-[calc(100%-6rem)] content-start">
+      <!-- populated by JS -->
+    </div>
   </main>
 
-  <footer class="footer">
-    <div class="container footer-inner">
-      <div class="footer-left">
-        <strong>ABHISHEK JADHAV</strong> <span>— Creative Developer • Baramati, IN</span>
-        <span class="footer-copy">© <span id="current-year">2026</span> • Built with HTML, CSS, JavaScript & GSAP • No frameworks needed.</span>
+  <!-- Window Layer -->
+  <div id="windowLayer" class="fixed inset-0 pt-7 pb-[72px] pointer-events-none z-20"></div>
+
+  <!-- Music Player — Now Playing Bar (replaces dock) — Wavecont YouTube only -->
+  <div id="musicBar" class="fixed bottom-3 left-1/2 -translate-x-1/2 z-30 w-[min(640px,calc(100%-16px))] bg-black/45 backdrop-blur-2xl border border-white/15 rounded-2xl shadow-2xl overflow-hidden hidden md:block" role="region" aria-label="Music player — Wavecont YouTube">
+    <div id="musicBarMain" class="flex items-center gap-3 px-3 py-2.5 cursor-pointer" tabindex="0" aria-label="Music player">
+      <img id="musicArt" src="assets/audio/wavecont-artwork.jpg" alt="Wavecont — artwork" class="w-10 h-10 rounded-md object-cover border border-white/10 shrink-0 bg-white/5">
+      <div class="flex-1 min-w-0 text-left">
+        <div id="musicTitle" class="text-sm font-semibold truncate leading-tight">Wavecont - Uplifting And Inspiring Acoustic Corporate</div>
+        <div id="musicArtist" class="text-[11px] opacity-60 truncate">Pro Tunes - Copyright Safe Music</div>
       </div>
-      <div class="footer-right">
-        <div class="footer-socials">
-          <a href="https://github.com/0xAbhi13" target="_blank" rel="noopener" aria-label="GitHub">GitHub</a>
-          <a href="https://linkedin.com/in/0xAbhi13" target="_blank" rel="noopener" aria-label="LinkedIn">LinkedIn</a>
-          <a href="mailto:contact.0xabhi13@gmail.com" aria-label="Email">Email</a>
-        </div>
-        <button class="back-to-top magnetic" data-magnetic aria-label="Back to top">↑</button>
+      <div class="flex items-center gap-1 shrink-0">
+        <button id="musicPrev" aria-label="Previous track" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/15 active:scale-95 grid place-items:center transition"><i data-lucide="skip-back" class="w-4 h-4"></i></button>
+        <button id="musicPlay" aria-label="Play" class="w-9 h-9 rounded-full bg-white text-black hover:bg-white/90 active:scale-95 grid place-items:center shadow transition"><i data-lucide="play" class="w-4 h-4 ml-0.5"></i></button>
+        <button id="musicNext" aria-label="Next track" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/15 active:scale-95 grid place-items:center transition"><i data-lucide="skip-forward" class="w-4 h-4"></i></button>
+      </div>
+      <div class="hidden lg:flex items-center gap-2 shrink-0">
+        <button id="musicMute" aria-label="Mute" class="w-8 h-8 rounded-full hover:bg-white/10 grid place-items:center transition"><i data-lucide="volume-2" class="w-4 h-4"></i></button>
+        <input id="musicVolume" type="range" min="0" max="1" step="0.01" value="0.85" aria-label="Volume" class="w-20 accent-violet-500 h-1 cursor-pointer">
       </div>
     </div>
-    <div class="footer-line"></div>
-  </footer>
+    <div class="px-3 pb-2.5 flex items-center gap-2">
+      <span id="musicCurrent" class="text-[10px] opacity-60 tabular-nums w-8 text-right">0:00</span>
+      <div id="musicProgressWrap" class="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden cursor-pointer relative group" role="slider" aria-label="Seek" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">
+        <div id="musicProgress" class="h-full bg-gradient-to-r from-violet-600 to-indigo-600 w-0 relative transition-[width] duration-100">
+          <div class="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow -mr-1.5 opacity-0 group-hover:opacity-100 transition"></div>
+        </div>
+      </div>
+      <span id="musicDuration" class="text-[10px] opacity-60 tabular-nums w-8">2:24</span>
+    </div>
+  </div>
+  <audio id="musicAudio" preload="metadata" class="hidden"></audio>
 
-  <!-- GSAP + Lenis -->
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollToPlugin.min.js"></script>
-  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
-  <script src="js/main.js"></script>
+  <!-- Spotlight Search -->
+  <div id="spotlight" class="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 hidden flex items-start justify-center pt-[18vh] p-4" onclick="if(event.target===this) toggleSpotlight(false)">
+    <div class="w-full max-w-[640px] bg-[#1e1e2e] border border-white/15 rounded-2xl overflow-hidden shadow-2xl flex flex-col max-h-[60vh]" onclick="event.stopPropagation()">
+      <div class="flex items-center px-4 py-3 border-b border-white/10">
+        <i data-lucide="search" class="w-4 h-4 text-white/40 mr-3"></i>
+        <input id="spotlightInput" type="text" placeholder="Search projects, skills, certifications..." class="flex-1 bg-transparent outline-none text-sm placeholder-white/30" />
+        <span class="text-[10px] px-1.5 py-0.5 bg-white/10 rounded ml-2 hidden sm:block">ESC</span>
+      </div>
+      <div id="spotlightResults" class="overflow-auto flex-1 p-2 text-sm"></div>
+      <div class="p-2 border-t border-white/10">
+        <button class="w-full text-left px-3 py-2 rounded-lg hover:bg-violet-500/15 text-violet-300 flex items-center gap-2 text-xs" onclick="openApp('askabhi'); toggleSpotlight(false)"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Ask Abhi about your query</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Layout — Phone Style (visible <768px) -->
+  <div id="mobileLayout" class="fixed inset-0 bg-[#020208] z-50 hidden flex-col overflow-hidden md:hidden items-center justify-center p-0 sm:p-4">
+    <!-- Phone Frame -->
+    <div class="phone-device w-full h-full sm:h-[780px] sm:max-w-[390px] sm:rounded-[48px] bg-[#050510] sm:border-[10px] sm:border-black sm:shadow-[0_32px_80px_rgba(0,0,0,0.7),0_0_0_1px_rgba(255,255,255,0.08)] relative overflow-hidden flex flex-col">
+      <!-- Notch -->
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-7 bg-black rounded-b-2xl z-20 hidden sm:block"></div>
+      <!-- Status Bar -->
+      <div class="h-11 flex items-center justify-between px-6 pt-2 text-[13px] font-semibold text-white shrink-0">
+        <span id="phoneTime" class="tabular-nums">9:41</span>
+        <div class="flex items-center gap-1.5">
+          <i data-lucide="signal" class="w-3.5 h-3.5 opacity-80"></i>
+          <i data-lucide="wifi" class="w-3.5 h-3.5 opacity-80"></i>
+          <span class="w-6 h-3 rounded-[4px] border border-white/40 p-[2px] flex"><span class="flex-1 bg-white rounded-[2px]"></span></span>
+        </div>
+      </div>
+      <!-- Wallpaper inside phone -->
+      <div class="absolute inset-0 top-11 bg-gradient-to-br from-[#0a0a1a] via-[#101036] to-[#1a0a2e] -z-10"></div>
+      <div class="absolute inset-0 top-11 opacity-20 -z-10" style="background: radial-gradient(400px 200px at 30% 10%, rgba(139,92,246,0.35), transparent), radial-gradient(300px 200px at 80% 70%, rgba(59,130,246,0.25), transparent)"></div>
+
+      <div class="flex-1 overflow-auto px-5 pt-2 pb-4 flex flex-col">
+        <div class="text-center mb-5 mt-2">
+          <div class="w-20 h-20 rounded-2xl overflow-hidden mx-auto mb-3 border-2 border-white/15 shadow-xl">
+            <img src="assets/profile/profilepic.jpg" alt="Abhishek" class="w-full h-full object-cover">
+          </div>
+          <p class="text-white/60 text-xs">Hey, I'm</p>
+          <h1 class="text-[22px] font-bold tracking-tight">Abhishek Jadhav</h1>
+          <p class="text-white/50 text-[11px] mt-0.5">0xAbhi13 • Creative Developer • BCA • Baramati</p>
+          <p class="text-[11px] text-violet-300 mt-1 font-mono">C++ • Python • JavaScript • 5 projects →</p>
+        </div>
+        <button onclick="openMobileApp('askabhi')" class="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-violet-600 to-indigo-600 p-3 rounded-2xl font-semibold mb-5 shadow-lg shadow-violet-600/20 active:scale-[0.98] transition-transform"><i data-lucide="sparkles" class="w-4 h-4"></i> Ask Abhi</button>
+        <div id="mobileGrid" class="grid grid-cols-4 gap-x-3 gap-y-5"></div>
+        <!-- Mobile Music Bar — replaces bottom navbar (phone) -->
+        <div id="musicBarMobile" class="mt-auto mx-1 mb-2 bg-black/50 backdrop-blur-xl border border-white/15 rounded-2xl p-2.5 flex items-center gap-2.5 shadow-xl" role="region" aria-label="Music player">
+          <img id="musicArtMobile" src="assets/audio/wavecont-artwork.jpg" alt="Wavecont — artwork" class="w-10 h-10 rounded-lg object-cover border border-white/10 shrink-0">
+          <div class="flex-1 min-w-0 text-left">
+            <div id="musicTitleMobile" class="text-xs font-semibold truncate leading-tight">Wavecont - Uplifting And Inspiring Acoustic Corporate</div>
+            <div id="musicArtistMobile" class="text-[10px] opacity-60 truncate">Pro Tunes - Copyright Safe Music</div>
+            <div class="h-1 bg-white/10 rounded-full mt-1.5 overflow-hidden"><div id="musicProgressMobile" class="h-full bg-gradient-to-r from-violet-600 to-indigo-600 w-0"></div></div>
+          </div>
+          <button id="musicPrevMobile" aria-label="Previous track" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/15 active:scale-95 grid place-items:center shrink-0 transition"><i data-lucide="skip-back" class="w-3.5 h-3.5"></i></button>
+          <button id="musicPlayMobile" aria-label="Play" class="w-10 h-10 rounded-full bg-white text-black hover:bg-white/90 active:scale-95 grid place-items:center shrink-0 shadow transition"><i data-lucide="play" class="w-4 h-4 ml-0.5"></i></button>
+          <button id="musicNextMobile" aria-label="Next track" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/15 active:scale-95 grid place-items:center shrink-0 transition"><i data-lucide="skip-forward" class="w-3.5 h-3.5"></i></button>
+        </div>
+        <div class="w-32 h-1 bg-white rounded-full mx-auto opacity-90 sm:opacity-100 shrink-0"></div>
+        <div class="text-center text-[10px] text-white/30 mt-1.5 mb-1">Tap art • Use controls • Desktop has full bar</div>
+      </div>
+    </div>
+  </div>
+  <div id="mobileAppView" class="fixed inset-0 bg-[#0a0a1a] z-[55] hidden flex-col">
+    <div class="flex items-center justify-between px-3 py-2 bg-[#14142a] border-b border-white/10">
+      <button onclick="closeMobileApp()" class="flex items-center gap-1 text-blue-400 text-sm"><i data-lucide="chevron-left" class="w-4 h-4"></i> Back</button>
+      <span id="mobileAppTitle" class="text-sm font-semibold"></span>
+      <span class="w-12"></span>
+    </div>
+    <div id="mobileAppContent" class="flex-1 overflow-auto bg-[#12122a]"></div>
+  </div>
+
+  <div id="youtubePlayer" style="position:absolute; left:-9999px; top:-9999px; width:320px; height:180px; opacity:0; pointer-events:none; overflow:hidden;"></div>
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/music-player.js"></script>
 </body>
 </html>

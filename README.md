@@ -1,11 +1,11 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:00E5FF,100:A855F7&height=220&section=header&text=0xAbhi13%20-%20PORTFOLIO&fontSize=54&fontColor=ffffff&fontAlignY=38&desc=Cinematic%20•%20GSAP%20•%20Lenis%20•%20Editorial&descAlignY=58&descSize=16&animation=fadeIn" width="100%"/>
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:8b5cf6,100:4f46e5&height=220&section=header&text=0xAbhi13%20—%20PORTFOLIO&fontSize=52&fontColor=ffffff&fontAlignY=38&desc=Desktop%20OS%20•%20Professional%20Icons%20•%20Ask%20Abhi%20AI%20•%20Universal%20Responsive&descAlignY=58&descSize=15&animation=fadeIn" width="100%"/>
 
 <br/>
 
-<a href="https://github.com/0xAbhi13/MyPortfolio">
-  <img src="https://readme-typing-svg.demolab.com/?lines=%F0%9F%8E%AC+Cinematic+GSAP+Portfolio...;%E2%9C%A8+ScrollTrigger+%2B+Lenis+Smooth+Scroll...;%F0%9F%92%BB+Creative+Developer+%40+0xAbhi13...;%F0%9F%8E%A8+Black+White+Electric+Blue+Yellow...&font=JetBrains%20Mono&center=true&width=680&height=45&duration=2200&pause=900&color=00E5FF&vCenter=true&size=20" alt="Typing SVG" />
+<a href="https://github.com/0xAbhi13/Abhishek-Portfolio">
+  <img src="https://readme-typing-svg.demolab.com/?lines=%F0%9F%96%A5%EF%B8%8F+Desktop+OS+Portfolio...;%E2%9C%A8+5+Projects+Shipped+in+Public...;%F0%9F%92%AC+Ask+Abhi+Offline+AI+Assistant...;%F0%9F%AA%9F+Windows+%2F+Dock+%2F+Spotlight+%2F+Terminal...;%F0%9F%93%B1+Phone-style+%2F+Fully+Responsive...&font=JetBrains%20Mono&center=true&width=720&height=45&duration=2200&pause=900&color=8b5cf6&vCenter=true&size=18" alt="Typing SVG" />
 </a>
 
 <br/><br/>
@@ -13,18 +13,19 @@
 [![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
 [![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![Tailwind](https://img.shields.io/badge/Tailwind-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 [![GSAP](https://img.shields.io/badge/GSAP-88CE02?style=for-the-badge&logo=greensock&logoColor=white)](https://gsap.com)
-[![Lenis](https://img.shields.io/badge/Lenis-Smooth_Scroll-FFE600?style=for-the-badge)](https://lenis.darkroom.engineering)
+[![Lottie](https://img.shields.io/badge/Lottie-00DDB3?style=for-the-badge&logo=lottie&logoColor=white)](https://lottiefiles.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-34D399?style=for-the-badge)](LICENSE)
 
-![Stars](https://img.shields.io/github/stars/0xAbhi13/MyPortfolio?style=for-the-badge&color=fbbf24&logo=github)
-![Forks](https://img.shields.io/github/forks/0xAbhi13/MyPortfolio?style=for-the-badge&color=f472b6&logo=github)
-![Last Commit](https://img.shields.io/github/last-commit/0xAbhi13/MyPortfolio?style=for-the-badge&color=a855f7)
+![Stars](https://img.shields.io/github/stars/0xAbhi13/Abhishek-Portfolio?style=for-the-badge&color=fbbf24&logo=github)
+![Forks](https://img.shields.io/github/forks/0xAbhi13/Abhishek-Portfolio?style=for-the-badge&color=f472b6&logo=github)
+![Last Commit](https://img.shields.io/github/last-commit/0xAbhi13/Abhishek-Portfolio?style=for-the-badge&color=a78bfa)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-34D399?style=for-the-badge)
 
 <br/>
 
-**Created by Abhishek Jadhav — [@0xAbhi13](https://github.com/0xAbhi13) — BCA • Baramati, Maharashtra**
+**Built by Abhishek Jadhav — [@0xAbhi13](https://github.com/0xAbhi13) — Creative Developer • BCA • Baramati • 5 Projects**
 
 </div>
 
@@ -33,8 +34,7 @@
 <div align="center">
 
 ### 📚 Table of Contents
-
-[⚡ About](#-about) • [✨ Features](#-features) • [🛠️ Tech Stack](#️-tech-stack) • [🔗 Live Demo](#-live-demo) • [📦 Getting Started](#-getting-started) • [🗂️ Structure](#️-project-structure) • [🎬 Motion](#-motion--gsap-architecture) • [📄 License](#-license)
+[⚡ About](#-about) • [✨ Features](#-features) • [🎨 Desktop OS](#-desktop-os) • [🛠️ Stack](#️-stack) • [🔗 Live](#-live-demo) • [📦 Quick Start](#-quick-start) • [🗂️ Structure](#️-structure) • [🎬 Motion](#-motion) • [📄 License](#-license)
 
 </div>
 
@@ -42,22 +42,22 @@
 
 ## ⚡ About
 
-**Cinematic rebuild of MyPortfolio** — transformed from a static portfolio into an **editorial, immersive creative-developer experience** inspired by award sites. Same content (projects, GitHub links, skills, contact, certificates), completely reimagined presentation.
+**Desktop OS portfolio** — macOS-inspired, fully vanilla `HTML/CSS/JS` — no frameworks, no build — transforms a static portfolio into an **interactive operating system**.
 
-- Left: `ABHISHEK / JADHAV — CREATIVE DEVELOPER` + BCA story, right: profile `assets/profile.jpg` centered (`hero-left` vs `hero-visual`) — as requested
-- Name kept small (`clamp(32px,5.6vw,68px)`) , photo frame big and true to photo ratio (`max-width:440px` + `object-fit:contain`)
-- No `0xAbhi13 / Baramati` floating badge, no `© 2026 0xAbhi13` on image, no custom cursor
-- Dark palettes per section, not single-color — editorial pacing
+- **Desktop:** `ABHISHEK` centered (static, no float per request) + `0xAbhi13` menu + `wallpaper` `Unsplash` `https://images.unsplash.com/photo-1531297484001...` + `particleCanvas` `56 dots` + `GSAP parallax` on wallpaper only
+- **Windows:** `Finder` `About` `Projects` `Skills` `Certifications` `Photos` `Resume (Coming Soon)` `Contact` `Terminal` `Ask Abhi` — draggable `8px` clamp, resizable, `windowIn 0.38s` `scale 0.88→1` `blur 6px`
+- **Icons:** `assets/icons/*.svg` `14` professional `96×96` `linearGradient #8b5cf6→#4f46e5` `filter shadow` — `iconPulseGlow 2.8s` `iconGradientShift 8s` `iconBounce 0.45s` on hover — **no float** per request
+- **Favicon:** premium `favicon.svg` `64×64` `rx18` `0x ABHI 13` `grid` `shine` `pulse dot`
 
 <div align="center">
 
 ```text
-> booting 0xAbhi13/portfolio...
-> GSAP + ScrollTrigger + Lenis      ✓
-> hero title sequence               ✓
-> ScrollTrigger x39 per section     ✓
-> portrait 520×640 — frame=photo    ✓
-> Portfolio ready — cinematic ✨
+> booting Abhishek-Portfolio...
+> wallpaper Unsplash + Lottie + particles   ✓
+> windowIn 0.38s • iconPulseGlow 2.8s        ✓
+> Ask Abhi local AI • offline               ✓
+> universal responsive 320→1536             ✓
+> Portfolio ready — desktop OS ✨
 ```
 
 </div>
@@ -74,46 +74,46 @@
 <tr>
 <td width="33%" align="center">
 
-### 📱
-**Responsive + Editorial**
-Hero left/right desktop → stacked mobile, no overflow
+### 🖥️
+**Desktop OS**
+Wallpaper `Unsplash` + `Lottie` boot `3s` + `particles 56` + `menu 28px` `dock 72px`
 
 </td>
 <td width="33%" align="center">
 
-### 🎬
-**Cinematic Motion**
-GSAP timelines, ScrollTrigger scrub, pin & parallax
+### 🪟
+**Window Manager**
+Drag `grab` • Resize `nwse` • Focus `zIndex` • Min/Max `traffic` • `windowIn` spring every open
 
 </td>
 <td width="33%" align="center">
 
-### 🖼️
-**Selected Work**
-6 full-bleed project scenes (5 + brewing) with media `clipPath` + `scale` reveals
+### 💬
+**Ask Abhi — Pro**
+Header `avatar + Online` `Offline AI` • `6 starters` `code-2/cpu/eye/award` • local `searchIndex 45`
 
 </td>
 </tr>
 <tr>
 <td width="33%" align="center">
 
-### 🙋
-**Identity**
-`BUILDING DIGITAL EXPERIENCES.` huge editorial type
+### 📱
+**Phone-style**
+`phone-device 390×780` `notch` `status 9:41` `dock` `home-indicator` • `<768px` auto
 
 </td>
 <td width="33%" align="center">
 
-### 🧠
-**Stack Kinetic**
-`C++ • Python • JS • HTML/CSS • Git/GitHub` marquee scrub + bars
+### 🎨
+**Professional Icons**
+`assets/icons/*.svg` `96×96` `gradient` `shadow` — `pulseGlow` `gradientShift` `bounce` — **no float**
 
 </td>
 <td width="33%" align="center">
 
-### 📬
-**Contact Final Scene**
-`LET'S BUILD SOMETHING.` + magnetic CTA, no custom cursor
+### 📄
+**Resume Coming Soon**
+`85% final review` `progress` `Contact Instead` • `assets/resume/Abhishek_Resume.pdf` `2 pages`
 
 </td>
 </tr>
@@ -121,113 +121,110 @@ GSAP timelines, ScrollTrigger scrub, pin & parallax
 
 <div align="center">
 
-### 🎬 Distinct Style Per Section
-
-About → dotted grid + yellow | Stack → `#101012` + yellow `3px` top | Work → electric line + alt `#0D0D0F` | Certs → dark `var(--bg-2)` marquee | Education → `#0E0E10` concrete | Contact → `3px` yellow + lined paper
+### 🎬 Distinct Per App
+About `card` • Projects `grid 240` `chip-live` • Skills `chips` • Certs `View + Verify ↗` • Photos `masonry` • Terminal `0xAbhi13@portfolio` • Spotlight `Ctrl+K`
 
 </div>
 
-## 🛠️ Tech Stack
+## 🛠️ Stack
 
 <div align="center">
 
 ![HTML5](https://img.shields.io/badge/-HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/-CSS3-1572B6?style=flat-square&logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/-Vanilla%20JS-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
-![GSAP](https://img.shields.io/badge/-GSAP%203.12.5-88CE02?style=flat-square&logo=greensock&logoColor=white)
-![ScrollTrigger](https://img.shields.io/badge/-ScrollTrigger-88CE02?style=flat-square&logo=greensock&logoColor=white)
-![Lenis](https://img.shields.io/badge/-Lenis%201.1.18-FFE600?style=flat-square)
+![Tailwind](https://img.shields.io/badge/-Tailwind-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
+![GSAP 3.12.5](https://img.shields.io/badge/-GSAP%203.12.5-88CE02?style=flat-square&logo=greensock&logoColor=white)
+![Lottie](https://img.shields.io/badge/-Lottie-00DDB3?style=flat-square)
 ![Syne](https://img.shields.io/badge/-Syne-000000?style=flat-square)
-![Space Grotesk](https://img.shields.io/badge/-Space%20Grotesk-000000?style=flat-square)
+![Inter](https://img.shields.io/badge/-Inter-000000?style=flat-square)
 ![JetBrains Mono](https://img.shields.io/badge/-JetBrains%20Mono-000000?style=flat-square)
 
 </div>
 
-- **No build, no framework** — CDN: `gsap@3.12.5` + `ScrollTrigger` + `ScrollToPlugin` + `lenis@1.1.18`
-- **Fonts:** `Syne 800` (display) + `Space Grotesk` (body) + `JetBrains Mono` (mono)
-- **Colors:** `black #08080A / white #F5F5F0 / electric #00E5FF→#0066FF / yellow #FFE600`
+- **No build** — CDN: `tailwind` + `lucide@latest` + `lottie-player` + `gsap@3.12.5`
+- **Fonts:** `Syne 800` (ABHISHEK) + `Inter` (body) + `JetBrains Mono` (mono)
+- **Colors:** `bg #050510 / #0a0a1a / violet #8b5cf6→#4f46e5 / emerald #10b981 / amber #f59e0b`
+- **Icons:** `assets/icons/*.svg` `96×96` `linearGradient` `filter shadow` — `iconPulseGlow` `iconGradientShift` (no float)
 
 ## 🔗 Live Demo
 
 <div align="center">
 
-### 👉 [0xabhi13.github.io/MyPortfolio](https://0xabhi13.github.io/MyPortfolio/) 👈
+### 👉 [0xabhi13.github.io/Abhishek-Portfolio](https://0xabhi13.github.io/Abhishek-Portfolio/) 👈
+
+`https://0xabhi13.github.io/Abhishek-Portfolio/` • also `https://0xabhi13.github.io/` if repo is `0xAbhi13.github.io`
 
 </div>
 
-## 📦 Getting Started
+## 📦 Quick Start
 
 <details open>
-<summary><b>🖱️ Click to expand setup steps</b></summary>
+<summary><b>🖱️ Click to expand</b></summary>
 
 <br/>
 
 **1. Clone**
-
 ```bash
-git clone https://github.com/0xAbhi13/MyPortfolio.git
-cd MyPortfolio
+git clone https://github.com/0xAbhi13/Abhishek-Portfolio.git
+cd Abhishek-Portfolio
 ```
 
-**2. Open**
-
+**2. Run — no install**
 ```bash
-# no install — static
-open index.html
-# or
-python -m http.server 8000
-# then http://localhost:8000
+# double-click index.html  —or—
+python -m http.server 8002
+# open http://localhost:8002/
+```
+
+**3. Deploy — GitHub Pages (no build)**
+```bash
+git init; git add .; git commit -m "feat: Abhishek desktop"
+gh repo create Abhishek-Portfolio --public --source=. --push
+# Settings → Pages → Deploy from branch → main / (root) → Save
 ```
 
 </details>
 
-## 🗂️ Project Structure
+## 🗂️ Structure
 
 ```text
-MyPortfolio/
-│
-├── index.html              # Cinematic editorial structure — hero-left (title+desc) | visual (photo)
-├── README.md               # this file — animated / cinematic docs
-├── LICENSE
-├── robots.txt / sitemap.xml
-│
-├── css/
-│   ├── style.css           # Tokens, hero 92svh→32/5.6/68 title, 440px photo frame = photo size
-│   └── animations.css      # Minimal keyframes — GSAP drives motion
-│
-├── js/
-│   └── main.js             # Lenis + Loader + Navigation + Interactions + 39× ScrollTrigger
-│
-└── assets/
-    ├── profile.jpg         # 520×640 — shown top-center, contain, no crop
-    ├── portfolio.png
-    ├── projects/0x*.png    # 5 projects
-    ├── certificate-*.jpg   # 3 verified
-    └── favicon.svg / og-banner.png
+Abhishek-Portfolio/
+├─ index.html              # desktop OS shell — wallpaper Unsplash + Lottie boot 3s + phone frame
+├─ README.md               # this animated file
+├─ favicon.svg             # premium 64×64 rx18 0x ABHI 13 — Netlify-style triangle removed, static
+├─ css/style.css           # tokens, windowIn 0.38s, iconPulseGlow 2.8s + iconGradientShift 8s (no float), universal 320→1536
+├─ js/data.js              # Abhishek data — profile, 5 projects, 5 skills, 3 certs, gallery, searchIndex 45
+├─ js/app.js               # ~780 lines — window manager, 10 apps, Ask Abhi local, particleCanvas 56, GSAP wallpaper only
+└─ assets/
+   ├─ profile/profilepic.jpg
+   ├─ projects/{developer-portfolio,0xemotion,0xmagicsearch,0xaircanvas,0xvoicevision}
+   ├─ certifications/3
+   ├─ icons/12  # finder,projects,resume,about,certifications,terminal,askabhi,skills,photos,contact,0xabhi13
+   └─ resume/Abhishek_Resume.pdf  # 2 pages, coming soon UI in app
 ```
 
-## 🎬 Motion — GSAP Architecture
+## 🎬 Motion — Animation Architecture
 
-- **Loader** `js/main.js:29` — `00→100` count + `l-char` stagger → `yPercent:-100` expo
-- **Hero** `js/main.js:259` — `hero-word yPercent:110` stagger, badge/kicker, visual `y:-40` scrub
-- **Every section-head** — `eyebrow x:-14` + `head-line scaleX:0→1` on `top 88%`
-- **About / Stack / Work / Certs / Education / Contact / Footer** — each has dedicated `ScrollTrigger` (total 39), `strip xPercent -4` scrub, skill `rotation`, cert `y+rotation`, etc.
-- **`gsap.context()` + `ScrollTrigger.refresh()` + `prefers-reduced-motion` disables Lenis/particles**
+- **Boot** `js/app.js:12` — `steps 5` `420ms` → `bar 0→100%` `shimmer 1.2s` → `hide 3s` `opacity 0.6s` `sessionStorage booted`
+- **Wallpaper** `js/app.js:25` `initOnlineGraphics` — `particleCanvas 56` `r 1.1` `line 120px` `rgba(139,92,246,0.08)` + `GSAP wallpaper parallax x-6 y-4` `1.2s` — **ABHISHEK static, no GSAP** per request
+- **Icons** `css/style.css:24` — `iconPulseGlow 2.8s` `iconGradientShift 8s` `iconBounce 0.45s` on hover — **no float**
+- **Windows** `css/style.css:31` — `windowIn 0.38s` `scale 0.88→1.02→1` `blur 6px` `cubic-bezier(0.16,1,0.3,1)` every open
+- **Every app** — `lucide.createIcons()` after `renderWindows:732`, `spotlight Ctrl+K`, `phoneTime` `tickTime:16`
 
 ## 👨‍💻 Author
 
 <div align="center">
 
-### Abhishek Jadhav
-
-Creative Developer — C++ • Python • JavaScript — BCA 2026
+### Abhishek Jadhav — 0xAbhi13
+Creative Developer — C++ • Python • JavaScript — BCA 2026 • Baramati, Maharashtra
 
 [![GitHub](https://img.shields.io/badge/GitHub-%400xAbhi13-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/0xAbhi13)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0xAbhi13-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/0xAbhi13)
 
 **Email:** `contact.0xabhi13@gmail.com` • **Location:** Baramati, Maharashtra
 
-⭐ If you like this cinematic rebuild, give it a star!
+⭐ If you like this desktop OS, give it a star!
 
 </div>
 
@@ -237,8 +234,8 @@ Released under the [MIT License](LICENSE).
 
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:A855F7,100:00E5FF&height=120&section=footer" width="100%"/>
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:4f46e5,100:8b5cf6&height=120&section=footer&text=ABHISHEK%20—%200xAbhi13&fontSize=22&fontColor=ffffff&animation=fadeIn" width="100%"/>
 
-**Made with 💻 GSAP + Lenis — no frameworks, just motion.**
+**Made with 💜 GSAP + Lottie + Tailwind — vanilla, no frameworks, just OS.**
 
 </div>

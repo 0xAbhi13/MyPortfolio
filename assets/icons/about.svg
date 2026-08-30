@@ -1,0 +1,23 @@
+<svg width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="About Abhi">
+  <defs>
+    <linearGradient id="g-about" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+    <filter id="shadow-about" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#7c3aed" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <rect width="96" height="96" rx="22" fill="url(#g-about)" filter="url(#shadow-about)"/>
+  <!-- subtle inner highlight -->
+  <rect x="1" y="1" width="94" height="94" rx="21" fill="none" stroke="white" stroke-opacity="0.12"/>
+  <g transform="translate(24 24)">
+    <g transform="scale(2)">
+      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2 M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.96"/>
+    </g>
+  </g>
+  <!-- professional badge: small 0x -->
+  <g font-family="JetBrains Mono, monospace" font-size="7" font-weight="700" fill="white" opacity="0.0">
+    <text x="48" y="88" text-anchor="middle">0x</text>
+  </g>
+</svg>
