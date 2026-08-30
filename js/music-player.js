@@ -116,7 +116,7 @@
   }catch(e){}
   prevVolume = AUDIO.volume;
   AUDIO.preload = 'metadata';
-  AUDIO.crossOrigin = 'anonymous';
+  try{ AUDIO.removeAttribute('crossorigin'); AUDIO.crossOrigin=''; }catch(e){}
 
   // --- UI refs (desktop + mobile) ---
   const els = {

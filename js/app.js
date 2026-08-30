@@ -152,6 +152,8 @@ function initialPos(id){
 function openApp(id, sub){
   const win=windows[id]; if(!win) return;
   if(win.isOpen && !win.isMinimized){ focusApp(id); if(sub) win.sub=sub; renderWindows(); return; }
+  // Single-window mode: close all other windows so only 1 open at a time
+  Object.values(windows).forEach(v=>{ if(v.id!==id){ v.isOpen=false; v.isMinimized=false; v.isMaximized=false; v.isFocused=false; v.sub=null; } });
   if(!win.hasOpened){ const p=initialPos(id); win.x=p.x; win.y=p.y; win.w=p.w; win.h=p.h; win.prev={...p}; win.hasOpened=true; }
   win.isOpen=true; win.isMinimized=false; win.sub=sub||null;
   zCounter++; win.z=zCounter;
