@@ -52,35 +52,6 @@
 
 <div align="center">
 
-### 🎬 Projects — visual
-
-</div>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/7-Shipped-8b5cf6?style=for-the-badge&labelColor=0a0a1a" />
-  <img src="https://img.shields.io/badge/View-%E2%86%92_GitHub-white?style=for-the-badge&labelColor=0a0a1a" />
-</p>
-
-| Preview | What it does | Stack |
-|:---:|:---|:---:|
-| <img src="assets/projects/0xbeatforge/hero.png" width="220" style="border-radius:10px"/> <br/> **0xBeatForge** | Layer-by-layer beat sequencer — Web Audio API | ![JS](https://img.shields.io/badge/-JS-F7DF1E?style=flat-square&logo=javascript&logoColor=black) ![WebAudio](https://img.shields.io/badge/-Web_Audio-8b5cf6?style=flat-square) |
-| <img src="assets/projects/0xpdfforge/hero.png" width="220" style="border-radius:10px"/> <br/> **0xPDFForge** | Web → PDF templated automation | ![Python](https://img.shields.io/badge/-Python-3776AB?style=flat-square&logo=python&logoColor=white) ![Docker](https://img.shields.io/badge/-Docker-2496ED?style=flat-square&logo=docker&logoColor=white) |
-| <img src="assets/projects/developer-portfolio/hero.png" width="220" style="border-radius:10px"/> <br/> **This OS** | Desktop OS itself — vanilla, no framework | ![HTML](https://img.shields.io/badge/-HTML5-E34F26?style=flat-square&logo=html5&logoColor=white) ![JS](https://img.shields.io/badge/-GSAP-88CE02?style=flat-square&logo=greensock&logoColor=white) |
-| <img src="assets/projects/0xemotion/hero.png" width="220" style="border-radius:10px"/> <br/> **0xEmotion** | Offline facial expression — Flask + OpenCV | ![Python](https://img.shields.io/badge/-Python-3776AB?style=flat-square) ![Flask](https://img.shields.io/badge/-Flask-000?style=flat-square&logo=flask&logoColor=white) |
-| <img src="assets/projects/0xmagicsearch/scanner.png" width="220" style="border-radius:10px"/> <br/> **0xMagicSearch** | YOLOv4-tiny real-time object detection | ![OpenCV](https://img.shields.io/badge/-OpenCV-5C3EE8?style=flat-square&logo=opencv&logoColor=white) |
-| <img src="assets/projects/0xaircanvas/canvas.png" width="220" style="border-radius:10px"/> <br/> **0xAirCanvas** | Fingertip = pen via MediaPipe Hands | ![MediaPipe](https://img.shields.io/badge/-MediaPipe-0097A7?style=flat-square) |
-| <img src="assets/projects/0xvoicevision/voice.png" width="220" style="border-radius:10px"/> <br/> **0xVoiceVision** | Voice → image via Web Speech + Openverse | ![Flask](https://img.shields.io/badge/-Flask-000?style=flat-square) ![Speech](https://img.shields.io/badge/-Speech-06B6D4?style=flat-square) |
-
-<div align="center">
-
-→ all live on **GitHub @0xAbhi13** · `View` opens repo · `Verify` on certs below
-
-</div>
-
----
-
-<div align="center">
-
 ### 🤖 Ask Abhi — ask, don't scroll
 
 <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&size=12&duration=2000&pause=700&color=f472b6&center=true&vCenter=true&width=780&height=20&lines=Try%3A+%22Which+project+uses+Flask%3F%22+%E2%80%A2+%22Verify+Jio+AI%22+%E2%80%A2+%22Show+9+certs%22" alt="ask demo" />
@@ -145,26 +116,6 @@
 <sub>Fonts `Syne 800` · `Inter` · `JetBrains Mono` · Colors `#050510` `#8b5cf6→#4f46e5` · Favicon briefcase `#2E90FA→#D946EF`</sub>
 
 </div>
-
----
-
-<div align="center">
-
-### 📜 Certs — 9 verified (tap Verify)
-
-</div>
-
-| | Certificate | Verify |
-|:---:|:---|:---:|
-| 1 | **C++** · Sheryians · Jul 2026 | [Verify →](https://sheryians.com/certificate/4834427359730082f339b619) |
-| 2 | **HTML CSS JS** · Educative · Jul 2026 | [Verify →](https://www.educative.io/verify-certificate/FD9G69XC5T) |
-| 3 | **Python 3** · Educative · Jul 2026 | [Verify →](https://www.educative.io/verify-certificate/7HYRJKNF2B) |
-| 4 | **AI Foundation** · Jio Institute · Aug 2026 | [Verify →](https://jiopc.embibe.com/verify/credential/nfJzfbmZP2Id) |
-| 5 | **CS301 Arch** · Saylor · Aug 2026 | [Verify →](https://learn.saylor.org/admin/tool/certificate/index.php) |
-| 6 | **CS207 ML** · Saylor · Aug 2026 | [Verify →](https://learn.saylor.org/admin/tool/certificate/index.php) |
-| 7 | **Git Mastery** · freeacademy · Aug 2026 | [Verify →](https://freeacademy.ai/verify/FA-2026-GGM-6NDHKH) |
-| 8 | **SkillUp 101** · EDUCBA · Aug 2026 | [Verify →](https://www.educba.com/certificate/?c=OSZL2ZKED) |
-| 9 | **YUVA AI** · IndiaAI TCS iON · Aug 2026 | [Verify →](https://g09.tcsion.com//LX/ecertificate/verification?id=87006977-0545-17505-4) |
 
 ---
 
