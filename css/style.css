@@ -276,8 +276,10 @@ html{font-size:15px}
 }
 
 /* ===== Phone Wallpaper & Phone Animations — PC parity ===== */
-.phone-device{isolation:isolate}
-#phoneWallpaper{border-radius:0; will-change:transform}
+.phone-device{isolation:auto; background:#050510}
+#phoneWallpaper{border-radius:0; will-change:transform; z-index:0}
+.phone-device > .flex-1{position:relative; z-index:1}
+#phoneWallpaper{pointer-events:none}
 @media(min-width:640px){#phoneWallpaper{border-radius:0 0 38px 38px}}
 @media(max-width:639px){#phoneWallpaper{border-radius:0}}
 #phoneWallpaper img{will-change:transform}
@@ -316,25 +318,36 @@ html{font-size:15px}
 @media(max-width:639px){
   .phone-device{animation:none}
 }
-/* Phone section popup — iOS sheet style pop */
+/* Phone section popup — refined spring pop for EVERY app */
 @keyframes mobilePopIn{
-  0%{opacity:0; transform:translateY(22px) scale(0.93); filter:blur(10px)}
-  55%{opacity:1; transform:translateY(-2px) scale(1.015); filter:blur(0)}
+  0%{opacity:0; transform:translateY(44px) scale(0.94); filter:blur(12px)}
+  45%{opacity:1; transform:translateY(-6px) scale(1.03); filter:blur(0)}
+  70%{transform:translateY(3px) scale(0.995); filter:blur(0)}
   100%{opacity:1; transform:translateY(0) scale(1); filter:blur(0)}
 }
 @keyframes mobilePopOut{
   0%{opacity:1; transform:translateY(0) scale(1); filter:blur(0)}
-  100%{opacity:0; transform:translateY(18px) scale(0.96); filter:blur(6px)}
+  100%{opacity:0; transform:translateY(24px) scale(0.97); filter:blur(8px)}
 }
 @keyframes mobilePopInContent{
-  0%{opacity:0; transform:translateY(10px)}
+  0%{opacity:0; transform:translateY(14px)}
   100%{opacity:1; transform:translateY(0)}
 }
-#mobileAppView{will-change:transform,opacity,filter}
-#mobileAppView.mobile-pop-in{animation:mobilePopIn 0.42s cubic-bezier(0.16,1,0.3,1) both}
-#mobileAppView.mobile-pop-out{animation:mobilePopOut 0.26s cubic-bezier(0.4,0,1,1) both}
-#mobileAppView.mobile-pop-in #mobileAppContent{animation:mobilePopInContent 0.38s cubic-bezier(0.16,1,0.3,1) 0.08s both}
-#mobileAppView.mobile-pop-in .flex.items-center.justify-between{animation:mobilePopInContent 0.32s ease 0.04s both}
+@keyframes mobilePopHeader{
+  0%{opacity:0; transform:translateY(-8px)}
+  100%{opacity:1; transform:translateY(0)}
+}
+#mobileAppView{will-change:transform,opacity,filter; transform-origin:center bottom}
+#mobileAppView.mobile-pop-in{animation:mobilePopIn 0.48s cubic-bezier(0.34,1.56,0.64,1) both}
+#mobileAppView.mobile-pop-out{animation:mobilePopOut 0.28s cubic-bezier(0.4,0,1,1) both}
+#mobileAppView.mobile-pop-in #mobileAppContent{animation:mobilePopInContent 0.42s cubic-bezier(0.16,1,0.3,1) 0.1s both}
+#mobileAppView.mobile-pop-in .flex.items-center.justify-between{animation:mobilePopHeader 0.36s ease 0.06s both}
+/* Stagger cards inside phone sections on every open */
+#mobileAppView.mobile-pop-in .card{animation:mobilePopInContent 0.4s cubic-bezier(0.16,1,0.3,1) both}
+#mobileAppView.mobile-pop-in .card:nth-child(1){animation-delay:0.12s}
+#mobileAppView.mobile-pop-in .card:nth-child(2){animation-delay:0.16s}
+#mobileAppView.mobile-pop-in .card:nth-child(3){animation-delay:0.20s}
+#mobileAppView.mobile-pop-in .card:nth-child(4){animation-delay:0.24s}
 /* Phone Ask button — entrance only, no floating per request */
 .phone-ask-btn{animation:phoneFadeUp 0.6s ease 0.55s both}
 /* Ensure music bar on phone sits above wallpaper correctly with backdrop separation */

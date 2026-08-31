@@ -162,7 +162,7 @@
         </div>
       </div>
       <!-- Wallpaper inside phone — PC style: Unsplash + mesh + noise + particles (full-bleed like PC #wallpaper) -->
-      <div id="phoneWallpaper" class="absolute inset-0 -z-10 overflow-hidden bg-[#050510]">
+      <div id="phoneWallpaper" class="absolute inset-0 z-0 overflow-hidden bg-[#050510] rounded-[0px] sm:rounded-b-[38px]">
         <img src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=2020&auto=format&fit=crop" alt="" class="absolute inset-0 w-full h-full object-cover opacity-[0.22] scale-105" loading="eager">
         <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop" alt="" class="absolute inset-0 w-full h-full object-cover opacity-[0.12] mix-blend-screen">
         <div class="absolute inset-0 bg-gradient-to-br from-[#050510]/90 via-[#0a0a1a]/70 to-[#1a0a2e]/80"></div>
@@ -172,7 +172,7 @@
         <canvas id="phoneParticleCanvas" class="absolute inset-0 opacity-40"></canvas>
       </div>
 
-      <div class="flex-1 overflow-auto px-5 pt-2 pb-4 flex flex-col">
+      <div class="flex-1 overflow-auto px-5 pt-2 pb-4 flex flex-col relative z-10">
         <div class="text-center mb-5 mt-2 animate-[phoneHeroIn_0.7s_cubic-bezier(0.16,1,0.3,1)_0.2s_both]">
           <div class="relative w-20 h-20 mx-auto mb-3">
             <div class="absolute -inset-1.5 bg-gradient-to-br from-violet-600 via-indigo-600 to-cyan-500 rounded-[18px] blur-[10px] opacity-60 animate-[pulseGlow_2.5s_ease-in-out_infinite]"></div>

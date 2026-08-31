@@ -261,11 +261,10 @@ MyPortfolio/
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0xAbhi13-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/0xAbhi13)
 [![Email](https://img.shields.io/badge/Email-contact.0xabhi13@gmail.com-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:contact.0xabhi13@gmail.com)
 
-<img src="https://github-readme-stats.vercel.app/api?username=0xAbhi13&show_icons=true&theme=tokyonight&hide_border=true&bg_color=0a0a1a&title_color=8b5cf6&icon_color=06b6d4&text_color=ffffff&border_radius=12" height="150"/>
-<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=0xAbhi13&layout=compact&theme=tokyonight&hide_border=true&bg_color=0a0a1a&title_color=8b5cf6&text_color=ffffff&border_radius=12" height="150"/>
-
-<img src="https://streak-stats.demolab.com?user=0xAbhi13&theme=tokyonight&hide_border=true&background=0a0a1a&ring=8b5cf6&currStreakLabel=8b5cf6" height="150"/>
-<img src="https://github-readme-activity-graph.vercel.app/graph?username=0xAbhi13&theme=tokyo-night&hide_border=true&bg_color=0a0a1a&color=8b5cf6&line=06b6d4&point=a78bfa" width="100%"/>
+<img src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=0xAbhi13&theme=tokyonight" height="150"/>
+<img src="https://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=0xAbhi13&theme=tokyonight" height="150"/>
+<img src="https://github-profile-summary-cards.vercel.app/api/cards/most-commit-language?username=0xAbhi13&theme=tokyonight" height="150"/>
+<img src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=0xAbhi13&theme=tokyonight&utcOffset=5.5" width="100%"/>
 
 ⭐ **If you like this OS, give it a star — and try `View →` on any project!**
 
@@ -279,7 +278,7 @@ Released under the [MIT License](LICENSE).
 
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=12&height=140&section=footer&text=ABHISHEK%20—%200xAbhi13&fontSize=24&fontColor=ffffff&animation=fadeIn" width="100%"/>
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=12&height=140&section=footer&text=ABHISHEK%20%E2%80%94%200xAbhi13&fontSize=24&fontColor=ffffff&animation=fadeIn" width="100%"/>
 
 **Made with 💜 GSAP + Lottie + Tailwind — vanilla, no frameworks, just OS.**
 
