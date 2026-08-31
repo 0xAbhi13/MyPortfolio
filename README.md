@@ -59,7 +59,7 @@
 - **10 apps** — Finder, About, Projects, Skills, Certs (9), Photos (Coming Soon), Resume (Coming Soon), Contact, Terminal, **Ask Abhi v2.1**
 - **Single-window — Windows controls** — 1 at a time, draggable • **resizable 8-dir** `n/s/e/w/ne/nw/se/sw` • `zIndex` • `windowIn 0.38s` • **min / max / close on right** `_ □ ×` hover `#e81123` • **double-click header → fullscreen**
 - **Phone 390×780** — notch `9:41`, **wallpaper fixed** `z-0 + isolation:auto`, particles 28, **pop 0.48s spring `0.34,1.56,0.64,1` for EVERY section**, **Ask Abhi static** (no float)
-- **Ask Abhi Professional** — `js/askAbhiKnowledge.js` centralized, dynamic from `js/data.js`, knows **7 projects + 9 certs** with verify, `bhai`/`bro` casual, context-aware, never hallucinates
+- **Ask Abhi Professional v2.1** — `js/askAbhiKnowledge.js` centralized **live** getters (fixed `0 projects` bug: `live()` now handles `const` globals via direct `typeof` check), knows **7 projects + 9 certs** with verify, `bhai`/`bro` + **Hindi `कौन है`/Marathi `कोण आहे` + `hindi me bolo`/`marathi me sang`**, greeting `hi/hello/namaste/नमस्ते` respectful `Good morning/afternoon` time-based, context-aware, never hallucinates, **Quick chips removed**
 - **Icons** — `14× 96×96 SVG` `linearGradient #8b5cf6→#4f46e5` with `iconPulseGlow` + `gradientShift` (collapsing fixed `36×36`/`28×28` + `min-w`)
 - **Certs 9** — systematic `certificate-*.jpg` + `verifyUrl` per txt detail, `.txt` deleted
 - **Audio** — `Wavecont 2:24` `5.7MB` works on `file://` **and** `http://` + briefcase favicon `#2E90FA→#D946EF`
@@ -162,11 +162,13 @@
 - **Hosting:** `who hosts?` → `GitHub Pages` only if known, else says not exposed
 - **Unknown:** `I don't have that information in my portfolio knowledge base yet.` — never invents employment/achievements
 
-**Suggested Questions (dynamic from live knowledge)**
+**Suggested Questions (dynamic from live knowledge — `Quick chips` removed, `education+contact` removed)**
 
-`Who is Abhishek Jadhav?` • `What are his skills?` • `Show me his 7 projects` • `List all 9 certifications with verify links` • `Where can I find his GitHub?` • `Tell me about 0xBeatForge`
+`Who is Abhishek Jadhav?` • `What are his skills?` • `Show me his 7 projects` • `List all 9 certifications with verify links` • `Which project uses Flask?` • `Tell me about 0xBeatForge`
 
-**UI Premium:** typing dots `animate-bounce` 3×, clean bubbles `rounded-2xl backdrop-blur`, avatars `profile + bot`, `Copy` button (clipboard + check), `Clear chat` (header + mobile), responsive `390×780` pop, `min-h-0` chatbox fix (was hidden), keyboard `Enter`/`Ctrl+K` spotlight, `Esc` handling
+**Languages:** English + casual Indian English + **Hindi (Devanagari & Roman)** + **Marathi (Devanagari & Roman)** — auto-detects `नमस्ते`/`नमस्कार`/`hi`/`hello`/`good morning` and replies respectfully in same language; `hindi me bolo`/`marathi me sang` switches language
+
+**UI Premium:** typing dots `animate-bounce` 3×, clean bubbles `rounded-2xl backdrop-blur`, avatars `profile + bot` (collapsing fixed `36×36`/`32×32`/`24×24` `flex-none`), `Copy` button (always visible, not `hidden sm:flex`), `Clear chat` (header desktop+mobile), responsive `390×780` pop, `min-h-0` chatbox fix (was `overflow:visible` → hidden input, now `overflow:auto`), keyboard `Enter`/`Ctrl+K`/`Esc`
 
 **To update:** edit `js/data.js` (profile/projects/skills/certs) or `js/askAbhiKnowledge.js` (identity/website) — Ask Abhi auto-updates (dynamic getters). No duplication.
 
