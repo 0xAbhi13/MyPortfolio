@@ -119,9 +119,17 @@ const skills = [
 ];
 
 const certifications = [
+  // --- Core Programming (existing) ---
   { title: "Complete C++ Language", issuer: "Sheryians Coding School", issued: "Jul 2026", credentialId: "4834427359730082f339b619", image: "assets/certifications/certificate-cpp.jpg", verifyUrl: "https://sheryians.com/certificate/4834427359730082f339b619" },
   { title: "HTML, CSS & JavaScript from Scratch", issuer: "Educative", issued: "Jul 2026", credentialId: "FD9G69XC5T", image: "assets/certifications/certificate-html-css-js.jpg", verifyUrl: "https://www.educative.io/verify-certificate/FD9G69XC5T" },
-  { title: "Learn Python 3", issuer: "Educative", issued: "Jul 2026", credentialId: "7HYRJKNF2B", image: "assets/certifications/certificate-python.jpg", verifyUrl: "https://www.educative.io/verify-certificate/7HYRJKNF2B" }
+  { title: "Learn Python 3", issuer: "Educative", issued: "Jul 2026", credentialId: "7HYRJKNF2B", image: "assets/certifications/certificate-python.jpg", verifyUrl: "https://www.educative.io/verify-certificate/7HYRJKNF2B" },
+  // --- AI & Foundations (new, systematically added Aug 2026) ---
+  { title: "AI Foundation Course Badge", issuer: "Jio Institute — AI Classroom (JioPC)", issued: "Aug 2026", credentialId: "nfJzfbmZP2Id", image: "assets/certifications/certificate-jio-ai-foundation.jpg", verifyUrl: "https://jiopc.embibe.com/verify/credential/nfJzfbmZP2Id" },
+  { title: "CS301: Computer Architecture — Certificate of Achievement", issuer: "Saylor University", issued: "Aug 2026", credentialId: "SAYLOR-CS301-81.25%", image: "assets/certifications/certificate-saylor-computer-architecture.jpg", verifyUrl: "https://learn.saylor.org/admin/tool/certificate/index.php" },
+  { title: "CS207: Fundamentals of Machine Learning", issuer: "Saylor Academy", issued: "Aug 2026", credentialId: "SAYLOR-CS207-98.00%", image: "assets/certifications/certificate-saylor-machine-learning.jpg", verifyUrl: "https://learn.saylor.org/admin/tool/certificate/index.php" },
+  { title: "Git GitHub Mastery", issuer: "freeacademy.ai", issued: "Aug 2026", credentialId: "FA-2026-GGM-6NDHKH", image: "assets/certifications/certificate-git-github-mastery.jpg", verifyUrl: "https://freeacademy.ai/verify/FA-2026-GGM-6NDHKH" },
+  { title: "SkillUp 101 — Python Certification", issuer: "EDUCBA", issued: "Aug 2026", credentialId: "OSZL2ZKED", image: "assets/certifications/certificate-educba-skillup-python.jpg", verifyUrl: "https://www.educba.com/certificate/?c=OSZL2ZKED" },
+  { title: "YUVA AI For All", issuer: "IndiaAI — TCS iON", issued: "Aug 2026", credentialId: "87006977-0545-17505-4", image: "assets/certifications/certificate-yuva-ai-for-all.jpg", verifyUrl: "https://g09.tcsion.com//LX/ecertificate/verification?id=87006977-0545-17505-4" }
 ];
 
 const playlist = [

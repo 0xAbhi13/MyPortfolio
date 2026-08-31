@@ -261,16 +261,23 @@ function renderWindows(){
     el.dataset.id=win.id;
     el.innerHTML=`
       <div class="window-header" data-drag="${win.id}">
-        <div class="flex items-center gap-1.5">
-          <button class="traffic close" onmousedown="event.stopPropagation()" onclick="closeApp('${win.id}'); event.stopPropagation()">×</button>
-          <button class="traffic min" onmousedown="event.stopPropagation()" onclick="minimizeApp('${win.id}'); event.stopPropagation()">−</button>
-          <button class="traffic max" onmousedown="event.stopPropagation()" onclick="maximizeApp('${win.id}'); event.stopPropagation()">□</button>
-        </div>
         <div class="window-title">${win.title}</div>
-        <div class="w-14"></div>
+        <div class="flex items-center gap-0 ml-auto">
+          <button class="traffic min" onmousedown="event.stopPropagation()" onclick="minimizeApp('${win.id}'); event.stopPropagation()" title="Minimize">−</button>
+          <button class="traffic max" onmousedown="event.stopPropagation()" onclick="maximizeApp('${win.id}'); event.stopPropagation()" title="${win.isMaximized?'Restore':'Maximize'}">${win.isMaximized?'❐':'□'}</button>
+          <button class="traffic close" onmousedown="event.stopPropagation()" onclick="closeApp('${win.id}'); event.stopPropagation()" title="Close">×</button>
+        </div>
       </div>
       <div class="window-content" id="win-${win.id}">${getAppHTML(win.id, win.sub)}</div>
-      <div class="window-resize" data-resize="${win.id}"></div>
+      <div class="window-resize-handle window-resize-n" data-resize="${win.id}" data-dir="n" title="Resize"></div>
+      <div class="window-resize-handle window-resize-s" data-resize="${win.id}" data-dir="s" title="Resize"></div>
+      <div class="window-resize-handle window-resize-e" data-resize="${win.id}" data-dir="e" title="Resize"></div>
+      <div class="window-resize-handle window-resize-w" data-resize="${win.id}" data-dir="w" title="Resize"></div>
+      <div class="window-resize-handle window-resize-ne" data-resize="${win.id}" data-dir="ne" title="Resize"></div>
+      <div class="window-resize-handle window-resize-nw" data-resize="${win.id}" data-dir="nw" title="Resize"></div>
+      <div class="window-resize-handle window-resize-se" data-resize="${win.id}" data-dir="se" title="Resize"></div>
+      <div class="window-resize-handle window-resize-sw" data-resize="${win.id}" data-dir="sw" title="Resize"></div>
+      <div class="window-resize window-resize-se" data-resize="${win.id}" data-dir="se" style="opacity:0.6"><svg width="10" height="10" viewBox="0 0 10 10" class="absolute right-1 bottom-1 opacity-40"><path d="M7 2 L9 2 L9 4 M5 4 L9 4 L9 8 M3 6 L9 6 L9 9" stroke="white" stroke-width="0.9" fill="none" stroke-linecap="round"/></svg></div>
     `;
     el.addEventListener('mousedown',()=>focusApp(win.id));
     layer.appendChild(el);
@@ -296,6 +303,12 @@ function bindDrag(){
       document.addEventListener('mouseup', onDragEnd);
       e.preventDefault();
     };
+    h.ondblclick=(e)=>{
+      if(e.target.closest('button')) return;
+      const id=h.dataset.drag;
+      maximizeApp(id);
+      e.preventDefault();
+    };
   });
 }
 function onDragMove(e){
@@ -314,28 +327,73 @@ function onDragEnd(){ drag=null; document.removeEventListener('mousemove', onDra
 
 function bindResize(){
   document.querySelectorAll('[data-resize]').forEach(h=>{
-    h.onmousedown=(e)=>{
+    const start = (e)=>{
       const id=h.dataset.resize, win=windows[id];
-      if(win.isMaximized) return;
+      if(!win || win.isMaximized) return;
+      const dir=h.dataset.dir || 'se';
+      const cx = e.touches ? e.touches[0].clientX : e.clientX;
+      const cy = e.touches ? e.touches[0].clientY : e.clientY;
       focusApp(id);
-      resize={id, sx:e.clientX, sy:e.clientY, ow:win.w, oh:win.h};
+      resize={id, dir, sx:cx, sy:cy, ox:win.x, oy:win.y, ow:win.w, oh:win.h};
+      const el=document.querySelector(`.window[data-id="${id}"]`);
+      if(el) el.classList.add('is-resizing');
       document.addEventListener('mousemove', onResizeMove);
       document.addEventListener('mouseup', onResizeEnd);
+      document.addEventListener('touchmove', onResizeMove, {passive:false});
+      document.addEventListener('touchend', onResizeEnd);
       e.preventDefault();
+      e.stopPropagation();
     };
+    h.addEventListener('mousedown', start);
+    h.addEventListener('touchstart', start, {passive:false});
   });
 }
 function onResizeMove(e){
   if(!resize) return;
+  if(e.touches) e.preventDefault();
   const win=windows[resize.id];
-  win.w=Math.max(360, resize.ow + (e.clientX-resize.sx));
-  win.h=Math.max(260, resize.oh + (e.clientY-resize.sy));
+  const cx = e.touches ? e.touches[0].clientX : e.clientX;
+  const cy = e.touches ? e.touches[0].clientY : e.clientY;
+  const dx = cx - resize.sx;
+  const dy = cy - resize.sy;
+  const dir = resize.dir || 'se';
   const wa=getWorkArea();
-  win.w=Math.min(wa.w, win.w); win.h=Math.min(wa.h, win.h);
+  const minW = window.innerWidth < 640 ? 280 : 360;
+  const minH = window.innerWidth < 640 ? 200 : 260;
+  let nx = resize.ox, ny = resize.oy, nw = resize.ow, nh = resize.oh;
+  if(dir.includes('e')) nw = resize.ow + dx;
+  if(dir.includes('w')) { nw = resize.ow - dx; nx = resize.ox + dx; }
+  if(dir.includes('s')) nh = resize.oh + dy;
+  if(dir.includes('n')) { nh = resize.oh - dy; ny = resize.oy + dy; }
+  // clamp size
+  if(nw < minW){ if(dir.includes('w')) nx -= (minW - nw); nw = minW; }
+  if(nh < minH){ if(dir.includes('n')) ny -= (minH - nh); nh = minH; }
+  // clamp to work area
+  nw = Math.min(nw, wa.w);
+  nh = Math.min(nh, wa.h);
+  // clamp position for w/n
+  if(dir.includes('w')){ nx = Math.max(wa.left, Math.min(wa.right - nw, nx)); }
+  else { nx = Math.max(wa.left, Math.min(wa.right - nw, nx)); if(dir==='e' || dir==='se' || dir==='ne') nx = resize.ox; }
+  if(dir.includes('n')){ ny = Math.max(wa.top, Math.min(wa.bottom - nh, ny)); }
+  else { ny = Math.max(wa.top, Math.min(wa.bottom - nh, ny)); if(dir==='s' || dir==='se' || dir==='sw') ny = resize.oy; }
+  // if only e/s, keep original xy
+  if(dir==='e' || dir==='se' || dir==='s'){ nx = resize.ox; if(dir==='e') ny = resize.oy; }
+  if(dir==='se'){ nx = resize.ox; ny = resize.oy; }
+  win.x = nx; win.y = ny; win.w = nw; win.h = nh;
   const el=document.querySelector(`.window[data-id="${resize.id}"]`);
-  if(el){ el.style.width=win.w+'px'; el.style.height=win.h+'px';}
+  if(el){ el.style.left=win.x+'px'; el.style.top=win.y+'px'; el.style.width=win.w+'px'; el.style.height=win.h+'px';}
 }
-function onResizeEnd(){ resize=null; document.removeEventListener('mousemove', onResizeMove); document.removeEventListener('mouseup', onResizeEnd); }
+function onResizeEnd(){
+  if(resize){
+    const el=document.querySelector(`.window[data-id="${resize.id}"]`);
+    if(el) el.classList.remove('is-resizing');
+  }
+  resize=null;
+  document.removeEventListener('mousemove', onResizeMove);
+  document.removeEventListener('mouseup', onResizeEnd);
+  document.removeEventListener('touchmove', onResizeMove);
+  document.removeEventListener('touchend', onResizeEnd);
+}
 
 /* ---------- App HTML Generators ---------- */
 function getAppHTML(id, sub){
@@ -490,8 +548,8 @@ function appCertifications(){
   return `
   <div class="p-4 grid gap-3 max-w-3xl mx-auto">
     ${certifications.map(c=>`
-      <div class="card flex gap-3">
-        <img src="${c.image}" class="w-24 h-16 rounded-lg object-cover border border-white/10 bg-white/5 shrink-0">
+      <div class="card flex gap-3 min-w-0 overflow-hidden">
+        <img src="${c.image}" class="w-24 h-16 min-w-[96px] min-h-[64px] max-w-[96px] max-h-[64px] rounded-lg object-cover border border-white/10 bg-white/5 flex-none shrink-0">
         <div class="flex-1 min-w-0">
           <h3 class="font-semibold text-sm leading-tight">${c.title}</h3>
           <p class="text-xs text-violet-300">${c.issuer} • ${c.issued}</p>
@@ -510,22 +568,48 @@ function appCertifications(){
 
 function appPhotos(){
   return `
-  <div class="p-3">
-    <div class="columns-2 md:columns-3 gap-3 space-y-3">
-      ${galleryImages.map((img,i)=>`
-        <div class="break-inside-avoid rounded-xl overflow-hidden border border-white/10 bg-white/5 cursor-pointer group" onclick="openPhoto(${i})">
-          <img src="${img.src}" alt="${img.label}" loading="lazy" class="w-full h-auto group-hover:scale-[1.02] transition">
-          ${img.label?`<div class="p-2 text-xs bg-black/40">${img.label}</div>`:''}
-        </div>
-      `).join('')}
+  <div class="h-full flex flex-col bg-[#0f0f1e] relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-blue-600/10 via-transparent to-cyan-600/10 pointer-events-none"></div>
+    <div class="absolute inset-0 opacity-[0.04] pointer-events-none" style="background-image: radial-gradient(circle at 1px 1px, white 1px, transparent 0); background-size: 24px 24px;"></div>
+    <div class="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-black/20 backdrop-blur shrink-0">
+      <div class="flex items-center gap-2 text-sm font-medium">
+        <span class="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></span>
+        Photos Gallery
+        <span class="hidden sm:inline-flex ml-2 text-[10px] px-2 py-0.5 bg-blue-500/20 text-blue-300 rounded-full border border-blue-500/20">Coming Soon</span>
+      </div>
+      <span class="text-[11px] px-2.5 py-1 bg-white/5 border border-white/10 rounded-full opacity-60">Gallery • Updating</span>
     </div>
-    <div id="photoModal" class="fixed inset-0 bg-black/90 hidden place-items:center p-4 z-50" onclick="this.classList.add('hidden')">
-      <img id="photoModalImg" class="max-w-full max-h-[85vh] rounded-xl" onclick="event.stopPropagation()">
-      <button class="absolute top-4 right-4 p-2 bg-white/10 rounded-full" onclick="document.getElementById('photoModal').classList.add('hidden')"><i data-lucide="x" class="w-5 h-5"></i></button>
+    <div class="flex-1 flex flex-col items-center justify-center p-6 md:p-10 text-center relative">
+      <div class="w-20 h-20 md:w-24 md:h-24 rounded-3xl bg-gradient-to-br from-blue-600 to-cyan-600 flex items-center justify-center shadow-2xl shadow-blue-600/30 mb-6 relative">
+        <i data-lucide="image" class="w-10 h-10 md:w-12 md:h-12 text-white"></i>
+        <span class="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-blue-500 border-2 border-[#0f0f1e] grid place-items:center"><i data-lucide="clock" class="w-3.5 h-3.5 text-white"></i></span>
+      </div>
+      <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight">Photos — Coming Soon</h2>
+      <p class="text-sm md:text-base text-white/60 max-w-md mt-2 leading-relaxed">
+        Curated moments and project visuals are being organized.<br>
+        A polished, high-resolution gallery will be live shortly.
+      </p>
+      <div class="w-full max-w-sm mt-6">
+        <div class="flex justify-between text-[11px] opacity-60 mb-1.5">
+          <span>Progress</span><span class="text-blue-300">70% • Curating</span>
+        </div>
+        <div class="h-2 bg-white/10 rounded-full overflow-hidden p-1">
+          <div class="h-full w-[70%] bg-gradient-to-r from-blue-600 to-cyan-600 rounded-full animate-pulse"></div>
+        </div>
+      </div>
+      <div class="flex flex-col sm:flex-row gap-3 mt-8 w-full max-w-sm">
+        <button disabled class="flex-1 py-3 px-4 bg-white/10 border border-white/10 rounded-full text-sm font-medium flex items-center justify-center gap-2 opacity-50 cursor-not-allowed">
+          <i data-lucide="images" class="w-4 h-4"></i> Gallery — Soon
+        </button>
+        <button onclick="openApp('projects')" class="flex-1 py-3 px-4 bg-white text-black rounded-full text-sm font-bold flex items-center justify-center gap-2 hover:bg-white/90 transition">
+          <i data-lucide="code-2" class="w-4 h-4"></i> View Projects
+        </button>
+      </div>
+      <p class="text-[11px] opacity-30 mt-6">Want a preview? Check Projects for screenshots</p>
     </div>
   </div>`;
 }
-function openPhoto(i){ const m=document.getElementById('photoModal'), img=document.getElementById('photoModalImg'); img.src=galleryImages[i].src; m.classList.remove('hidden'); m.classList.add('grid'); }
+function openPhoto(i){ const m=document.getElementById('photoModal'), img=document.getElementById('photoModalImg'); if(!m||!img) return; img.src=galleryImages[i].src; m.classList.remove('hidden'); m.classList.add('grid'); }
 
 function appResume(){
   return `
@@ -653,73 +737,103 @@ function termCmd(e){
 
 function appAskAbhi(){
   return `
-  <div class="h-full flex flex-col bg-[#0f0f1e] overflow-hidden">
-    <!-- Professional Header -->
-    <div class="px-3 md:px-4 py-3 border-b border-white/10 flex items-center gap-3 bg-gradient-to-r from-violet-600/10 via-indigo-600/10 to-transparent backdrop-blur shrink-0">
-      <div class="relative">
-        <img src="assets/profile/profilepic.jpg" alt="Abhishek" class="w-10 h-10 md:w-11 md:h-11 rounded-full object-cover border-2 border-white/15 shadow-lg">
-        <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 rounded-full border-2 border-[#0f0f1e] flex items-center justify-center"><span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span></span>
+  <div class="h-full min-h-0 flex flex-col bg-[#0a0a1f] overflow-hidden">
+    <!-- Professional Header — compact, premium — fixed collapsing -->
+    <div class="px-3 md:px-4 py-3 border-b border-white/[0.07] flex items-center gap-3 bg-gradient-to-r from-violet-600/[0.08] via-indigo-600/[0.07] to-transparent backdrop-blur-xl shrink-0 min-w-0">
+      <div class="relative shrink-0 flex-none">
+        <div class="w-10 h-10 md:w-11 md:h-11 min-w-[40px] min-h-[40px] max-w-[44px] max-h-[44px] rounded-xl overflow-hidden border border-white/10 shadow-lg bg-gradient-to-br from-violet-600 to-indigo-600 p-[1.5px] flex-none">
+          <img src="assets/profile/profilepic.jpg" alt="Abhishek" class="w-full h-full object-cover rounded-[10px] border-2 border-[#0a0a1f]">
+        </div>
+        <span class="absolute -bottom-1 -right-1 w-3.5 h-3.5 min-w-[14px] min-h-[14px] bg-emerald-500 rounded-full border-2 border-[#0a0a1f] flex items-center justify-center shadow-sm flex-none">
+          <span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>
+        </span>
       </div>
       <div class="flex-1 min-w-0">
-        <h3 class="font-bold text-sm flex items-center gap-1.5">Ask Abhi <span class="hidden sm:inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 bg-emerald-500/15 text-emerald-400 rounded-full border border-emerald-500/20"><span class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span> Online</span></h3>
-        <p class="text-[11px] text-white/60 truncate hidden sm:block">Ask about projects, skills, certifications — instant local AI • 5 projects • BCA • Baramati</p>
-        <p class="text-[11px] text-white/60 sm:hidden">0xAbhi13 • 5 projects • Replies instantly</p>
+        <div class="flex items-center gap-2 flex-wrap">
+          <h3 class="font-bold text-[13px] md:text-sm tracking-tight">Ask Abhi</h3>
+          <span class="inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 bg-emerald-500/12 text-emerald-400 rounded-full border border-emerald-500/20 font-medium"><span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span> Online</span>
+          <span class="hidden sm:inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 bg-violet-500/12 text-violet-300 rounded-full border border-violet-500/20">Professional</span>
+          <span class="hidden lg:inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 bg-white/5 text-white/60 rounded-full border border-white/10">Offline AI</span>
+        </div>
+        <p class="text-[11px] leading-none text-white/50 mt-0.5 truncate hidden sm:block">${(typeof ASK_ABHI_KNOWLEDGE !== 'undefined' ? ASK_ABHI_KNOWLEDGE.projects.length : 7)} projects • ${(typeof ASK_ABHI_KNOWLEDGE !== 'undefined' ? ASK_ABHI_KNOWLEDGE.certificates.length : 9)} certs • skills • architecture • replies instantly • private</p>
+        <p class="text-[11px] leading-none text-white/50 mt-0.5 sm:hidden">0xAbhi13 • ${(typeof ASK_ABHI_KNOWLEDGE !== 'undefined' ? ASK_ABHI_KNOWLEDGE.projects.length : 7)} projects • ${(typeof ASK_ABHI_KNOWLEDGE !== 'undefined' ? ASK_ABHI_KNOWLEDGE.certificates.length : 9)} certs</p>
       </div>
-      <span class="hidden md:flex items-center gap-1 text-[11px] px-2.5 py-1 bg-white/5 border border-white/10 rounded-full"><i data-lucide="shield-check" class="w-3 h-3 text-violet-400"></i> Offline AI</span>
-      <span class="px-2 py-1 bg-gradient-to-r from-violet-600 to-indigo-600 rounded-full text-[11px] font-bold hidden sm:block">0xAbhi13</span>
+      <div class="hidden sm:flex items-center gap-1.5 shrink-0">
+        <span class="hidden md:inline-flex items-center gap-1.5 text-[10px] px-2 py-1 bg-white/[0.04] border border-white/10 rounded-full text-white/60"><i data-lucide="shield-check" class="w-3 h-3 text-violet-400"></i> No data stored</span>
+        <button onclick="clearAskChat()" title="Clear chat" class="inline-flex items-center gap-1 text-[11px] px-2 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full transition"><i data-lucide="trash-2" class="w-3 h-3"></i> Clear</button>
+        <span class="px-2.5 py-1 bg-gradient-to-r from-violet-600 to-indigo-600 rounded-full text-[11px] font-bold text-white shadow-md shadow-violet-600/20">0xAbhi13</span>
+      </div>
+      <button onclick="clearAskChat()" title="Clear chat" class="sm:hidden w-8 h-8 rounded-full bg-white/5 border border-white/10 grid place-items:center shrink-0"><i data-lucide="trash-2" class="w-3.5 h-3.5 opacity-70"></i></button>
     </div>
 
-    <!-- Messages -->
-    <div id="askMsgs" class="flex-1 overflow-auto p-3 md:p-4 space-y-4 scroll-smooth">
-      <!-- Welcome bubble -->
-      <div class="flex gap-2 md:gap-3">
-        <img src="assets/profile/profilepic.jpg" alt="Abhi" class="w-7 h-7 md:w-8 md:h-8 rounded-full border border-white/10 hidden sm:block shrink-0 mt-1">
-        <div class="flex-1 max-w-[88%] sm:max-w-[78%]">
-          <div class="px-4 py-3 rounded-2xl rounded-tl-sm bg-white/[0.07] border border-white/10 backdrop-blur text-sm leading-relaxed">
-            Hi! I'm <b class="text-violet-300">Ask Abhi</b> — professional assistant for <b>Abhishek Jadhav (0xAbhi13)</b>.<br>
-            <span class="opacity-70">Ask me about projects, skills, certifications, or contact. I run 100% offline on GitHub Pages — no API needed.</span>
-            <div class="flex items-center gap-2 mt-2 text-[11px] opacity-50">
-              <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span> Just now • Local AI • Private
+    <!-- Messages — subtle mesh + scrollbar — fixed min-h-0 so input stays visible -->
+    <div id="askMsgs" class="flex-1 min-h-0 overflow-auto p-3 md:p-4 space-y-3.5 scroll-smooth bg-[radial-gradient(600px_200px_at_20%_0%,rgba(139,92,246,0.07),transparent_70%),radial-gradient(500px_200px_at_90%_10%,rgba(6,182,212,0.06),transparent_70%)] [scrollbar-width:thin] [scrollbar-color:rgba(255,255,255,0.12)_transparent]">
+      <!-- Welcome — premium card — fixed collapsing icon -->
+      <div class="flex gap-2.5 min-w-0">
+        <div class="w-8 h-8 min-w-[32px] min-h-[32px] max-w-[32px] max-h-[32px] rounded-full bg-gradient-to-br from-violet-600 to-indigo-600 border border-white/10 hidden sm:flex items-center justify-center flex-none shrink-0 mt-0.5 shadow-md overflow-hidden">
+          <i data-lucide="sparkles" class="w-4 h-4 min-w-[16px] min-h-[16px] text-white shrink-0"></i>
+        </div>
+        <div class="flex-1 min-w-0 max-w-[90%] sm:max-w-[78%]">
+          <div class="px-4 py-3.5 rounded-2xl rounded-tl-sm bg-white/[0.06] border border-white/[0.08] backdrop-blur-xl text-sm leading-relaxed shadow-sm">
+            <div class="flex items-center gap-2 mb-1.5">
+              <span class="text-xs font-bold tracking-wide text-violet-300">Ask Abhi</span>
+              <span class="text-[10px] px-1.5 py-0.5 bg-white/5 border border-white/10 rounded-full opacity-60">Professional</span>
+              <span class="text-[10px] opacity-40">• Just now</span>
+            </div>
+            <p class="font-medium">Hi! I'm <span class="text-violet-300">Ask Abhi</span> — your professional guide to <span class="text-white font-semibold">Abhishek Jadhav (0xAbhi13)</span>.</p>
+            <p class="opacity-70 mt-1.5 text-[13px] leading-relaxed">I know <b class="text-white/90 font-semibold">everything</b> in this portfolio: <b>7 projects</b> with stacks & GitHub, <b>9 certifications</b> with verify links, 5 skill categories, BCA 2026 Baramati, contact, photos & architecture. Ask in natural language.</p>
+            <div class="flex flex-wrap gap-1.5 mt-3">
+              <span class="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-violet-500/12 text-violet-300 rounded-full border border-violet-500/20 font-medium"><i data-lucide="code-2" class="w-3 h-3"></i> 7 projects</span>
+              <span class="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-emerald-500/12 text-emerald-300 rounded-full border border-emerald-500/20 font-medium"><i data-lucide="award" class="w-3 h-3"></i> 9 certs verified</span>
+              <span class="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-white/[0.04] rounded-full border border-white/10 opacity-70"><i data-lucide="lock" class="w-3 h-3"></i> Offline • Private</span>
             </div>
           </div>
+          <p class="text-[10px] opacity-30 mt-1.5 ml-1 hidden sm:block">Tip: try “Verify Jio AI” or “What is CS301?”</p>
         </div>
       </div>
 
-      <!-- Starters -->
-      <div id="askStarters" class="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3">
-        ${[
-          {q:"What projects has Abhishek built?", icon:"code-2", desc:"5 shipped • View all"},
-          {q:"What skills does he have?", icon:"cpu", desc:"C++ • Python • JS"},
-          {q:"Tell me about 0xEmotion", icon:"eye", desc:"AI Vision • Offline"},
-          {q:"What certifications has he earned?", icon:"award", desc:"3 verified • Sheryians"},
-          {q:"Show me his resume.", icon:"file-text", desc:"Coming Soon • 85%"},
-          {q:"What is his education?", icon:"book-open", desc:"BCA 2026 • Baramati"},
-        ].map(item=>`
-          <button onclick="askSend('${item.q.replace(/'/g,"\\'")}')" class="group text-left p-3 bg-white/[0.05] hover:bg-white/[0.09] active:bg-white/[0.12] border border-white/10 hover:border-violet-500/40 rounded-2xl flex items-center gap-3 transition-all hover:scale-[1.01] active:scale-[0.98] shadow-sm">
-            <span class="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600/25 to-indigo-600/25 border border-violet-500/20 grid place-items:center group-hover:from-violet-600/35 group-hover:to-indigo-600/35 shrink-0 shadow-inner"><i data-lucide="${item.icon}" class="w-[18px] h-[18px] text-violet-300"></i></span>
-            <span class="flex-1 min-w-0"><span class="block text-[13px] font-semibold leading-tight line-clamp-2">${item.q}</span><span class="block text-[11px] opacity-60 mt-0.5">${item.desc}</span></span>
-            <span class="hidden sm:grid w-7 h-7 rounded-full bg-white/5 border border-white/10 place-items:center group-hover:bg-violet-500/20 group-hover:border-violet-500/30 transition"><i data-lucide="arrow-up-right" class="w-3.5 h-3.5 opacity-70 group-hover:opacity-100"></i></span>
-          </button>
-        `).join('')}
-      </div>
-
-      <!-- Quick chips -->
-      <div class="flex flex-wrap gap-1.5 pt-1">
-        <span class="text-[11px] opacity-40 mr-1 hidden sm:block">Try:</span>
-        ${["0xMagicSearch","0xAirCanvas","Skills","Contact"].map(t=>`<button onclick="askSend('${t}')" class="text-[11px] px-2.5 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full transition"> ${t}</button>`).join('')}
+      <!-- Starters — 2-col premium cards — dynamic from knowledge -->
+      <div id="askStarters" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+        ${(() => {
+          const K = (typeof window !== 'undefined' && window.ASK_ABHI_KNOWLEDGE) ? window.ASK_ABHI_KNOWLEDGE : null;
+          const qs = K ? K.getSuggestedQuestions() : ["Who is Abhishek Jadhav?","What are Abhishek's skills?","Show me his 7 projects","List all 9 certifications with verify links","Which project uses Flask?","Tell me about 0xBeatForge"];
+          const meta = [
+            {icon:"user", desc:"Owner • BCA 2026 • Baramati", grad:"from-violet-600/20 to-indigo-600/20", border:"border-violet-500/20"},
+            {icon:"cpu", desc:"5 cats • C++/Python/JS", grad:"from-amber-500/15 to-orange-500/15", border:"border-amber-500/20"},
+            {icon:"code-2", desc:"7 shipped • stacks • GitHub", grad:"from-violet-600/20 to-indigo-600/20", border:"border-violet-500/20"},
+            {icon:"award", desc:"9 verified • Saylor • Jio • EDUCBA", grad:"from-emerald-500/15 to-teal-500/15", border:"border-emerald-500/20"},
+            {icon:"github", desc:"@0xAbhi13 • Source", grad:"from-zinc-700/20 to-zinc-800/20", border:"border-white/10"},
+            {icon:"music", desc:"Web Audio • BeatForge", grad:"from-blue-500/15 to-cyan-500/15", border:"border-blue-500/20"},
+          ];
+          return qs.map((q,i)=> {
+            const m = meta[i % meta.length];
+            return `<button onclick="askSend('${q.replace(/'/g,"\\'")}')" class="group text-left p-3.5 bg-white/[0.04] hover:bg-white/[0.07] active:bg-white/[0.08] border border-white/[0.06] hover:border-white/10 rounded-2xl flex items-start gap-3 transition-all hover:translate-y-[-1px] hover:shadow-lg hover:shadow-black/20 active:scale-[0.98] overflow-hidden">
+              <span class="w-9 h-9 min-w-[36px] min-h-[36px] max-w-[36px] max-h-[36px] rounded-xl bg-gradient-to-br ${m.grad} border ${m.border} flex items-center justify-center flex-none shrink-0 mt-0.5 group-hover:scale-105 transition-transform overflow-hidden"><i data-lucide="${m.icon}" class="w-[16px] h-[16px] min-w-[16px] min-h-[16px] text-white/90 shrink-0"></i></span>
+              <span class="flex-1 min-w-0 overflow-hidden">
+                <span class="block text-[13px] font-semibold leading-tight text-white group-hover:text-white break-words">${q}</span>
+                <span class="block text-[11px] opacity-55 mt-1 leading-none">${m.desc}</span>
+              </span>
+              <span class="hidden sm:flex w-7 h-7 min-w-[28px] min-h-[28px] max-w-[28px] max-h-[28px] rounded-full bg-white/[0.04] border border-white/10 items-center justify-center flex-none shrink-0 group-hover:bg-white/10 group-hover:border-white/15 transition mt-1"><i data-lucide="arrow-up-right" class="w-3.5 h-3.5 min-w-[14px] min-h-[14px] opacity-50 group-hover:opacity-100 shrink-0"></i></span>
+            </button>`;
+          }).join('');
+        })()}
       </div>
     </div>
 
-    <!-- Input -->
-    <div class="p-2.5 md:p-3 border-t border-white/10 bg-black/20 backdrop-blur shrink-0">
-      <form onsubmit="return askForm(event)" class="flex gap-2 items-end max-w-3xl mx-auto">
-        <div class="flex-1 relative">
-          <input id="askInput" placeholder="Ask about projects, skills, certifications..." autocomplete="off" class="w-full px-4 py-3 md:py-3 pr-12 rounded-2xl bg-white/[0.06] border border-white/10 hover:border-white/15 focus:border-violet-500/40 focus:bg-white/[0.08] outline-none text-sm placeholder-white/30 transition-all">
-          <span class="absolute right-2 top-1/2 -translate-y-1/2 hidden sm:flex items-center gap-1 text-[10px] px-1.5 py-1 bg-white/5 border border-white/10 rounded-full opacity-60">↵</span>
+    <!-- Input — pill, premium — fixed collapsing -->
+    <div class="p-3 border-t border-white/[0.06] bg-[#0a0a1f]/80 backdrop-blur-xl shrink-0">
+      <form onsubmit="return askForm(event)" class="flex gap-2 items-end max-w-3xl mx-auto min-w-0">
+        <div class="flex-1 min-w-0 relative group">
+          <input id="askInput" placeholder="Ask anything: projects, 9 certs, verify links, skills, contact..." autocomplete="off" class="w-full min-w-0 pl-4 pr-11 py-3 rounded-2xl bg-white/[0.05] border border-white/10 group-hover:border-white/15 focus:border-violet-500/30 focus:bg-white/[0.07] focus:ring-2 focus:ring-violet-500/20 outline-none text-[13px] placeholder-white/35 transition-all">
+          <span class="absolute right-1.5 top-1/2 -translate-y-1/2 hidden sm:flex items-center justify-center w-7 h-7 min-w-[28px] min-h-[28px] bg-white/5 border border-white/10 rounded-full opacity-60 group-focus-within:opacity-100 transition flex-none shrink-0">
+            <i data-lucide="corner-down-left" class="w-3.5 h-3.5 opacity-60 shrink-0"></i>
+          </span>
         </div>
-        <button type="submit" class="w-11 h-11 md:w-11 md:h-11 rounded-2xl bg-gradient-to-br from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 grid place-items:center shadow-lg shadow-violet-600/20 hover:shadow-violet-600/30 hover:scale-105 active:scale-95 transition-all shrink-0"><i data-lucide="send" class="w-4 h-4 text-white"></i></button>
+        <button type="submit" aria-label="Send" class="w-11 h-11 min-w-[44px] min-h-[44px] max-w-[44px] max-h-[44px] rounded-2xl bg-gradient-to-br from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 active:scale-95 flex items-center justify-center flex-none shrink-0 shadow-lg shadow-violet-600/20 hover:shadow-violet-600/30 transition-all border border-white/10 overflow-hidden">
+          <i data-lucide="send" class="w-4 h-4 min-w-[16px] min-h-[16px] text-white translate-x-[1px] shrink-0"></i>
+        </button>
       </form>
-      <p class="text-[10px] opacity-25 text-center mt-1.5 hidden sm:block">AI can make mistakes. Verify via portfolio apps • Offline • Private • No data stored</p>
+      <p class="text-[10px] opacity-25 text-center mt-2 hidden sm:block tracking-wide">Professional • Offline • No API • Answers from portfolio data • Verify via app buttons</p>
     </div>
   </div>`;
 }
@@ -733,13 +847,11 @@ function askForm(e){
   const inp=document.getElementById('askInput'), box=document.getElementById('askMsgs');
   const q=(inp.value||'').trim(); if(!q) return false;
   inp.value='';
-  // hide starters
   const starters=document.getElementById('askStarters'); if(starters) starters.style.display='none';
-  // user bubble
-  box.innerHTML+=`<div class="flex justify-end"><div class="max-w-[80%] px-3 py-2 rounded-2xl bg-violet-600 text-white text-sm">${q}</div></div>`;
-  // bot thinking
+  const esc = s=> s.replace(/[&<>"']/g, m=> ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  box.innerHTML+=`<div class="flex justify-end msg-user min-w-0"><div class="max-w-[80%] px-3.5 py-2.5 rounded-2xl rounded-br-sm bg-gradient-to-br from-violet-600 to-indigo-600 text-white text-sm shadow-md border border-violet-500/20 break-words">${esc(q)}</div></div>`;
   const botId='bot-'+Date.now();
-  box.innerHTML+=`<div id="${botId}" class="flex gap-2"><div class="w-6 h-6 rounded-full bg-violet-500/20 grid place-items:center flex-shrink-0"><i data-lucide="bot" class="w-3 h-3 text-violet-400"></i></div><div class="flex-1 px-3 py-2 rounded-2xl bg-white/5 border border-white/10 text-sm"><span class="opacity-60">Thinking…</span></div></div>`;
+  box.innerHTML+=`<div id="${botId}" class="flex gap-2 msg-user min-w-0"><div class="w-6 h-6 min-w-[24px] min-h-[24px] max-w-[24px] max-h-[24px] rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center flex-none shrink-0 mt-0.5 overflow-hidden"><i data-lucide="bot" class="w-3 h-3 min-w-[12px] min-h-[12px] text-violet-400 shrink-0"></i></div><div class="flex-1 min-w-0 px-3.5 py-2.5 rounded-2xl rounded-tl-sm bg-white/[0.05] border border-white/[0.07] text-sm backdrop-blur break-words overflow-hidden flex items-center gap-2"><span class="flex items-center gap-1"><span class="w-1.5 h-1.5 bg-violet-400 rounded-full animate-bounce" style="animation-delay:0ms"></span><span class="w-1.5 h-1.5 bg-violet-400 rounded-full animate-bounce" style="animation-delay:150ms"></span><span class="w-1.5 h-1.5 bg-violet-400 rounded-full animate-bounce" style="animation-delay:300ms"></span></span><span class="opacity-60 text-xs">Ask Abhi is typing…</span></div></div>`;
   box.scrollTop=box.scrollHeight;
   lucide.createIcons();
   setTimeout(()=>{
@@ -747,55 +859,375 @@ function askForm(e){
     const el=document.getElementById(botId);
     if(el){
       const content=renderAskContent(ans);
-      el.outerHTML=`<div class="flex gap-2"><div class="w-6 h-6 rounded-full bg-violet-500/20 grid place-items:center flex-shrink-0"><i data-lucide="bot" class="w-3 h-3 text-violet-400"></i></div><div class="flex-1 px-3 py-2 rounded-2xl bg-white/5 border border-white/10 text-sm whitespace-pre-wrap">${content}</div></div>`;
+      // store raw text for copy
+      const rawForCopy = ans.replace(/<[^>]*>/g,'').replace(/\[OPEN_[^\]]+\]/g,'').trim().slice(0,4000);
+      const escCopy = rawForCopy.replace(/'/g,"\\'").replace(/"/g,'&quot;');
+      el.outerHTML=`<div class="flex gap-2 msg-user min-w-0 group/msg"><div class="w-6 h-6 min-w-[24px] min-h-[24px] max-w-[24px] max-h-[24px] rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center flex-none shrink-0 mt-0.5 overflow-hidden"><i data-lucide="bot" class="w-3 h-3 min-w-[12px] min-h-[12px] text-violet-400 shrink-0"></i></div><div class="flex-1 min-w-0 relative px-3.5 py-2.5 rounded-2xl rounded-tl-sm bg-white/[0.06] border border-white/[0.08] text-sm whitespace-pre-wrap leading-relaxed backdrop-blur shadow-sm break-words overflow-hidden"><button onclick="copyAskResponse(this, '${escCopy.replace(/\n/g,'\\n')}')" title="Copy response" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center opacity-60 hover:opacity-100 transition flex"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button><div class="pr-8">${content}</div></div></div>`;
       lucide.createIcons();
       box.scrollTop=box.scrollHeight;
+      // update context with assistant answer
+      if(typeof askAbhiContext !== 'undefined'){ askAbhiContext.history.push({role:'assistant', text: rawForCopy}); if(askAbhiContext.history.length>20) askAbhiContext.history.shift(); }
     }
-  }, 400);
+  }, 380);
   return false;
 }
+function copyAskResponse(btn, text){
+  const clean = text.replace(/\\n/g, '\n');
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(clean).then(()=>{
+      const orig = btn.innerHTML;
+      btn.innerHTML = '<i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i>';
+      lucide.createIcons();
+      btn.classList.add('bg-emerald-500/20','border-emerald-500/30');
+      setTimeout(()=>{ btn.innerHTML = orig; lucide.createIcons(); btn.classList.remove('bg-emerald-500/20','border-emerald-500/30'); }, 1400);
+    }).catch(()=>{ fallbackCopy(clean, btn); });
+  } else fallbackCopy(clean, btn);
+  function fallbackCopy(t, b){
+    const ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); b.innerHTML='<i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i>'; lucide.createIcons(); setTimeout(()=>{ b.innerHTML='<i data-lucide="copy" class="w-3.5 h-3.5"></i>'; lucide.createIcons(); },1200);}catch(e){} ta.remove();
+  }
+}
+function clearAskChat(){
+  const box=document.getElementById('askMsgs');
+  const starters=document.getElementById('askStarters');
+  if(!box) return;
+  // keep first welcome bubble, remove rest
+  const kids=Array.from(box.children);
+  kids.forEach((el,i)=>{ if(i>0) el.remove(); });
+  if(starters) starters.style.display='';
+  box.scrollTop=0;
+  if(typeof askAbhiContext !== 'undefined'){ askAbhiContext.history=[]; askAbhiContext.lastProject=null; askAbhiContext.lastCert=null; askAbhiContext.lastQuery=""; }
+  const inp=document.getElementById('askInput');
+  if(inp){ inp.value=''; inp.focus(); }
+  // error state clear
+  const err=document.getElementById('askError'); if(err) err.remove();
+  lucide.createIcons();
+}
+// keyboard support: Esc clears, Ctrl+K already handled for spotlight
+document.addEventListener('keydown', (e)=>{
+  const active = document.activeElement && document.activeElement.id==='askInput';
+  if(e.key==='Escape' && active && document.getElementById('mobileAppView') && !document.getElementById('mobileAppView').classList.contains('hidden')){
+    // if ask input focused in mobile, let mobileAppView handle? still allow clear on Esc when input has text
+  }
+});
+// ── Ask Abhi — Centralized Knowledge + Context ──
+let askAbhiContext = { lastProject: null, lastCert: null, lastQuery: "", history: [] };
 function getLocalAnswer(q){
-  const lower=q.toLowerCase();
-  const has=(...ks)=>ks.some(k=>lower.includes(k));
-  if(has('project','0xemotion','0xmagic','0xair','0xvoice','portfolio')){
-    const list=projects.map(p=>`• ${p.name} [${p.status}] — ${p.category}: ${p.purpose}`).join('\n');
-    return `Abhishek (0xAbhi13) has shipped 5 projects:\n${list}\n\nGitHub: https://github.com/0xAbhi13\n[OPEN_PROJECTS]`;
+  const K = (typeof window !== 'undefined' && window.ASK_ABHI_KNOWLEDGE) ? window.ASK_ABHI_KNOWLEDGE : null;
+  // fallbacks to raw globals if knowledge not loaded
+  const _profile = K ? K.owner : (typeof profile !== 'undefined' ? profile : {name:"Abhishek Jadhav", alias:"0xAbhi13", headline:"Creative Developer | C++ • Python • JavaScript | BCA Student — Baramati, Maharashtra", summary:"BCA student from Baramati learning the craft from the ground up — C++ for fundamentals, Python for shipping, JavaScript for the web.", location:"Baramati, Maharashtra, India", email:"contact.0xabhi13@gmail.com", github:"https://github.com/0xAbhi13", linkedin:"https://linkedin.com/in/0xAbhi13", education:{degree:"Bachelor of Computer Applications (BCA)", institution:"BCA Program — Baramati, Maharashtra", graduation:"2026", cgpa:"Currently Pursuing", affiliation:"Computer Science Fundamentals"}});
+  const _education = K ? K.education : (_profile.education || {degree:"Bachelor of Computer Applications (BCA)", institution:"BCA Program — Baramati, Maharashtra", graduation:"2026", cgpa:"Currently Pursuing", affiliation:"Computer Science Fundamentals"});
+  const _projects = K ? K.projects : (typeof projects !== 'undefined' ? projects : []);
+  const _certs = K ? K.certificates : (typeof certifications !== 'undefined' ? certifications : []);
+  const _skills = K ? K.skills : (typeof skills !== 'undefined' ? skills : []);
+  const _links = K ? K.links : { github:"https://github.com/0xAbhi13", linkedin:"https://linkedin.com/in/0xAbhi13", portfolioWebsite:"https://0xabhi13.github.io/MyPortfolio/", githubPortfolio:"https://github.com/0xAbhi13/MyPortfolio", portfolioUrl:"https://0xabhi13.github.io/MyPortfolio/", email:_profile.email };
+  const _website = K ? K.website : { hosting:"GitHub Pages", url:"https://0xabhi13.github.io/MyPortfolio/", repo:"https://github.com/0xAbhi13/MyPortfolio", builtWith:["HTML5","CSS3","JavaScript"] };
+  const _identity = K ? K.identity : { assistantName:"Ask Abhi", ownerName:"Abhishek Jadhav", githubUsername:"0xAbhi13", creator:"Abhishek Jadhav" };
+  const _contact = K ? K.contact : { email:_profile.email, github:_profile.github, linkedin:_profile.linkedin, location:_profile.location };
+
+  const raw = (q||"").trim();
+  const lower = raw.toLowerCase();
+  const clean = lower.replace(/[^a-z0-9\u0900-\u097F\s]/g,' ').replace(/\s+/g,' ').trim();
+  const tokens = clean.split(' ').filter(Boolean);
+  const has = (...ks) => ks.some(k=> {
+    const lk = k.toLowerCase();
+    // check both clean and raw lower for Devanagari
+    return clean.includes(lk) || lower.includes(lk);
+  });
+  const hasAny = (...ks) => has(...ks);
+  const hasAll = (...ks) => ks.every(k=> clean.includes(k.toLowerCase()) || lower.includes(k.toLowerCase()));
+  // casual Indian English normalization: bhai, bro, yaar, abhi, abhishek
+  const isCasual = has('bhai','bro','yaar','abhi','abhishek');
+  // track history
+  askAbhiContext.lastQuery = raw;
+  askAbhiContext.history.push({role:'user', text: raw});
+  if(askAbhiContext.history.length>20) askAbhiContext.history.shift();
+
+  // ── 0. Greeting — respectful, professional (handles hi, hello, namaste, good morning etc.) ──
+  const greetingWords = ["hi","hello","hey","hola","namaste","नमस्ते","namaskar","नमस्कार","pranam","प्रणाम","helo","greetings","good morning","good afternoon","good evening","good night","hey there","hi there","hello there","hi hello","hello hi","hey abhi","hi abhi","hello abhi","namaste bhai","नमस्ते भाई","hello bhai","hi bhai","hey bhai"];
+  const isPureGreeting = (()=> {
+    const c = clean;
+    if(greetingWords.includes(c)) return true;
+    if(["hi","hello","hey","hola","namaste","helo","greetings"].includes(c)) return true;
+    if(c === "hi hello" || c === "hello hi" || c === "hey hi" || c === "hi hey") return true;
+    // tokens 1-2 and all are greeting related
+    if(tokens.length <= 2 && tokens.length>0 && tokens.every(t=> ["hi","hello","hey","hola","namaste","namaskar","pranam","helo","greetings","good","morning","afternoon","evening","night","there","abhi","bhai","bro","yaar"].includes(t)) && c.length < 20) return true;
+    // good morning/afternoon/evening exact
+    if(["good morning","good afternoon","good evening","good night"].includes(c)) return true;
+    return false;
+  })();
+  if(isPureGreeting){
+    const hour = new Date().getHours();
+    let timeGreet = "Hello";
+    if(clean.includes("good morning")) timeGreet = "Good morning";
+    else if(clean.includes("good afternoon")) timeGreet = "Good afternoon";
+    else if(clean.includes("good evening")) timeGreet = "Good evening";
+    else if(clean.includes("good night")) timeGreet = "Good night";
+    else if(hour < 12) timeGreet = "Good morning";
+    else if(hour < 17) timeGreet = "Good afternoon";
+    else timeGreet = "Good evening";
+    const greetEmoji = timeGreet.includes("morning") ? "🌅" : timeGreet.includes("evening") ? "🌆" : timeGreet.includes("night") ? "🌙" : "👋";
+    // respectful, professional, mentions owner
+    return `${timeGreet}! ${greetEmoji} <b>Namaste!</b> I'm <b>Ask Abhi</b> — the official AI assistant for <b>${_identity.ownerName} (${_identity.ownerAlias})</b>.<br><br>It's a pleasure to have you here on <b>${_identity.ownerName}'s</b> portfolio. I have complete knowledge of his <b>${_projects.length} projects</b>, <b>${_certs.length} certifications</b> (with verify links), skills, education (BCA 2026, Baramati), and this website itself.<br><br>How may I help you today? You can ask me things like:<br>• <i>Who is Abhishek?</i><br>• <i>What projects has he built?</i><br>• <i>List all 9 certifications</i><br>• <i>Where is his GitHub?</i><br><br>Feel free to ask in English or casual Indian English — like “<i>bhai who is abhishek?</i>”<br>[OPEN_ABOUT] [OPEN_PROJECTS] [OPEN_CERTIFICATIONS]`;
   }
-  if(has('skill','stack','tech','c++','python','javascript','html','css','git')){
-    const s=skills.map(sk=>`${sk.category}: ${sk.items.join(', ')}`).join('\n');
-    return `Tech stack:\n${s}\n\nLeveling up: React • GSAP • Node • DSA\n[OPEN_SKILLS]`;
+  // if greeting + question (e.g., "hi who is abhishek"), strip greeting prefix and continue to other intents
+  // (we let it fall through — the other handlers will answer the question, but we still greet respectfully as prefix if needed)
+  // For combined like "hello who is abhishek", the specific handlers below will catch "who is abhishek" and answer correctly.
+
+  // ── Hindi / Marathi — understand and respond in same language ──
+  const wantsHindi = has('hindi me','hindi mai','in hindi','hindi mein','hindi bolo','hindi bol','hindi language','hindi main bolo');
+  const wantsMarathi = has('marathi me','marathi mai','marathi mein','in marathi','marathi bolo','marathi sang','marathi bol','marathi main sang');
+  const isDevanagari = /[\u0900-\u097F]/.test(raw);
+  const hasHindiTokens = has('kaun','kya','kahan','kaise','hai','hain','aap','apka','aapka','mera','tumhara','tum','kya karta','kya padhta','kaunse','uske','usne','uska','batao','hai','ho','kya hai','kaun hai','hame','bhai ye','कौन','क्या','कहाँ','कैसे','है','हैं','आप','आपका','मेरा','तुम्हारा','क्या करता','कौन है','कौन हैं','क्या है');
+  const hasMarathiTokens = has('kon','ahe','aahe','kay','kuthe','kontya','kuthun','kasa','kashi','tyache','tyane','tyacha','majha','tumcha','sang','ahet','kuthe','ahe','mala','tula','kon ahe','kay karto','kuthe shikto','konti','कोण','आहे','काय','कुठे','कोणत्या','माझे','तुमचे','त्याचे','त्याने','त्याचा','कोण आहे','काय करतो','कुठे शिकतो','कोणती');
+  let lang = 'en';
+  if(wantsHindi) lang='hi';
+  else if(wantsMarathi) lang='mr';
+  else if(isDevanagari){
+    const marathiDev = ['अहे','आहे','काय','कुठे','कोणत्या','माझे','तुझे','तुमचे','त्याचे','त्याने','त्याचा','कोण','कसा','कशी','कुठून','सांगा'].some(w=> raw.includes(w));
+    lang = marathiDev ? 'mr' : 'hi';
+  } else if(hasMarathiTokens && !hasHindiTokens) lang='mr';
+  else if(hasHindiTokens && !hasMarathiTokens) lang='hi';
+  else if(hasHindiTokens && hasMarathiTokens){
+    if(has('ahe','aahe','kuthe','kontya','majha')) lang='mr'; else lang='hi';
   }
-  if(has('bca','baramati','education')){
-    return `${profile.name} — ${profile.education.degree} — ${profile.education.institution} — ${profile.education.graduation}\n${profile.summary}\n[OPEN_ABOUT]`;
+  if(lang==='hi' || lang==='mr'){
+    // explicit language request without other content
+    if((wantsHindi || wantsMarathi) && tokens.length <= 3){
+      if(lang==='mr') return `होय, नक्की! आता मी <b>मराठी</b> मध्ये बोलेन. विचारा — <i>अभिषेक कोण आहे?</i>, <i>त्याचे प्रोजेक्ट्स कोणते?</i>, <i>सर्टिफिकेट्स कोणती?</i> किंवा <i>संपर्क कसा करायचा?</i><br><span class="opacity-60 text-xs">भाषा बदलण्यासाठी “hindi me bolo” किंवा “in english” म्हणा.</span>`;
+      return `हां, बिल्कुल! अब मैं <b>हिंदी</b> में जवाब दूंगा। पूछिए — <i>अभिषेक कौन है?</i>, <i>उसके प्रोजेक्ट्स कौन से हैं?</i>, <i>सर्टिफिकेट्स कौन से हैं?</i> या <i>संपर्क कैसे करें?</i><br><span class="opacity-60 text-xs">भाषा बदलने के लिए “marathi me sang” या “in english” कहें।</span>`;
+    }
+    // Hindi/Marathi intents — who is abhishek — handles Roman & Devanagari
+    if(has('kaun hai','कौन है','kon ahe','कोण आहे','abhishek kaun','अभिषेक कौन','abhishek kon','अभिषेक कोण','who is abhishek','अभिषेक कौन है','अभिषेक कोण आहे')){
+      if(lang==='mr') return `<b>Abhishek Jadhav</b> ha <b>${_profile.headline}</b> cha Creative Developer ahe.<br>To Baramati, Maharashtra cha BCA 2026 cha vidyarthi ahe. C++, Python, JavaScript var kaam karto. GitHub: <b>0xAbhi13</b> — <a href="${_links.github}" target="_blank" class="text-violet-300 underline">${_links.github}</a> • Portfolio: <a href="${_links.portfolioWebsite}" target="_blank" class="text-violet-300 underline">${_links.portfolioWebsite}</a><br>[OPEN_ABOUT]`;
+      return `<b>Abhishek Jadhav</b> ek <b>${_profile.headline}</b> hai.<br>Wo Baramati, Maharashtra se BCA 2026 ka student hai aur C++, Python, JavaScript me kaam karta hai. GitHub: <b>0xAbhi13</b> — <a href="${_links.github}" target="_blank" class="text-violet-300 underline">${_links.github}</a><br>[OPEN_ABOUT]`;
+    }
+    if(has('kya karta hai','क्या करता है','kay karto','काय करतो','what does') && has('abhishek')){
+      if(lang==='mr') return `<b>Abhishek</b> web applications banavto, modern technologies var prayog karto — <b>7 projects</b> (BeatForge, PDFForge, Emotion, MagicSearch, AirCanvas, VoiceVision + Portfolio) ani <b>9 certifications</b>. Tyache focus C++ fundamentals, Python, JavaScript, DSA ahe.<br>[OPEN_ABOUT]`;
+      return `<b>Abhishek</b> web applications banata hai aur modern technologies par experiment karta hai — <b>7 projects</b> aur <b>9 certifications</b>. Focus: C++ fundamentals, Python, JavaScript, DSA, React.<br>[OPEN_ABOUT]`;
+    }
+    if(has('kya padhta hai','kahan padhta','kuthe shikto','shikshan','education') && (has('abhishek') || has('padhta') || has('shikto'))){
+      if(lang==='mr') return `<b>Shikshan:</b> ${_education.degree} — ${_education.institution} (${_education.graduation})<br><span class="opacity-60">${_education.affiliation}</span><br>Thikan: ${_profile.location}<br>[OPEN_ABOUT]`;
+      return `<b>Padhai:</b> ${_education.degree} — ${_education.institution} (${_education.graduation})<br><span class="opacity-60">${_education.affiliation}</span><br>Location: ${_profile.location}<br>[OPEN_ABOUT]`;
+    }
+    if(has('skills kya hai','skills kay','takneek','technologies','kya aata hai','kay yeta')){
+      if(lang==='mr') return `<b>Skills — 5 prakar:</b><br>${_skills.map(s=> `• <b>${s.category}</b>: ${s.items.join(' • ')}`).join('<br>')}<br>[OPEN_SKILLS]`;
+      return `<b>Skills — 5 categories:</b><br>${_skills.map(s=> `• <b>${s.category}</b>: ${s.items.join(' • ')}`).join('<br>')}<br>[OPEN_SKILLS]`;
+    }
+    if(has('projects kaunse','projects kaun','konte projects','projects kay','projects kya')){
+      if(lang==='mr') return `<b>7 Projects — 0xAbhi13</b><br>${_projects.map(p=> `• <b>${p.name}</b> — ${p.category}`).join('<br>')}<br>[OPEN_PROJECTS]`;
+      return `<b>7 Projects — 0xAbhi13</b><br>${_projects.map(p=> `• <b>${p.name}</b> — ${p.category}`).join('<br>')}<br>[OPEN_PROJECTS]`;
+    }
+    if(has('certificates kaunse','certificates kaun','konti cert','certificates kay','pramanpatra')){
+      if(lang==='mr') return `<b>9 Certificates:</b><br>${_certs.map(c=> `• <b>${c.title}</b> — ${c.issuer} (${c.issued})`).join('<br>')}<br>[OPEN_CERTIFICATIONS]`;
+      return `<b>9 Certificates:</b><br>${_certs.map(c=> `• <b>${c.title}</b> — ${c.issuer} (${c.issued})`).join('<br>')}<br>[OPEN_CERTIFICATIONS]`;
+    }
+    if(has('contact kaise','contact kasa','kaise contact','kasa contact','sampark kaise','sampark kasa','github kahan','github kuthe','linkedin kahan')){
+      if(lang==='mr') return `<b>Sampark:</b><br>Email: <a href="mailto:${_contact.email}" class="text-violet-300 underline">${_contact.email}</a><br>GitHub: <a href="${_contact.github}" target="_blank" class="text-violet-300 underline">${_contact.github}</a><br>LinkedIn: <a href="${_contact.linkedin}" target="_blank" class="text-violet-300 underline">${_contact.linkedin}</a><br>Thikan: ${_contact.location}<br>[OPEN_CONTACT]`;
+      return `<b>Contact:</b><br>Email: <a href="mailto:${_contact.email}" class="text-violet-300 underline">${_contact.email}</a><br>GitHub: <a href="${_contact.github}" target="_blank" class="text-violet-300 underline">${_contact.github}</a><br>LinkedIn: <a href="${_contact.linkedin}" target="_blank" class="text-violet-300 underline">${_contact.linkedin}</a><br>[OPEN_CONTACT]`;
+    }
+    if(has('flask') || has('javascript') || has('python') || has('project') || has('sqlite') || has('php') || has('mysql') || has('certificate') || has('cert') || has('skill') || has('contact') || has('github') || has('linkedin') || has('portfolio') || has('hosting') || has('education') || has('padhta') || has('shikto') || has('kaunse') || has('konti') || has('kya') || has('kay')){
+      // let tech/project queries fall through to main handlers (they handle Hindi roman too)
+    } else {
+      // pure Hindi/Marathi greeting or unclear — respond in that language
+      if(lang==='mr'){
+        return `नमस्कार! 🙏 मी <b>Ask Abhi</b> — <b>${_identity.ownerName}</b> चा portfolio assistant.<br>तुम्ही मराठीत विचारू शकता: <i>अभिषेक कोण आहे?</i>, <i>त्याचे प्रोजेक्ट्स कोणते?</i>, <i>सर्टिफिकेट्स कोणती?</i>, <i>संपर्क कसा करायचा?</i><br><span class="opacity-60 text-xs">इंग्रजीसाठी “in english” म्हणा.</span><br>[OPEN_ABOUT]`;
+      } else {
+        return `नमस्ते! 🙏 मैं <b>Ask Abhi</b> — <b>${_identity.ownerName}</b> का portfolio assistant हूँ।<br>आप हिंदी में पूछ सकते हैं: <i>अभिषेक कौन है?</i>, <i>उसके प्रोजेक्ट्स कौन से हैं?</i>, <i>सर्टिफिकेट्स कौन से हैं?</i>, <i>संपर्क कैसे करें?</i><br><span class="opacity-60 text-xs">For English, say “in english”.</span><br>[OPEN_ABOUT]`;
+      }
+    }
   }
-  if(has('certificate','certification','sheryians','educative')){
-    const c=certifications.map(c=>`• ${c.title} — ${c.issuer} (${c.issued})`).join('\n');
-    return `Certified:\n${c}\n[OPEN_CERTIFICATIONS]`;
+
+  const fmtCert = c => `• <b>${c.title}</b> — <span class="text-violet-300">${c.issuer}</span> <span class="opacity-60">(${c.issued})</span><br><span class="text-[11px] opacity-60">ID: <span class="font-mono">${c.credentialId||'—'}</span> • <a href="${c.verifyUrl}" target="_blank" rel="noopener" class="text-violet-300 underline">Verify →</a></span>`;
+  const fmtProj = p => `• <b>${p.name}</b> <span class="text-[11px] px-1.5 py-0.5 bg-emerald-500/12 text-emerald-300 rounded-full border border-emerald-500/20 ml-1">${p.status}</span> <span class="opacity-60">— ${p.category}</span><br><span class="opacity-70 text-xs">${p.purpose}</span><br><span class="text-[11px] opacity-60">Stack: ${p.stack.join(' • ')} • <a href="${p.github}" target="_blank" class="text-violet-300 underline">GitHub →</a></span>`;
+  const allCertsList = _certs.map(c=> fmtCert(c)).join('<br><br>');
+  const allProjsList = _projects.map(p=> fmtProj(p)).join('<br><br>');
+  const skillsList = _skills.map(s=> `<b>${s.category}</b> ${s.icon||''}: ${s.items.join(' • ')}`).join('<br>');
+  const topLangs = (()=>{ const cats=_skills.find(s=> s.category.toLowerCase().includes('programming')); return cats? cats.items.join(', ') : 'C++, Python, JavaScript'; })();
+
+  // ── 1. Identity: who is abhishek / who owns / who is ask abhi / who created ──
+  if( has('who is abhishek') || has('who is abhishek jadhav') || has('who is abhi') && !has('ask abhi') || (has('bhai who is abhishek')) ){
+    // distinguish Ask Abhi vs Abhishek
+    if(has('ask abhi') || has('who are you')){
+      return `<b>Ask Abhi — Portfolio AI Assistant</b><br><br>I am <b>Ask Abhi</b>, the official AI assistant for <b>${_identity.ownerName} (${_identity.ownerAlias})</b>'s portfolio. I was created by <b>${_identity.creator}</b> to help visitors learn about his portfolio, projects, skills, education, certificates and website features. I run 100% offline in this site — no API, no backend, no data stored.<br><br><b>Status:</b> ${K ? K.getAssistantStatus() : 'online'} and available to answer. I know <b>${_projects.length} projects</b> and <b>${_certs.length} certifications</b> with full details.<br>[OPEN_ABOUT]`;
+    }
+    return `<b>Abhishek Jadhav — ${_profile.headline}</b><br><br>${_profile.summary || 'BCA student from Baramati, building web experiences with C++, Python, JavaScript. Loves practical products, DSA and shipping in public as @0xAbhi13.'}<br><br><b>Alias:</b> ${_identity.ownerAlias} • <b>Location:</b> ${_profile.location} • <b>Education:</b> ${_education.degree} (${_education.graduation}) • <b>GitHub:</b> <a href="${_links.github}" target="_blank" class="text-violet-300 underline">${_links.github}</a><br>[OPEN_ABOUT] [OPEN_CONTACT]`;
   }
-  if(has('contact','email','linkedin','github')){
-    return `Reach Abhishek:\nEmail: ${profile.email}\nGitHub: ${profile.github}\nLinkedIn: ${profile.linkedin}\nLocation: ${profile.location}\n[OPEN_CONTACT]`;
+  if( has('who owns this portfolio') || has('who owns this website') || has('owner of this portfolio') || has('who is the owner')){
+    return `<b>This portfolio belongs to ${_identity.ownerName}</b> and is maintained under his GitHub identity <b>${_identity.githubUsername}</b>.<br><br>Owner: <b>${_identity.ownerName} (${_identity.ownerAlias})</b><br>GitHub: <a href="${_links.github}" target="_blank" class="text-violet-300 underline">${_links.github}</a><br>Portfolio: <a href="${_links.portfolioWebsite}" target="_blank" class="text-violet-300 underline">${_links.portfolioWebsite}</a><br>Repository: <a href="${_links.githubPortfolio}" target="_blank" class="text-violet-300 underline">${_links.githubPortfolio}</a><br>[OPEN_ABOUT]`;
   }
-  if(has('resume','cv','download')){
-    return `Resume — Coming Soon (85% final review). Open Resume app for status or contact for latest.\n[OPEN_RESUME]`;
+  if( has('who created this portfolio') || has('who made this website') || has('who made this portfolio') || has('who created this website') || has('who built this portfolio')){
+    return `<b>${_identity.ownerName} created and owns this portfolio.</b><br>It is his personal portfolio website (repository <code>${_identity.portfolioRepository}</code>) built with vanilla HTML/CSS/JS and deployed to <b>${_website.hosting}</b>.<br>Source: <a href="${_links.githubPortfolio}" target="_blank" class="text-violet-300 underline">${_links.githubPortfolio}</a> • Live: <a href="${_links.portfolioWebsite}" target="_blank" class="text-violet-300 underline">${_links.portfolioWebsite}</a><br>[OPEN_ABOUT]`;
   }
-  if(has('about','who','abhishek','0xabhi13','creative')){
-    return `${profile.name} — ${profile.headline}\n\n${profile.summary}\nLocation: ${profile.location}\n[OPEN_ABOUT]`;
+  if( has('who is ask abhi') || has('what is ask abhi') || has('who created ask abhi') || has('why was ask abhi created') || has('what can ask abhi do') ){
+    return `<b>Ask Abhi</b> is the official AI assistant for <b>${_identity.ownerName}'s</b> portfolio.<br><br><b>Created by:</b> ${_identity.creator}<br><b>Purpose:</b> ${(K && K.assistant && K.assistant.purpose) || 'Help visitors learn about Abhishek, his portfolio, projects, skills, education, certificates and website features'}<br><b>What I can do:</b> ${(K && K.assistant && K.assistant.capabilities) ? K.assistant.capabilities.map(c=> `• ${c}`).join('<br>') : '• Answer about projects, skills, certificates, education, contact, architecture, navigation'}<br><br>I understand natural language, casual Indian English (bhai, bro, show projects), and context from previous messages. All answers come from the centralized knowledge at <code>js/askAbhiKnowledge.js</code> + live portfolio data.<br>[OPEN_ABOUT]`;
   }
-  if(has('photos','gallery')){
-    return `Photos: ${galleryImages.map(g=>g.label).join(', ')}\n[OPEN_PHOTOS]`;
+
+  // ── 2. Online / Offline awareness ──
+  if( has('is ask abhi online') || has('is ask abhi available') || has('are you online') || has('are you available')){
+    const st = K ? K.getAssistantStatus() : 'online';
+    return st === 'online' ? `Yes — <b>Ask Abhi is currently online and available</b> to answer questions. I am running locally in this portfolio (offline AI, no API) and ready to help.<br><span class="text-[11px] opacity-60">Status: online • Version ${K ? K.version : '2.1.0'} • Last update ${K ? K.lastUpdate : '2026-08-31'}</span>` : `Ask Abhi is currently <b>offline</b> because the AI service is unavailable. Please try again shortly.`;
   }
-  const hits=searchIndex.filter(it=> lower.split(/\s+/).some(w=>w.length>2 && it.keywords.includes(w))).slice(0,4);
-  if(hits.length) return `Found related to "${q}":\n${hits.map(h=>`• ${h.title} (${h.category})`).join('\n')}`;
-  return `I'm Ask Abhi — assistant for Abhishek's portfolio (0xAbhi13). Try: projects, skills, certifications, contact. This runs offline on GitHub Pages.`;
+  if( has('is abhishek online') || has('is abhishek available') || has('is abhishek here') || has('is abhi online') && !has('ask abhi')){
+    return K ? K.getOwnerPresence() : `I can't confirm Abhishek's personal real-time availability unless a live presence system is connected. Ask Abhi being online does not mean Abhishek is online. For urgent contact, use email <a href="mailto:${_contact.email}" class="text-violet-300 underline">${_contact.email}</a> or LinkedIn.`;
+  }
+
+  // ── 3. Host / Ownership ──
+  if( has('who hosts this website') || has('where is this portfolio hosted') || has('hosting') || has('where is this portfolio hosted') ){
+    return `<b>Hosting:</b> ${ _website.hosting || 'GitHub Pages'}<br><span class="opacity-70">${_website.hostingNote || 'Deployed statically — no backend. Source: '+_links.githubPortfolio}</span><br><br>Repo: <a href="${_links.githubPortfolio}" target="_blank" class="text-violet-300 underline">${_links.githubPortfolio}</a><br>URL: <a href="${_links.portfolioWebsite}" target="_blank" class="text-violet-300 underline">${_links.portfolioWebsite}</a>`;
+  }
+  if( has('what is the github repository') || has('what is the portfolio url') || has('where is the source code') || has('what technology is this website built with') || has('what is the github repository') || has('where is the source code')){
+    return `<b>Portfolio:</b> <a href="${_links.portfolioWebsite}" target="_blank" class="text-violet-300 underline">${_links.portfolioWebsite}</a><br><b>Repository:</b> <a href="${_links.githubPortfolio}" target="_blank" class="text-violet-300 underline">${_links.githubPortfolio}</a><br><b>Owner:</b> ${_identity.ownerName} (${_identity.githubUsername})<br><b>Built with:</b> ${_website.builtWith.join(' • ')}<br><b>Hosting:</b> ${_website.hosting}<br>[OPEN_ABOUT]`;
+  }
+
+  // ── 4. Navigation intents ──
+  if( has('take me to') || has('open github') || has('open linkedin') || has('show certificates') || has('show projects') || has('where is the skills section') || has('contact abhishek') || has('show me the projects') || has('take me to about') ){
+    if(has('project')) return `Opening <b>Projects</b> for you — 7 shipped. You can also press <code>Ctrl+K</code> → search.<br>[OPEN_PROJECTS]`;
+    if(has('certif')) return `Opening <b>Certifications — 9 verified</b>.<br>[OPEN_CERTIFICATIONS]`;
+    if(has('skill')) return `Opening <b>Skills — 5 categories</b>.<br>[OPEN_SKILLS]`;
+    if(has('about')) return `Opening <b>About — Abhishek</b>.<br>[OPEN_ABOUT]`;
+    if(has('contact')) return `Opening <b>Contact</b> — email, GitHub, LinkedIn.<br>[OPEN_CONTACT]`;
+    if(has('github') && !has('project')){ return `<b>GitHub — ${_identity.githubUsername}</b>: <a href="${_links.github}" target="_blank" class="text-violet-300 underline">${_links.github}</a> • Repo: <a href="${_links.githubPortfolio}" target="_blank" class="text-violet-300 underline">${_links.githubPortfolio}</a>`; }
+    if(has('linkedin')){ return `<b>LinkedIn:</b> <a href="${_links.linkedin}" target="_blank" class="text-violet-300 underline">${_links.linkedin}</a>`; }
+  }
+
+  // ── 5. Project intelligence — natural language ──
+  // context-aware: "which one uses flask" after listing
+  const flaskProjects = _projects.filter(p=> p.stack.join(' ').toLowerCase().includes('flask'));
+  const jsProjects = _projects.filter(p=> p.stack.join(' ').toLowerCase().includes('javascript'));
+  const pyProjects = _projects.filter(p=> p.stack.join(' ').toLowerCase().includes('python'));
+  const phpProjects = _projects.filter(p=> p.stack.join(' ').toLowerCase().includes('php'));
+  const sqliteProjects = _projects.filter(p=> p.stack.join(' ').toLowerCase().includes('sqlite'));
+  const mysqlProjects = _projects.filter(p=> p.stack.join(' ').toLowerCase().includes('mysql'));
+  if( has('which project uses flask') || has('what projects use flask') || (has('flask') && !has('project') && askAbhiContext.lastProject) || (has('which one uses flask')) ){
+    if(flaskProjects.length){
+      askAbhiContext.lastProject = flaskProjects[0];
+      return `<b>Projects using Flask — ${flaskProjects.length}</b><br><br>${flaskProjects.map(p=> fmtProj(p)).join('<br><br>')}<br>[OPEN_PROJECTS]`;
+    } else return `I don't have information about Flask projects in my portfolio knowledge base yet. Current stacks: ${[...new Set(_projects.flatMap(p=> p.stack))].join(', ')}`;
+  }
+  if( has('which project uses javascript') || has('what projects use javascript') || has('javascript project')){
+    return `<b>Projects using JavaScript — ${jsProjects.length}</b><br><br>${jsProjects.map(p=> fmtProj(p)).join('<br><br>')}<br>[OPEN_PROJECTS]`;
+  }
+  if( has('which project uses python') || has('what projects use python') || has('python project')){
+    return `<b>Projects using Python — ${pyProjects.length}</b><br><br>${pyProjects.map(p=> fmtProj(p)).join('<br><br>')}<br>[OPEN_PROJECTS]`;
+  }
+  if( has('sqlite') ){
+    if(sqliteProjects.length) return `<b>Projects using SQLite — ${sqliteProjects.length}</b><br><br>${sqliteProjects.map(p=> fmtProj(p)).join('<br><br>')}<br>[OPEN_PROJECTS]`;
+    return `I don't have that information in my portfolio knowledge base yet — no project currently lists <b>SQLite</b> in its stack. Known stacks: ${[...new Set(_projects.flatMap(p=> p.stack))].join(', ')}`;
+  }
+  if( has('php') ){
+    if(phpProjects.length) return `<b>Projects using PHP — ${phpProjects.length}</b><br><br>${phpProjects.map(p=> fmtProj(p)).join('<br><br>')}<br>[OPEN_PROJECTS]`;
+    return `I don't have that information in my portfolio knowledge base yet — no project currently lists <b>PHP</b> in its stack. Known stacks: ${[...new Set(_projects.flatMap(p=> p.stack))].join(', ')}`;
+  }
+  if( has('mysql') ){
+    if(mysqlProjects.length) return `<b>Projects using MySQL — ${mysqlProjects.length}</b><br><br>${mysqlProjects.map(p=> fmtProj(p)).join('<br><br>')}<br>[OPEN_PROJECTS]`;
+    return `I don't have that information in my portfolio knowledge base yet — no project currently lists <b>MySQL</b> in its stack. Known stacks: ${[...new Set(_projects.flatMap(p=> p.stack))].join(', ')}`;
+  }
+  if( has('which project is related to music') || has('music project') || (has('music') && !has('wavecont')) ){
+    const m = _projects.filter(p=> (p.category||'').toLowerCase().includes('audio') || p.id.includes('beat'));
+    if(m.length) return `<b>Music Project — ${m[0].name}</b><br>${fmtProj(m[0])}<br><br>Facts: ${m[0].facts.join(' • ')}<br>[OPEN_PROJECTS]`;
+  }
+  if( has('source code library') || has('library project')){
+    return `I don't have a project explicitly labeled as a source code library in my portfolio knowledge base yet. Available projects are: ${_projects.map(p=> p.name).join(', ')}.`;
+  }
+  if( has('what is abhisheks best project') || has('best project')){
+    return `My knowledge base doesn't rank a single “best” project — ${_identity.ownerName} hasn't designated one. Here are all <b>${_projects.length} projects</b> by category:<br><br>${_projects.map(p=> `• <b>${p.name}</b> — ${p.category} [${p.status}]`).join('<br>')}<br><br>Tell me a preference (e.g., “which uses Flask?” or “music”) and I'll recommend.<br>[OPEN_PROJECTS]`;
+  }
+  // specific project by name (natural)
+  const projByName = _projects.find(p=> {
+    const n=p.name.toLowerCase(), id=p.id.toLowerCase();
+    return clean.includes(id) || clean.includes(n) || lower.includes(p.name.toLowerCase());
+  });
+  if(projByName && (has(projByName.name.toLowerCase()) || has(projByName.id) || has('tell me about') && has(projByName.name.split(' ')[0].toLowerCase())) ){
+    askAbhiContext.lastProject = projByName;
+    return `<b>${projByName.name} — ${projByName.category}</b> <span class="chip chip-live">${projByName.status}</span><br>${fmtProj(projByName)}<br><br>Facts: ${projByName.facts.join(' • ')}<br>GitHub: <a href="${projByName.github}" target="_blank" class="text-violet-300 underline">${projByName.github}</a>${projByName.demo?` • Live: <a href="${projByName.demo}" target="_blank" class="text-violet-300 underline">${projByName.demo}</a>`:''}<br>[OPEN_PROJECTS]`;
+  }
+  // context: "which one uses flask" -> already handled, "give me its github" -> use lastProject
+  if( (has('give me its github') || has('its github') || has('github of that') || has('send github')) && askAbhiContext.lastProject){
+    const p=askAbhiContext.lastProject;
+    return `<b>${p.name} — GitHub:</b> <a href="${p.github}" target="_blank" class="text-violet-300 underline">${p.github}</a>`;
+  }
+  if( has('project','projects','shipped') && !has('certif') && !has('skill')){
+    // general project list (covers "what projects has abhishek built", "tell me about abhisheks projects", "show me his projects")
+    const list = _projects.map(p=> fmtProj(p)).join('<br><br>');
+    // remember first as last
+    if(_projects[0]) askAbhiContext.lastProject = _projects[0];
+    return `<b>${_projects.length} Projects Shipped — ${_identity.githubUsername}</b><br><br>${list}<br><br>All have View → GitHub and are searchable via <b>Ctrl+K</b>.<br>[OPEN_PROJECTS]`;
+  }
+
+  // ── 6. Certificate intelligence ──
+  const certByQuery = _certs.find(c=> clean.includes(c.title.toLowerCase()) || clean.includes(c.issuer.toLowerCase()) || clean.includes((c.credentialId||'').toLowerCase()));
+  if(certByQuery && (has(certByQuery.title.toLowerCase().split(' ')[0]) || has(certByQuery.issuer.toLowerCase().split(' ')[0]) || has(certByQuery.credentialId?.toLowerCase()))){
+    askAbhiContext.lastCert = certByQuery;
+    return `<b>${certByQuery.title} — ${certByQuery.issuer}</b><br>${fmtCert(certByQuery)}<br><br>Skills covered: see issuer details. Image: <code>${certByQuery.image}</code>.<br>[OPEN_CERTIFICATIONS]`;
+  }
+  // general cert list covers "what certificates does abhishek have", "show me certificates", "which organization issued", "when did he receive"
+  if(has('certificate','certificates','certs','certified') || has('which organization issued') || has('when did abhishek receive')){
+    return `<b>Abhishek — ${_certs.length} Certifications (Systematic)</b><br><br>${allCertsList}<br><br>All images renamed to <code>certificate-*.jpg</code> — View + Verify on each card. Ask “Verify Jio AI” or “What is CS301?” for details.<br>[OPEN_CERTIFICATIONS]`;
+  }
+  if(has('what certificates does abhishek have') || has('show me abhisheks certificates')){
+    return `<b>9 Certificates — ${certs.length} Verified</b><br><br>${allCertsList}<br>[OPEN_CERTIFICATIONS]`;
+  }
+
+  // ── 7. Skills ──
+  if(has('what are abhisheks skills') || has('what are his skills') || has('what programming languages does abhishek know') || has('what technologies does abhishek use') || has('what tech does he know') || has('skill') || has('stack')){
+    return `<b>Tech Stack — ${_skills.length} Categories</b><br><br>${skillsList}<br><br>Currently levelling up: ${_skills.find(s=> s.category.toLowerCase().includes('levelling'))?.items.join(' • ')||'React • GSAP Advanced • Node.js'}<br><br>Ask “which project uses Flask?” to see applied skills.<br>[OPEN_SKILLS]`;
+  }
+  if(has('what does abhishek do') || has('what does abhishek study') || has('what does abhi do')){
+    return `<b>${_profile.name} — ${_profile.headline}</b><br><br>${_profile.summary}<br><br><b>Studies:</b> ${_education.degree} — ${_education.institution} (${_education.graduation})<br><b>Focus:</b> C++ fundamentals, Python shipping, JavaScript web, DSA, React.<br>[OPEN_ABOUT]`;
+  }
+
+  // ── 8. Links / Contact ──
+  if(has('where can i see abhisheks github') || has('where can i find abhishek on github') || has('github') && !has('project') && !has('certif')){
+    return `<b>GitHub — ${_identity.githubUsername}:</b> <a href="${_links.github}" target="_blank" class="text-violet-300 underline">${_links.github}</a><br>Portfolio repo: <a href="${_links.githubPortfolio}" target="_blank" class="text-violet-300 underline">${_links.githubPortfolio}</a>`;
+  }
+  if(has('where can i find abhishek on linkedin') || has('linkedin') ){
+    return `<b>LinkedIn:</b> <a href="${_links.linkedin}" target="_blank" class="text-violet-300 underline">${_links.linkedin}</a>`;
+  }
+  if(has('how can i contact abhishek') || has('contact') || has('how to reach')){
+    return `<b>Contact — ${_identity.ownerName}</b><br><br><b>Email:</b> <a href="mailto:${_contact.email}" class="text-violet-300 underline">${_contact.email}</a><br><b>GitHub:</b> <a href="${_contact.github}" target="_blank" class="text-violet-300 underline">${_contact.github}</a><br><b>LinkedIn:</b> <a href="${_contact.linkedin}" target="_blank" class="text-violet-300 underline">${_contact.linkedin}</a><br><b>Location:</b> ${_contact.location}<br><span class="opacity-60">Open to internships, junior roles & collaboration — replies within 24h.</span><br>[OPEN_CONTACT]`;
+  }
+  if(has('what is abhisheks portfolio') || has('what is this portfolio about') || has('portfolio about')){
+    return `<b>Portfolio — ${_website.title}</b><br><br>Interactive desktop OS portfolio for <b>${_identity.ownerName}</b>. ${(_website.features||[]).slice(0,5).join(' • ')}.<br><br>Hosted on <b>${_website.hosting}</b> • Repo: <a href="${_links.githubPortfolio}" target="_blank" class="text-violet-300 underline">${_links.githubPortfolio}</a> • Live: <a href="${_links.portfolioWebsite}" target="_blank" class="text-violet-300 underline">${_links.portfolioWebsite}</a><br>Built with: ${_website.builtWith.slice(0,5).join(' • ')}<br>[OPEN_ABOUT]`;
+  }
+  if(has('what technologies does he use') || has('what technologies does abhishek use') || has('tech stack')){
+    return `<b>Technologies — ${_identity.ownerName} uses:</b><br><br>${_website.builtWith.join(' • ')}<br><br>Skills:<br>${skillsList}<br>[OPEN_SKILLS]`;
+  }
+
+  // ── 9. Resume / Photos / Music ──
+  if(has('resume','cv')){
+    return `📄 <b>Resume — Coming Soon</b> (85% final review, v1.0 Updating)<br><br>Professional ATS-friendly resume in final review. Use <b>Contact Instead</b> or open Resume app.<br>[OPEN_RESUME] [OPEN_CONTACT]`;
+  }
+  if(has('photo','photos','gallery')){
+    return `<b>Photos — Coming Soon</b><br>Curated gallery will be live shortly. Check Projects for screenshots or use Finder.<br>[OPEN_PHOTOS]`;
+  }
+  if(has('music','wavecont','playlist')){
+    const pl= (typeof playlist !== 'undefined' && playlist[0]) ? playlist[0] : {title:'Wavecont', artist:'Pro Tunes', duration:'2:24', src:'assets/audio/wavecont.mp3'};
+    return `<b>Music — ${pl.title}</b> (${pl.duration}) — ${pl.artist}<br>Local MP3 <code>${pl.src}</code> (5.7MB) • Works on <b>file://</b> + <b>http://</b> • Original YouTube yNXkRYhcH3c<br>`;
+  }
+
+  // ── 10. System status ──
+  if(has('system status') || has('assistant status') || has('website status') || has('backend status')){
+    const aSt = K ? K.getAssistantStatus() : 'online';
+    const wSt = K ? K.getWebsiteStatus() : _website.hosting;
+    return `<b>System Status</b><br>• Assistant (Ask Abhi): <b>${aSt}</b> (v${K?K.version:'2.1.0'})<br>• Website: ${_website.url} — hosted on <b>${wSt}</b><br>• Last knowledge update: ${K?K.lastUpdate:'2026-08-31'}<br>• Backend: offline (no API, local knowledge at <code>js/askAbhiKnowledge.js</code>)<br><span class="opacity-60 text-xs">No secrets exposed — no API keys, no env vars.</span>`;
+  }
+
+  // ── 11. Search fallback — dynamic ──
+  const hits = (typeof searchIndex !== 'undefined' ? searchIndex : []).filter(it=> tokens.some(w=> w.length>2 && it.keywords.includes(w))).slice(0,4);
+  if(hits.length) return `<b>Found related to “${raw.replace(/</g,'&lt;')}”:</b><br>${hits.map(h=>`• <b>${h.title}</b> <span class="opacity-60">(${h.category})</span>`).join('<br>')}<br><br>Try: <i>List all 9 certifications</i> • <i>Verify Jio AI</i> • <i>What is CS301?</i>`;
+  // ── 12. Unknown — no hallucination ──
+  return `I don't have that information in my portfolio knowledge base yet.<br><br>I can help with: <b>who is Abhishek</b>, <b>9 certifications</b> with verify, <b>7 projects</b> (try “which uses Flask?”), <b>skills</b>, <b>education</b>, <b>contact</b>, <b>hosting</b> (${_website.hosting}), and <b>navigation</b> (say “take me to projects”).<br><span class="opacity-60 text-xs">Knowledge: <code>js/askAbhiKnowledge.js</code> v${K?K.version:'2.1.0'} • ${K?K.lastUpdate:'2026-08-31'} • Never invent — only portfolio data.</span>`;
 }
 function renderAskContent(txt){
-  // convert [OPEN_*] to buttons
   const map={"[OPEN_PROJECTS]":["projects","Open Projects"],"[OPEN_SKILLS]":["skills","Open Skills"],"[OPEN_CERTIFICATIONS]":["certifications","Open Certifications"],"[OPEN_PHOTOS]":["photos","Open Photos"],"[OPEN_RESUME]":["resume","Open Resume"],"[OPEN_ABOUT]":["about","Open About"],"[OPEN_CONTACT]":["contact","Open Contact"]};
   let html=txt.replace(/\[OPEN_[A-Z_]+\]/g,m=>{
     const v=map[m]; if(!v) return '';
-    return `<button onclick="openApp('${v[0]}')" class="mt-2 mr-2 px-2 py-1 bg-violet-500/20 text-violet-300 rounded-full text-xs border border-violet-500/20">${v[1]}</button>`;
+    return `<button onclick="openApp('${v[0]}')" class="mt-2 mr-2 px-2.5 py-1 bg-violet-500/20 text-violet-300 rounded-full text-xs border border-violet-500/20 hover:bg-violet-500/30 transition">${v[1]}</button>`;
   });
-  return html.replace(/\n/g,'<br>');
+  // keep <br> and <b> etc, convert \n
+  html = html.replace(/\n/g,'<br>');
+  // auto-link verify URLs already in <a> from fmtCert
+  return html;
 }
 
 /* ---------- Spotlight ---------- */
@@ -884,6 +1316,7 @@ function bindAppEvents(){
 /* ---------- Init ---------- */
 renderIcons(); renderDock(); renderMobileGrid(); renderWindows(); lucide.createIcons();
 window.openApp=openApp; window.closeApp=closeApp; window.minimizeApp=minimizeApp; window.maximizeApp=maximizeApp; window.focusApp=focusApp; window.toggleSpotlight=toggleSpotlight; window.openMobileApp=openMobileApp; window.closeMobileApp=closeMobileApp; window.openPhoto=openPhoto; window.askSend=askSend; window.askForm=askForm; window.termCmd=termCmd; window.handleIconClick=handleIconClick;
+window.copyAskResponse=typeof copyAskResponse!=='undefined'?copyAskResponse:()=>{}; window.clearAskChat=typeof clearAskChat!=='undefined'?clearAskChat:()=>{}; window.askAbhiContext=typeof askAbhiContext!=='undefined'?askAbhiContext:null;
 
 // no auto-open — user must double-click icon/dock
 // setTimeout(()=>{ if(window.innerWidth>=768) openApp('finder'); }, 2200);
