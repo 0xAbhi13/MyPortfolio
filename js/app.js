@@ -22,9 +22,9 @@ function tickTime(){
 }
 tickTime(); setInterval(tickTime,60000);
 
-/* ---------- Online Graphics — Particles + GSAP Parallax ---------- */
+/* ---------- Online Graphics — Particles + GSAP Parallax (Desktop + Phone) ---------- */
 (function initOnlineGraphics(){
-  // Particle canvas — subtle floating dots with connections (online feel, no external lib)
+  // Desktop Particle canvas — subtle floating dots with connections (online feel, no external lib)
   const cvs=document.getElementById('particleCanvas');
   if(cvs){
     const ctx=cvs.getContext('2d'); let w,h, pts=[];
@@ -38,7 +38,56 @@ tickTime(); setInterval(tickTime,60000);
     }
     resize(); window.addEventListener('resize', resize); tick();
   }
-  // GSAP wallpaper parallax only — ABHISHEK stays static centered per request
+  // Phone Particle canvas — mirrors desktop but sized to phoneWallpaper (390×~740)
+  (function initPhoneParticles(){
+    const pcvs=document.getElementById('phoneParticleCanvas');
+    const wall=document.getElementById('phoneWallpaper');
+    const device=document.querySelector('.phone-device');
+    if(!pcvs || !wall) return;
+    const ctx=pcvs.getContext('2d');
+    const DPR=Math.min(2, window.devicePixelRatio||1);
+    let pts=[], rafId, running=true;
+    function getSize(){
+      const r=wall.getBoundingClientRect();
+      return {w:Math.max(1, Math.round(r.width)), h:Math.max(1, Math.round(r.height))};
+    }
+    function resize(){
+      const {w,h}=getSize();
+      pcvs.width=w*DPR; pcvs.height=h*DPR;
+      pcvs.style.width=w+'px'; pcvs.style.height=h+'px';
+      ctx.setTransform(DPR,0,0,DPR,0,0);
+      const n=Math.min(28, Math.max(16, Math.floor(w*h/18000)));
+      pts=Array.from({length:n},()=>({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-0.5)*0.32,vy:(Math.random()-0.5)*0.32,r:Math.random()*1.1+0.4}));
+    }
+    function tick(){
+      if(!running) return;
+      const {w,h}=getSize();
+      // skip if hidden (mobile layout display:none on desktop)
+      if(w<10||h<10){ rafId=requestAnimationFrame(tick); return; }
+      ctx.clearRect(0,0,w,h);
+      pts.forEach(p=>{
+        p.x+=p.vx; p.y+=p.vy;
+        if(p.x<0||p.x>w) p.vx*=-1; if(p.y<0||p.y>h) p.vy*=-1;
+        ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fillStyle='rgba(255,255,255,0.22)'; ctx.fill();
+      });
+      for(let i=0;i<pts.length;i++) for(let j=i+1;j<pts.length;j++){
+        const a=pts[i],b=pts[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.hypot(dx,dy);
+        if(d<90){ ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.strokeStyle=`rgba(139,92,246,${0.10*(1-d/90)})`; ctx.lineWidth=0.7; ctx.stroke(); }
+      }
+      rafId=requestAnimationFrame(tick);
+    }
+    resize(); tick();
+    window.addEventListener('resize', resize);
+    window.addEventListener('orientationchange', ()=>setTimeout(resize, 200));
+    if(window.ResizeObserver){
+      const ro=new ResizeObserver(()=>resize());
+      ro.observe(wall);
+      if(device) ro.observe(device);
+    }
+    // pause when phone not visible to save battery
+    document.addEventListener('visibilitychange', ()=>{ running=!document.hidden; if(running) tick(); });
+  })();
+  // GSAP wallpaper parallax — desktop + phone (touch/mouse)
   if(window.gsap){
     const wallpaper=document.getElementById('wallpaper');
     if(wallpaper){
@@ -47,6 +96,8 @@ tickTime(); setInterval(tickTime,60000);
         gsap.to(wallpaper, {x:x*-6, y:y*-4, duration:1.2, ease:'power2.out'});
       });
     }
+    // Phone floating removed per request — phoneWall stays static (no tilt / no auto-drift)
+    // keep wallpaper and particles only, no GSAP transform on #phoneWallpaper
   }
 })();
 
@@ -773,16 +824,57 @@ document.addEventListener('keydown',e=>{
   if(e.key==='Escape' && spotlightOpen) toggleSpotlight(false);
 });
 
-/* ---------- Mobile ---------- */
+/* ---------- Mobile — popup sheet with pop animation ---------- */
 function openMobileApp(id){
   const view=document.getElementById('mobileAppView'), title=document.getElementById('mobileAppTitle'), content=document.getElementById('mobileAppContent');
+  if(!view || !title || !content) return;
+  const isHidden = view.classList.contains('hidden');
   title.textContent = (WINDOW_DEFS[id]?.title || id);
   content.innerHTML = getAppHTML(id);
-  view.classList.remove('hidden'); view.classList.add('flex');
   lucide.createIcons();
   bindAppEvents();
+  if(isHidden){
+    view.classList.remove('hidden','mobile-pop-out');
+    view.classList.add('flex');
+    // restart pop-in
+    view.classList.remove('mobile-pop-in');
+    void view.offsetWidth;
+    view.classList.add('mobile-pop-in');
+    const onEnd = (e)=>{
+      if(e.target===view && e.animationName==='mobilePopIn'){
+        view.classList.remove('mobile-pop-in');
+        view.removeEventListener('animationend', onEnd);
+      }
+    };
+    view.addEventListener('animationend', onEnd);
+  } else {
+    // already open — pop content for section switch
+    content.style.animation='none';
+    void content.offsetHeight;
+    content.style.animation='mobilePopInContent 0.34s cubic-bezier(0.16,1,0.3,1) both';
+    setTimeout(()=>{ content.style.animation=''; }, 400);
+  }
 }
-function closeMobileApp(){ document.getElementById('mobileAppView').classList.add('hidden'); }
+function closeMobileApp(){
+  const view=document.getElementById('mobileAppView');
+  if(!view || view.classList.contains('hidden')) return;
+  view.classList.remove('mobile-pop-in');
+  view.classList.add('mobile-pop-out');
+  const finish = ()=>{
+    view.classList.add('hidden');
+    view.classList.remove('flex','mobile-pop-out');
+  };
+  const handler = (e)=>{
+    if(e.target===view && e.animationName==='mobilePopOut'){
+      finish();
+      view.removeEventListener('animationend', handler);
+    }
+  };
+  view.addEventListener('animationend', handler);
+  setTimeout(()=>{ // fallback
+    if(!view.classList.contains('hidden')) finish();
+  }, 300);
+}
 
 /* ---------- App events hook ---------- */
 function bindAppEvents(){

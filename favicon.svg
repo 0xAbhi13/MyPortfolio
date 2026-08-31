@@ -1,35 +1,27 @@
-<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="0xAbhi13 — Abhishek Portfolio">
-  <title>0xAbhi13</title>
-  <desc>Premium brand favicon for 0xAbhi13 — abstract AB monogram with code-inspired geometry</desc>
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Portfolio — Briefcase">
+  <title>0xAbhi13 — Portfolio</title>
   <defs>
-    <linearGradient id="brandG" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#8b5cf6"/>
-      <stop offset="55%" stop-color="#7c3aed"/>
-      <stop offset="100%" stop-color="#4f46e5"/>
+    <linearGradient id="bf" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2E90FA"/>
+      <stop offset="45%" stop-color="#7C3AED"/>
+      <stop offset="100%" stop-color="#D946EF"/>
     </linearGradient>
-    <linearGradient id="innerHighlight" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="white" stop-opacity="0.16"/>
-      <stop offset="100%" stop-color="white" stop-opacity="0"/>
+    <linearGradient id="bf2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="white" stop-opacity="0.0"/>
+      <stop offset="100%" stop-color="white" stop-opacity="0.18"/>
     </linearGradient>
-    <filter id="brandShadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="2" stdDeviation="2.2" flood-color="#4f46e5" flood-opacity="0.35"/>
-    </filter>
   </defs>
-  <!-- Premium rounded app shape — geometric, not text-dependent -->
-  <rect width="32" height="32" rx="7.5" fill="url(#brandG)" filter="url(#brandShadow)"/>
-  <rect x="0.7" y="0.7" width="30.6" height="30.6" rx="6.8" fill="none" stroke="white" stroke-opacity="0.10"/>
-  <rect width="32" height="32" rx="7.5" fill="url(#innerHighlight)" opacity="0.9"/>
-
-  <!-- Abstract AB monogram — bold geometric A formed by two diagonal bars + code-inspired crossbar -->
-  <!-- Left leg of A -->
-  <path d="M 9.2 24.2 L 15.1 8.2 Q 15.6 7.0 16.6 7.0 Q 17.6 7.0 18.1 8.2 L 24.0 24.2 Q 24.5 25.5 23.4 26.2 Q 22.9 26.5 22.2 26.5 L 21.1 26.5 L 18.9 20.8 L 14.3 20.8 L 12.1 26.5 L 11.0 26.5 Q 10.3 26.5 9.8 26.2 Q 8.7 25.5 9.2 24.2 Z" fill="white" fill-opacity="0.98"/>
-  <!-- Crossbar — code bracket inspired, subtle 0x hint via negative space -->
-  <path d="M 13.2 18.1 L 14.6 14.6 L 18.6 14.6 L 20.0 18.1 Z" fill="#0a0a1a" opacity="0.92"/>
-  <path d="M 14.8 16.8 L 15.4 15.2 L 17.8 15.2 L 18.4 16.8 Z" fill="white" opacity="0.92"/>
-  <!-- Subtle 0x dot — developer hint, geometric, not text -->
-  <g opacity="0.95">
-    <rect x="14.2" y="15.55" width="4.8" height="1.1" rx="0.55" fill="#0a0a1a" opacity="0.55"/>
-    <circle cx="15.1" cy="16.1" r="0.45" fill="#a78bfa"/>
-    <circle cx="17.0" cy="16.1" r="0.45" fill="#a78bfa"/>
-  </g>
+  <!-- Briefcase body — rounded, gradient stroke -->
+  <rect x="2.7" y="7.9" width="26.6" height="17.7" rx="2.7" ry="2.7" fill="none" stroke="url(#bf)" stroke-width="1.75" stroke-linejoin="round"/>
+  <!-- Top compartment line -->
+  <line x1="3.1" y1="11.4" x2="28.9" y2="11.4" stroke="url(#bf)" stroke-width="1.05" stroke-linecap="round" opacity="0.98"/>
+  <!-- Handle — centered -->
+  <path d="M 11 7.9 V 5.55 C 11 3.55 12.55 2.0 16 2.0 C 19.45 2.0 21 3.55 21 5.55 V 7.9" fill="none" stroke="url(#bf)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Folded corner (top-right) — document fold effect -->
+  <path d="M 23.55 7.9 H 29.25 V 13.6 Z" fill="url(#bf)"/>
+  <path d="M 23.55 7.9 L 29.25 13.6" stroke="rgba(255,255,255,0.55)" stroke-width="0.55" stroke-linecap="round"/>
+  <!-- Person — head -->
+  <circle cx="16" cy="14.05" r="3.05" fill="none" stroke="url(#bf)" stroke-width="1.65" stroke-linecap="round"/>
+  <!-- Person — shoulders / torso -->
+  <path d="M 9.35 23.75 V 20.75 C 9.35 18.05 11.35 16.05 14.15 16.05 H 17.85 C 20.65 16.05 22.65 18.05 22.65 20.75 V 23.75" fill="none" stroke="url(#bf)" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
