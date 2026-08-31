@@ -127,6 +127,10 @@ html,body{font-family:Inter,system-ui,sans-serif}
 .traffic.min:hover{background:rgba(255,255,255,0.08)}
 .traffic.max:hover{background:rgba(255,255,255,0.08)}
 .traffic:active{transform:none}
+.back-btn{width:32px;height:32px;display:grid;place-items:center;border-radius:6px;color:rgba(255,255,255,0.7);transition:background 0.15s,color 0.15s;flex-shrink:0;margin-right:2px;border:none;background:transparent;cursor:pointer}
+.back-btn:hover{background:rgba(255,255,255,0.08);color:white}
+.back-btn:active{transform:scale(0.92)}
+.back-btn.opacity-30{opacity:0.3}
 .window-title{flex:1;text-align:left;font-size:12px;font-weight:600;opacity:0.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; letter-spacing:0.01em}
 .window-content{flex:1;overflow:auto;background:#121225;color:#e8e8ef;position:relative; min-height:0; min-width:0}
 .window-resize{position:absolute;right:0;bottom:0;width:14px;height:14px;cursor:nwse-resize; z-index:5}
@@ -247,56 +251,38 @@ html{font-size:15px}
 @media(min-width:768px){html{font-size:16px}}
 @media(min-width:1280px){html{font-size:16px}}
 
-/* ===== Music Player — Now Playing Bar (replaces dock) ===== */
-#musicBar, #musicBarMobile{
+/* ===== Taskbar — Windows-style with animations ===== */
+#taskbar{
   backdrop-filter:blur(20px) saturate(1.2);
   -webkit-backdrop-filter:blur(20px) saturate(1.2);
-  transition:transform 0.35s cubic-bezier(0.16,1,0.3,1), opacity 0.3s, box-shadow 0.3s, border-color 0.3s;
+  animation:taskbarIn 0.5s cubic-bezier(0.16,1,0.3,1) both;
+}
+@keyframes taskbarIn{
+  from{opacity:0; transform:translateY(16px)}
+  to{opacity:1; transform:translateY(0)}
+}
+.taskbar-item{
+  animation:taskbarItemIn 0.35s cubic-bezier(0.16,1,0.3,1) both;
   will-change:transform,opacity;
-  animation:musicBarIn 0.45s cubic-bezier(0.16,1,0.3,1) both;
 }
-@keyframes musicBarIn{
-  from{opacity:0; transform:translate(-50%, 16px) scale(0.96); filter:blur(6px)}
-  to{opacity:1; transform:translate(-50%, 0) scale(1); filter:blur(0)}
+@keyframes taskbarItemIn{
+  from{opacity:0; transform:scale(0.85) translateY(4px)}
+  to{opacity:1; transform:scale(1) translateY(0)}
 }
-#musicBarMobile{animation:none; transform:none !important}
-#musicBar:hover{border-color:rgba(255,255,255,0.22); box-shadow:0 20px 48px rgba(0,0,0,0.5), 0 8px 16px rgba(0,0,0,0.3)}
-#musicBar.is-playing #musicArt{animation:musicArtPulse 1.2s ease-in-out infinite}
-@keyframes musicArtPulse{
-  0%,100%{transform:scale(1); filter:brightness(1)}
-  50%{transform:scale(1.02); filter:brightness(1.08)}
-}
-#musicProgress, #musicProgressMobile{transition:width 0.1s linear}
-#musicProgressWrap:active #musicProgress{transition:none}
-#musicVolume{appearance:none; -webkit-appearance:none; height:4px; background:rgba(255,255,255,0.15); border-radius:99px; outline:none}
-#musicVolume::-webkit-slider-thumb{appearance:none; -webkit-appearance:none; width:12px; height:12px; border-radius:50%; background:white; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,0.3); transition:transform 0.15s}
-#musicVolume::-webkit-slider-thumb:hover{transform:scale(1.15)}
-#musicVolume::-moz-range-thumb{width:12px;height:12px;border-radius:50%;background:white;border:none;cursor:pointer}
-#musicVolume:focus-visible{outline:2px solid #8b5cf6; outline-offset:2px}
-#musicBar button:focus-visible, #musicBarMobile button:focus-visible{outline:2px solid #8b5cf6; outline-offset:2px; border-radius:8px}
-#musicProgressWrap:focus-visible{outline:2px solid #8b5cf6; outline-offset:2px}
-/* Hide desktop bar on mobile, show mobile bar inside phone */
-@media(max-width:768px){
-  #musicBar{display:none !important}
-}
-@media(min-width:769px){
-  #musicBarMobile{display:none !important}
-}
-/* Fix collapsed buttons — music bar + Ask Abhi */
-#musicBar, #musicBarMobile{flex-wrap:nowrap}
-#musicBar button, #musicBarMobile button{flex-shrink:0; min-width:36px; min-height:36px; display:grid; place-items:center}
-#musicBar #musicTitle, #musicBarMobile #musicTitleMobile{min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+#taskbarApps{scrollbar-width:none; -ms-overflow-style:none}
+#taskbarApps::-webkit-scrollbar{display:none}
+.taskbar-item:hover{transform:translateY(-1px)}
+.taskbar-item:active{transform:scale(0.96)}
+#taskbarApps .taskbar-item:nth-child(1){animation-delay:0.05s}
+#taskbarApps .taskbar-item:nth-child(2){animation-delay:0.1s}
+#taskbarApps .taskbar-item:nth-child(3){animation-delay:0.15s}
+#taskbarApps .taskbar-item:nth-child(4){animation-delay:0.2s}
+#taskbarApps .taskbar-item:nth-child(5){animation-delay:0.25s}
 #askStarters{grid-template-columns:1fr}
 @media(min-width:640px){#askStarters{grid-template-columns:repeat(2,1fr) !important}}
 #askStarters button{min-height:64px; align-items:center; flex-shrink:0; overflow:visible}
 #askStarters button span{min-width:0}
 #askStarters button .line-clamp-2{display:block; white-space:normal; overflow:visible; -webkit-line-clamp:unset}
-/* Ensure music bar doesn't overlap phone's home indicator on very small screens */
-@media(max-width:374px){
-  #musicBar{width:calc(100% - 8px) !important; bottom:6px !important}
-  #musicBar #musicTitle{font-size:13px !important}
-  #musicBarMobile{margin-left:0 !important; margin-right:0 !important}
-}
 
 /* ===== Phone Wallpaper & Phone Animations — PC parity ===== */
 .phone-device{isolation:auto; background:#050510}
@@ -395,6 +381,82 @@ html{font-size:15px}
 .card img.w-24{flex:0 0 96px !important; width:96px !important; min-width:96px !important; max-width:96px !important; height:64px !important; min-height:64px !important; max-height:64px !important; flex-shrink:0 !important; display:block !important}
 @keyframes msgIn{from{opacity:0;transform:translateY(6px) scale(0.98)} to{opacity:1;transform:translateY(0) scale(1)}}
 #askMsgs .msg-user{animation:msgIn .24s cubic-bezier(0.16,1,0.3,1)}
+
+/* ===== Search + Header/Taskbar — never collapse ===== */
+@keyframes searchPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+@keyframes searchRing{0%{box-shadow:0 0 0 0 rgba(139,92,246,0.35)}100%{box-shadow:0 0 0 10px rgba(139,92,246,0)}}
+#taskbar button[aria-label="Search"]{animation:searchRing 2.8s ease-in-out infinite}
+#taskbar button[aria-label="Search"]:hover{animation:none}
+#taskbar button[aria-label="Search"] svg{transition:transform 0.2s cubic-bezier(0.34,1.56,0.64,1)}
+#taskbar button[aria-label="Search"]:hover svg{transform:scale(1.1) rotate(-6deg)}
+#taskbar button[aria-label="Search"]:active svg{transform:scale(0.92)}
+#menuBar button[aria-label="Search"]:hover svg{transform:scale(1.08)}
+#spotlight .w-8{animation:searchPulse 2.2s ease-in-out infinite}
+
+/* HARD LOCK — header + taskbar buttons: no flex shrink, no 0-width */
+#menuBar, #taskbar { min-width:0; }
+#menuBar > div, #taskbar > div { min-width:0; }
+#menuBar button.icon-btn{
+  flex:0 0 28px !important;
+  width:28px !important; height:28px !important;
+  min-width:28px !important; min-height:28px !important;
+  max-width:28px !important; max-height:28px !important;
+  display:grid !important; place-items:center !important;
+  flex-shrink:0 !important; flex-grow:0 !important;
+  overflow:hidden !important;
+  padding:0 !important;
+  border-radius:8px !important;
+}
+#menuBar button.icon-btn svg{
+  width:16px !important; height:16px !important;
+  min-width:16px !important; min-height:16px !important;
+  display:block !important; flex:none !important;
+}
+#taskbar .taskbar-start{
+  flex:0 0 36px !important;
+  width:36px !important; height:36px !important;
+  min-width:36px !important; min-height:36px !important;
+  max-width:36px !important; max-height:36px !important;
+  display:grid !important; place-items:center !important;
+  flex-shrink:0 !important;
+  border-radius:12px !important;
+}
+#taskbar .taskbar-start svg{ width:18px !important; height:18px !important; display:block !important; flex:none !important; }
+#taskbar button.taskbar-search{
+  flex:0 0 38px !important;
+  width:38px !important; height:38px !important;
+  min-width:38px !important; min-height:38px !important;
+  max-width:38px !important; max-height:38px !important;
+  display:grid !important; place-items:center !important;
+  flex-shrink:0 !important;
+  border-radius:12px !important;
+}
+#taskbar button.taskbar-search svg{ width:18px !important; height:18px !important; display:block !important; flex:none !important; }
+#taskbar .taskbar-pill{
+  flex-shrink:0 !important; display:flex !important; align-items:center !important;
+  white-space:nowrap !important; min-width:0;
+}
+#taskbar .taskbar-pill svg{ flex:none !important; display:block !important; width:14px !important; height:14px !important; }
+#taskbar .taskbar-0x{
+  flex:0 0 36px !important;
+  width:36px !important; height:36px !important;
+  min-width:36px !important; min-height:36px !important;
+  display:grid !important; place-items:center !important;
+  flex-shrink:0 !important; margin-right:2px !important;
+}
+#spotlight .spotlight-icon{
+  flex:0 0 32px !important; width:32px !important; height:32px !important;
+  min-width:32px !important; min-height:32px !important;
+  display:grid !important; place-items:center !important;
+  flex-shrink:0 !important;
+}
+#spotlight .spotlight-icon svg{ width:16px !important; height:16px !important; display:block !important; }
+#menuBar #menuTime{ flex-shrink:0 !important; white-space:nowrap !important; }
+.taskbar-item img, #taskbarApps img, #mobileGrid img { flex:none !important; flex-shrink:0 !important; display:block !important; }
+.taskbar-item img{ width:20px !important; height:20px !important; min-width:20px !important; min-height:20px !important; }
+/* Never let any flex item collapse to 0 */
+#menuBar *, #taskbar * { min-width:0; }
+#menuBar button, #taskbar button { min-width:0; }
 
 /* Utilities */
 .line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}

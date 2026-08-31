@@ -19,6 +19,8 @@ function tickTime(){
   if(menuEl) menuEl.textContent=d.toLocaleString('en-US',{weekday:'short', month:'short', day:'numeric', hour:'numeric', minute:'2-digit'});
   const phoneEl=document.getElementById('phoneTime');
   if(phoneEl) phoneEl.textContent=d.toLocaleTimeString('en-US',{hour:'numeric', minute:'2-digit', hour12:false});
+  const taskEl=document.getElementById('taskbarTime');
+  if(taskEl) taskEl.textContent=d.toLocaleTimeString('en-US',{hour:'numeric', minute:'2-digit'});
 }
 tickTime(); setInterval(tickTime,60000);
 
@@ -168,6 +170,50 @@ function handleIconClick(id, el){
   if(el){ el.classList.add('icon-bounce'); setTimeout(()=>el.classList.remove('icon-bounce'), 400); }
   openApp(id);
 }
+function renderTaskbar(){
+  const bar=document.getElementById('taskbarApps');
+  if(!bar) return;
+  const open=Object.values(windows).filter(w=>w.isOpen);
+  // sort by z then opened order
+  open.sort((a,b)=>a.z-b.z);
+  if(open.length===0){
+    bar.innerHTML='<span class="text-[11px] opacity-30 px-2 hidden sm:block">No windows open — double-click icons to launch</span>';
+    lucide.createIcons();
+    return;
+  }
+  bar.innerHTML = open.map(w=>{
+    const isFocused = w.isFocused && !w.isMinimized;
+    const isMin = w.isMinimized;
+    return `
+      <button onclick="handleTaskbarClick('${w.id}')" title="${w.title} ${isMin?'(Minimized)':''}" class="taskbar-item group flex items-center gap-2 px-2.5 py-1.5 rounded-md border transition-all duration-200 ${isFocused?'bg-white/15 border-violet-500/30 text-white shadow-md shadow-violet-500/10':'bg-white/[0.04] border-white/10 hover:bg-white/10 hover:border-white/15 text-white/80'} ${isMin?'opacity-60':''} min-w-0 max-w-[160px]">
+        <img src="assets/icons/${w.id}.svg" alt="" class="w-5 h-5 object-contain shrink-0" onerror="this.style.display='none'">
+        <span class="text-xs font-medium truncate pr-1 hidden sm:block">${w.title}</span>
+        <span class="w-1.5 h-1.5 rounded-full ${isFocused?'bg-violet-400 shadow shadow-violet-400/50': isMin?'bg-white/20':'bg-emerald-400/60'} shrink-0"></span>
+      </button>
+    `;
+  }).join('');
+  lucide.createIcons();
+}
+function handleTaskbarClick(id){
+  const w=windows[id];
+  if(!w || !w.isOpen) return;
+  if(w.isMinimized){
+    w.isMinimized=false;
+    focusApp(id);
+    renderWindows();
+    renderTaskbar();
+    return;
+  }
+  if(w.isFocused){
+    minimizeApp(id);
+  } else {
+    focusApp(id);
+    // bring to front visually without full re-render
+    const el=document.querySelector(`.window[data-id="${id}"]`);
+    if(el){ zCounter++; w.z=zCounter; el.style.zIndex=w.z; }
+    renderTaskbar();
+  }
+}
 function renderMobileGrid(){
   const g=document.getElementById('mobileGrid');
   if(!g) return;
@@ -187,10 +233,65 @@ const windows={};
 Object.keys(WINDOW_DEFS).forEach(id=>{
   windows[id]={id, ...WINDOW_DEFS[id], isOpen:false, isMinimized:false, isMaximized:false, isFocused:false, z:0, x:0,y:0,w:WINDOW_DEFS[id].w,h:WINDOW_DEFS[id].h, prev:null, hasOpened:false};
 });
+// Finder Explorer navigation — like Windows Explorer, opens inside same window
+let finderNav = { view: 'grid', sub: null, stack: [] };
+function navigateFinder(view, sub){
+  if(view === finderNav.view && sub === finderNav.sub) {
+    // just focus finder
+    const fw = windows['finder'];
+    if(fw && fw.isOpen && !fw.isMinimized) { focusApp('finder'); return; }
+  }
+  finderNav.stack.push({view: finderNav.view, sub: finderNav.sub});
+  finderNav.view = view;
+  finderNav.sub = sub || null;
+  const fw = windows['finder'];
+  if(!fw.isOpen || fw.isMinimized){
+    // open finder (will render with new view)
+    if(!fw.hasOpened){ const p=initialPos('finder'); fw.x=p.x; fw.y=p.y; fw.w=p.w; fw.h=p.h; fw.prev={...p}; fw.hasOpened=true; }
+    fw.isOpen=true; fw.isMinimized=false; zCounter++; fw.z=zCounter;
+    Object.values(windows).forEach(v=>{ v.isFocused = (v.id==='finder'); });
+    document.getElementById('mobileAppView')?.classList.add('hidden');
+    renderWindows(); renderDock(); renderTaskbar(); renderIcons();
+    focusApp('finder');
+  } else {
+    renderWindows();
+    lucide.createIcons();
+    focusApp('finder');
+    renderTaskbar();
+  }
+}
+function finderBack(){
+  if(finderNav.stack.length===0) return;
+  const prev = finderNav.stack.pop();
+  finderNav.view = prev.view;
+  finderNav.sub = prev.sub;
+  renderWindows();
+  lucide.createIcons();
+  renderTaskbar();
+}
+function finderReset(){
+  finderNav = {view:'grid', sub:null, stack:[]};
+}
+function handleWindowBack(id){
+  if(id==='finder'){
+    if(finderNav.stack.length>0) finderBack();
+    else closeApp('finder');
+    return;
+  }
+  const win=windows[id];
+  if(win && win.sub){
+    win.sub=null;
+    renderWindows();
+    renderTaskbar();
+    return;
+  }
+  // for other windows, back goes to Finder explorer
+  navigateFinder(id, null);
+}
 
 function getWorkArea(){
-  const menu=28, dock=88, m=8;
-  return {left:m, top:menu+m, right:window.innerWidth-m, bottom:window.innerHeight-dock, w:window.innerWidth-2*m, h:window.innerHeight-menu-dock-2*m};
+  const menu=28, taskbar=52, m=8;
+  return {left:m, top:menu+m, right:window.innerWidth-m, bottom:window.innerHeight-taskbar, w:window.innerWidth-2*m, h:window.innerHeight-menu-taskbar-2*m};
 }
 function initialPos(id){
   const wa=getWorkArea(); const idx=Object.keys(WINDOW_DEFS).indexOf(id); const win=windows[id];
@@ -202,22 +303,21 @@ function initialPos(id){
 }
 function openApp(id, sub){
   const win=windows[id]; if(!win) return;
-  if(win.isOpen && !win.isMinimized){ focusApp(id); win.sub = sub || null; renderWindows(); return; }
-  // Single-window mode: close all other windows so only 1 open at a time
-  Object.values(windows).forEach(v=>{ if(v.id!==id){ v.isOpen=false; v.isMinimized=false; v.isMaximized=false; v.isFocused=false; v.sub=null; } });
+  if(win.isOpen && !win.isMinimized){ focusApp(id); win.sub = sub || null; renderWindows(); renderTaskbar(); return; }
+  if(win.isMinimized){ win.isMinimized=false; }
   if(!win.hasOpened){ const p=initialPos(id); win.x=p.x; win.y=p.y; win.w=p.w; win.h=p.h; win.prev={...p}; win.hasOpened=true; }
   win.isOpen=true; win.isMinimized=false; win.sub=sub||null;
   zCounter++; win.z=zCounter;
-  Object.values(windows).forEach(v=>{ if(v.id!==id) v.isFocused=false; }); win.isFocused=true;
+  Object.values(windows).forEach(v=>{ v.isFocused = (v.id===id && v.isOpen && !v.isMinimized); });
   // hide mobile if open
   document.getElementById('mobileAppView')?.classList.add('hidden');
-  renderWindows(); renderDock(); renderIcons();
+  renderWindows(); renderDock(); renderTaskbar(); renderIcons();
   if(window.innerWidth<768 && !['finder','askabhi'].includes(id) && !win.isMaximized){
     // optional: maximize on mobile for better UX? currently keep as window but also allow mobile sheet
   }
 }
-function closeApp(id){ const w=windows[id]; w.isOpen=false; w.isMinimized=false; w.isMaximized=false; w.isFocused=false; w.sub=null; renderWindows(); renderDock(); renderIcons(); }
-function minimizeApp(id){ windows[id].isMinimized=true; windows[id].isFocused=false; const next=Object.values(windows).filter(v=>v.isOpen&&!v.isMinimized).sort((a,b)=>b.z-a.z)[0]; if(next) next.isFocused=true; renderWindows(); renderDock(); }
+function closeApp(id){ const w=windows[id]; if(id==='finder') finderReset(); w.isOpen=false; w.isMinimized=false; w.isMaximized=false; w.isFocused=false; w.sub=null; renderWindows(); renderDock(); renderTaskbar(); renderIcons(); }
+function minimizeApp(id){ windows[id].isMinimized=true; windows[id].isFocused=false; const next=Object.values(windows).filter(v=>v.isOpen&&!v.isMinimized).sort((a,b)=>b.z-a.z)[0]; if(next) next.isFocused=true; renderWindows(); renderDock(); renderTaskbar(); }
 function maximizeApp(id){
   const w=windows[id];
   if(w.isMaximized){ // restore
@@ -226,6 +326,8 @@ function maximizeApp(id){
     w.prev={x:w.x,y:w.y,w:w.w,h:w.h}; const wa=getWorkArea(); w.x=wa.left; w.y=wa.top; w.w=wa.w; w.h=wa.h; w.isMaximized=true;
   }
   renderWindows();
+  renderTaskbar();
+  renderDock();
 }
 function focusApp(id){
   const win=windows[id]; if(!win || win.isFocused) {
@@ -234,6 +336,7 @@ function focusApp(id){
       zCounter++; win.z=zCounter;
       const el=document.querySelector(`.window[data-id="${id}"]`);
       if(el) el.style.zIndex=win.z;
+      renderTaskbar();
     }
     return;
   }
@@ -248,6 +351,7 @@ function focusApp(id){
   });
   // update dock highlight
   renderDock();
+  renderTaskbar();
 }
 
 function renderWindows(){
@@ -261,6 +365,9 @@ function renderWindows(){
     el.dataset.id=win.id;
     el.innerHTML=`
       <div class="window-header" data-drag="${win.id}">
+        ${win.id==='finder' ? `<button class="back-btn" onmousedown="event.stopPropagation()" onclick="closeApp('finder'); event.stopPropagation()" title="Back">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        </button>` : ``}
         <div class="window-title">${win.title}</div>
         <div class="flex items-center gap-0 ml-auto">
           <button class="traffic min" onmousedown="event.stopPropagation()" onclick="minimizeApp('${win.id}'); event.stopPropagation()" title="Minimize">−</button>
@@ -422,20 +529,90 @@ function appFinder(){
     {id:'resume', label:'Resume', icon:'file-text'},
     {id:'contact', label:'Contact', icon:'mail'},
   ];
-  return `
-  <div class="flex h-full">
-    <div class="w-[200px] bg-black/30 border-r border-white/10 p-2 hidden sm:flex flex-col gap-1">
-      <div class="text-[11px] opacity-50 px-2 py-1">Favorites</div>
-      ${items.map(i=>`<button onclick="openApp('${i.id}')" class="flex items-center gap-2 px-2 py-1.5 rounded-md hover:bg-white/10 text-sm text-left"><img src="assets/icons/${i.id}.svg" class="w-5 h-5 object-contain" alt="${i.label}" onerror="this.outerHTML='<i data-lucide=&quot;${i.icon}&quot; class=&quot;w-4 h-4 text-violet-300&quot;></i>'"> ${i.label}</button>`).join('')}
-    </div>
-    <div class="flex-1 p-4 overflow-auto">
-      <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4">
+  const current = finderNav.view;
+  const subtitleMap = {
+    grid: '0xAbhi13 Portfolio',
+    about: 'About Abhishek',
+    projects: 'Projects',
+    skills: 'Skills',
+    certifications: 'Certifications',
+    photos: 'Photos',
+    resume: 'Resume',
+    contact: 'Contact',
+    terminal: 'Terminal',
+    askabhi: 'Ask Abhi'
+  };
+  const titleCrumb = subtitleMap[current] || current;
+  const isGrid = current === 'grid';
+  // content for sub view — render inside same window like Explorer
+  let inner = '';
+  if(isGrid){
+    inner = `<div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4">
         ${items.map(i=>`
-          <button onclick="openApp('${i.id}')" class="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-white/10 group">
+          <button onclick="navigateFinder('${i.id}')" class="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-white/10 group">
             <img src="assets/icons/${i.id}.svg" class="w-14 h-14 object-contain group-hover:scale-105 transition-transform drop-shadow-lg" alt="${i.label}" onerror="this.outerHTML='<span class=&quot;w-14 h-14 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-500 grid place-items:center&quot;><i data-lucide=&quot;${i.icon}&quot; class=&quot;w-6 h-6&quot;></i></span>'">
             <span class="text-xs">${i.label}</span>
           </button>
         `).join('')}
+      </div>`;
+  } else {
+    // render the selected section inside Finder
+    const view = current;
+    const sub = finderNav.sub;
+    let html = '';
+    if(view==='projects') html = sub ? appProjectDetail(sub) : appProjects();
+    else if(view==='about') html = appAbout();
+    else if(view==='skills') html = appSkills();
+    else if(view==='certifications') html = appCertifications();
+    else if(view==='photos') html = appPhotos();
+    else if(view==='resume') html = appResume();
+    else if(view==='contact') html = appContact();
+    else if(view==='terminal') html = appTerminal();
+    else if(view==='askabhi') html = appAskAbhi();
+    else html = `<div class="p-6 text-sm opacity-60">Unknown section: ${view}</div>`;
+    // wrap with scroll
+    inner = `<div class="h-full overflow-auto">${html}</div>`;
+    // for projects detail, sub navigation is handled via navigateFinder('projects', id) — override openApp for projects inside finder
+    // patch project clicks to stay inside finder
+    setTimeout(()=>{
+      document.querySelectorAll('#win-finder .card').forEach(card=>{
+        const onclick = card.getAttribute('onclick');
+        if(onclick && onclick.includes("openApp('projects'")){
+          const m = onclick.match(/openApp\('projects','([^']+)'\)/);
+          if(m){
+            card.setAttribute('onclick', `navigateFinder('projects','${m[1]}')`);
+            card.onclick = () => navigateFinder('projects', m[1]);
+          } else {
+            card.setAttribute('onclick', `navigateFinder('projects')`);
+          }
+        }
+      });
+      // also handle View buttons inside
+      document.querySelectorAll('#win-finder [onclick*="openApp"]').forEach(el=>{
+        const oc = el.getAttribute('onclick');
+        if(oc && oc.includes("openApp('projects')") && !oc.includes('navigateFinder')){
+          el.setAttribute('onclick', oc.replace(/openApp\('projects'\)/, "navigateFinder('projects')"));
+        }
+      });
+    }, 0);
+  }
+  return `
+  <div class="flex h-full">
+    <div class="w-[200px] bg-black/30 border-r border-white/10 p-2 hidden sm:flex flex-col gap-1 shrink-0">
+      <div class="text-[11px] opacity-50 px-2 py-1">Favorites</div>
+      ${items.map(i=>`<button onclick="navigateFinder('${i.id}')" class="flex items-center gap-2 px-2 py-1.5 rounded-md ${current===i.id?'bg-white/10 text-white':'hover:bg-white/10 text-white/80'} text-sm text-left w-full"><img src="assets/icons/${i.id}.svg" class="w-5 h-5 object-contain shrink-0" alt="${i.label}" onerror="this.outerHTML='<i data-lucide=&quot;${i.icon}&quot; class=&quot;w-4 h-4 text-violet-300&quot;></i>'"> ${i.label}</button>`).join('')}
+    </div>
+    <div class="flex-1 flex flex-col min-w-0 bg-[#0a0a1a]/20">
+      <div class="h-9 flex items-center gap-2 px-3 border-b border-white/10 bg-white/[0.03] shrink-0">
+        <button onclick="finderBack()" class="w-7 h-7 rounded-md hover:bg-white/10 flex items-center justify-center ${finderNav.stack.length? 'opacity-100' : 'opacity-30 pointer-events-none'}" title="Back">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        </button>
+        <span class="text-xs opacity-50 hidden sm:block">0xAbhi13 Portfolio</span>
+        <span class="opacity-20 hidden sm:block">›</span>
+        <span class="text-xs font-medium truncate">${titleCrumb}${finderNav.sub ? ' › ' + finderNav.sub : ''}</span>
+      </div>
+      <div class="flex-1 overflow-auto p-4 min-h-0" id="finderContent">
+        ${inner}
       </div>
     </div>
   </div>`;
@@ -1314,9 +1491,10 @@ function bindAppEvents(){
 }
 
 /* ---------- Init ---------- */
-renderIcons(); renderDock(); renderMobileGrid(); renderWindows(); lucide.createIcons();
+renderIcons(); renderDock(); renderMobileGrid(); renderWindows(); renderTaskbar(); lucide.createIcons();
 window.openApp=openApp; window.closeApp=closeApp; window.minimizeApp=minimizeApp; window.maximizeApp=maximizeApp; window.focusApp=focusApp; window.toggleSpotlight=toggleSpotlight; window.openMobileApp=openMobileApp; window.closeMobileApp=closeMobileApp; window.openPhoto=openPhoto; window.askSend=askSend; window.askForm=askForm; window.termCmd=termCmd; window.handleIconClick=handleIconClick;
 window.copyAskResponse=typeof copyAskResponse!=='undefined'?copyAskResponse:()=>{}; window.clearAskChat=typeof clearAskChat!=='undefined'?clearAskChat:()=>{}; window.askAbhiContext=typeof askAbhiContext!=='undefined'?askAbhiContext:null;
+window.handleWindowBack=typeof handleWindowBack!=='undefined'?handleWindowBack:()=>{}; window.handleTaskbarClick=typeof handleTaskbarClick!=='undefined'?handleTaskbarClick:()=>{}; window.renderTaskbar=typeof renderTaskbar!=='undefined'?renderTaskbar:()=>{};
 
 // no auto-open — user must double-click icon/dock
 // setTimeout(()=>{ if(window.innerWidth>=768) openApp('finder'); }, 2200);
