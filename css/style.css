@@ -304,6 +304,8 @@ html{font-size:15px}
   0%{opacity:0; transform:translateY(10px) scale(0.92)}
   100%{opacity:1; transform:translateY(0) scale(1)}
 }
+#mobileGrid{align-content:start !important; align-items:start !important; flex:none !important;}
+#mobileGrid button{min-width:0; width:100%;}
 #mobileGrid button{animation:phoneGridIn 0.52s cubic-bezier(0.16,1,0.3,1) both; will-change:transform,opacity}
 #mobileGrid button:nth-child(1){animation-delay:0.62s}
 #mobileGrid button:nth-child(2){animation-delay:0.68s}

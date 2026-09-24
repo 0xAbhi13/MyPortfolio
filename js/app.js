@@ -219,9 +219,9 @@ function renderMobileGrid(){
   if(!g) return;
   const list=[{id:'about',label:'About',icon:'user'},{id:'projects',label:'Projects',icon:'code'},{id:'skills',label:'Skills',icon:'cpu'},{id:'certifications',label:'Certs',icon:'award'},{id:'photos',label:'Photos',icon:'image'},{id:'resume',label:'Resume',icon:'file-text'},{id:'contact',label:'Contact',icon:'mail'},{id:'terminal',label:'Terminal',icon:'terminal'}];
   g.innerHTML = list.map(a=>`
-    <button onclick="openMobileApp('${a.id}')" class="flex flex-col items-center gap-2 active:scale-95 transition-transform">
-      <img src="assets/icons/${a.id}.svg" alt="${a.label}" class="w-14 h-14 object-contain drop-shadow-lg" loading="lazy" onerror="this.outerHTML='<span class=&quot;w-14 h-14 rounded-2xl bg-white/10 border border-white/10 grid place-items:center&quot;><i data-lucide=&quot;${a.icon}&quot; class=&quot;w-6 h-6 opacity-70&quot;></i></span>'">
-      <span class="text-[11px] text-white/60">${a.label}</span>
+    <button onclick="openMobileApp('${a.id}')" class="flex flex-col items-center gap-1.5 active:scale-95 transition-transform min-w-0">
+      <img src="assets/icons/${a.id}.svg" alt="${a.label}" class="w-[52px] h-[52px] object-contain drop-shadow-lg" loading="lazy" onerror="this.outerHTML='<span class=&quot;w-[52px] h-[52px] rounded-2xl bg-white/10 border border-white/10 grid place-items:center&quot;><i data-lucide=&quot;${a.icon}&quot; class=&quot;w-6 h-6 opacity-70&quot;></i></span>'">
+      <span class="text-[11px] text-white/70 leading-none">${a.label}</span>
     </button>
   `).join('');
   lucide.createIcons();

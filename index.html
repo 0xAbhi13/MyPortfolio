@@ -177,17 +177,17 @@
       </div>
       <!-- Wallpaper inside phone — PC style: Unsplash + mesh + noise + particles (full-bleed like PC #wallpaper) -->
       <div id="phoneWallpaper" class="absolute inset-0 z-0 overflow-hidden bg-[#050510] rounded-[0px] sm:rounded-b-[38px]">
-        <img src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=2020&auto=format&fit=crop" alt="" class="absolute inset-0 w-full h-full object-cover opacity-[0.22] scale-105" loading="eager">
-        <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop" alt="" class="absolute inset-0 w-full h-full object-cover opacity-[0.12] mix-blend-screen">
-        <div class="absolute inset-0 bg-gradient-to-br from-[#050510]/90 via-[#0a0a1a]/70 to-[#1a0a2e]/80"></div>
+        <img src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=2020&auto=format&fit=crop" alt="" class="absolute inset-0 w-full h-full object-cover opacity-[0.32] scale-105" loading="eager">
+        <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop" alt="" class="absolute inset-0 w-full h-full object-cover opacity-[0.16] mix-blend-screen">
+        <div class="absolute inset-0 bg-gradient-to-br from-[#050510]/80 via-[#0a0a1a]/60 to-[#1a0a2e]/70"></div>
         <div class="absolute -top-20 -right-20 w-[420px] h-[420px] bg-gradient-to-br from-violet-600/25 via-indigo-600/15 to-transparent rounded-full blur-[60px]"></div>
         <div class="absolute -bottom-24 -left-24 w-[380px] h-[380px] bg-gradient-to-tr from-blue-600/15 via-cyan-500/10 to-transparent rounded-full blur-[60px]"></div>
         <div class="absolute inset-0 opacity-[0.04]" style="background-image:url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22n%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/%3E%3C/svg%3E')"></div>
         <canvas id="phoneParticleCanvas" class="absolute inset-0 opacity-40"></canvas>
       </div>
 
-      <div class="flex-1 overflow-auto px-5 pt-2 pb-4 flex flex-col relative z-10">
-        <div class="text-center mb-5 mt-2 animate-[phoneHeroIn_0.7s_cubic-bezier(0.16,1,0.3,1)_0.2s_both]">
+      <div class="flex-1 overflow-y-auto px-5 pt-3 pb-3 flex flex-col relative z-10">
+        <div class="text-center mb-4 mt-2 animate-[phoneHeroIn_0.7s_cubic-bezier(0.16,1,0.3,1)_0.2s_both]">
           <div class="relative w-20 h-20 mx-auto mb-3">
             <div class="absolute -inset-1.5 bg-gradient-to-br from-violet-600 via-indigo-600 to-cyan-500 rounded-[18px] blur-[10px] opacity-60 animate-[pulseGlow_2.5s_ease-in-out_infinite]"></div>
             <div class="relative w-20 h-20 rounded-2xl overflow-hidden border-2 border-white/15 shadow-xl">
@@ -200,10 +200,12 @@
           <p class="text-white/50 text-[11px] mt-0.5 animate-[phoneFadeUp_0.6s_ease_0.45s_both]">0xAbhi13 • Creative Developer • BCA • Baramati</p>
           <p class="text-[11px] text-violet-300 mt-1 font-mono animate-[phoneFadeUp_0.6s_ease_0.5s_both]">C++ • Python • JavaScript • 5 projects →</p>
         </div>
-        <button onclick="openMobileApp('askabhi')" class="phone-ask-btn w-full flex items-center justify-center gap-2 bg-gradient-to-r from-violet-600 to-indigo-600 p-3 rounded-2xl font-semibold mb-5 shadow-lg shadow-violet-600/20 active:scale-[0.98] transition-transform relative overflow-hidden group"><span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out"></span><i data-lucide="sparkles" class="w-4 h-4 relative z-10"></i> <span class="relative z-10">Ask Abhi</span></button>
-        <div id="mobileGrid" class="grid grid-cols-4 gap-x-3 gap-y-5 flex-1"></div>
-        <div class="w-32 h-1 bg-white rounded-full mx-auto opacity-90 sm:opacity-100 shrink-0 mt-4"></div>
-        <div class="text-center text-[10px] text-white/30 mt-1.5 mb-1">Tap app • Every window shows in taskbar below</div>
+        <button onclick="openMobileApp('askabhi')" class="phone-ask-btn w-full flex items-center justify-center gap-2 bg-gradient-to-r from-violet-600 to-indigo-600 p-3 rounded-2xl font-semibold mb-4 shadow-lg shadow-violet-600/20 active:scale-[0.98] transition-transform relative overflow-hidden group"><span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out"></span><i data-lucide="sparkles" class="w-4 h-4 relative z-10"></i> <span class="relative z-10">Ask Abhi</span></button>
+        <div id="mobileGrid" class="grid grid-cols-4 gap-x-2 gap-y-5 content-start items-start"></div>
+        <!-- Spacer absorbs extra vertical space BELOW the grid so both icon rows stay together at top -->
+        <div class="flex-1 min-h-[16px]"></div>
+        <div class="w-32 h-1 bg-white rounded-full mx-auto opacity-90 sm:opacity-100 shrink-0 mt-3"></div>
+        <div class="text-center text-[10px] text-white/30 mt-1.5 mb-1">Tap app to open</div>
       </div>
     </div>
   </div>
