@@ -186,26 +186,35 @@
         <canvas id="phoneParticleCanvas" class="absolute inset-0 opacity-40"></canvas>
       </div>
 
-      <div class="flex-1 overflow-y-auto px-5 pt-3 pb-3 flex flex-col relative z-10">
-        <div class="text-center mb-4 mt-2 animate-[phoneHeroIn_0.7s_cubic-bezier(0.16,1,0.3,1)_0.2s_both]">
-          <div class="relative w-20 h-20 mx-auto mb-3">
-            <div class="absolute -inset-1.5 bg-gradient-to-br from-violet-600 via-indigo-600 to-cyan-500 rounded-[18px] blur-[10px] opacity-60 animate-[pulseGlow_2.5s_ease-in-out_infinite]"></div>
-            <div class="relative w-20 h-20 rounded-2xl overflow-hidden border-2 border-white/15 shadow-xl">
-              <img src="assets/profile/profilepic.jpg" alt="Abhishek" class="w-full h-full object-cover">
-            </div>
-            <span class="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 rounded-full border-2 border-[#050510] grid place-items:center shadow-lg"><span class="w-2 h-2 bg-white rounded-full animate-[pulseGlow_2s_ease-in-out_infinite]"></span></span>
+      <div class="flex-1 min-h-0 overflow-y-auto px-5 pt-1 pb-1.5 flex flex-col relative z-10">
+        <!-- Distribute free space evenly so screen is full with no leftover gap, scrolls only on very short screens -->
+        <div class="flex-1 min-h-0 flex flex-col justify-evenly">
+          <!-- Time widget -->
+          <div class="text-center pt-0.5 animate-[phoneFadeUp_0.6s_ease_0.15s_both]">
+            <p id="phoneWidgetTime" class="tabular-nums leading-none font-extralight tracking-tight text-white drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)] text-[60px]">9:22 PM</p>
+            <p id="phoneWidgetDate" class="text-white/60 text-sm mt-1">Tuesday, 29 Sep</p>
           </div>
-          <p class="text-white/60 text-xs animate-[phoneFadeUp_0.6s_ease_0.35s_both]">Hey, I'm</p>
-          <h1 class="text-[22px] font-bold tracking-tight drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)] animate-[phoneFadeUp_0.6s_ease_0.4s_both]" style="font-family:Syne,Inter,sans-serif">Abhishek Jadhav</h1>
-          <p class="text-white/50 text-[11px] mt-0.5 animate-[phoneFadeUp_0.6s_ease_0.45s_both]">0xAbhi13 • Creative Developer • BCA • Baramati</p>
-          <p class="text-[11px] text-violet-300 mt-1 font-mono animate-[phoneFadeUp_0.6s_ease_0.5s_both]">C++ • Python • JavaScript • 5 projects →</p>
+          <div class="text-center animate-[phoneHeroIn_0.7s_cubic-bezier(0.16,1,0.3,1)_0.2s_both]">
+            <button onclick="openProfileViewer()" title="View profile picture" aria-label="View profile picture" class="phone-profile-btn relative w-[92px] h-[92px] mx-auto mb-2.5 block cursor-pointer group active:scale-95 transition-transform">
+              <span class="absolute -inset-1.5 bg-gradient-to-br from-violet-600 via-indigo-600 to-cyan-500 rounded-[20px] blur-[12px] opacity-70 animate-[pulseGlow_2.5s_ease-in-out_infinite]"></span>
+              <span class="phone-profile-frame relative block w-[92px] h-[92px] rounded-2xl overflow-hidden border-2 border-white/15 shadow-xl group-hover:border-violet-400/60 transition-colors">
+                <img src="assets/profile/profilepic.jpg" alt="Abhishek — tap to zoom" class="w-full h-full object-cover pointer-events-none">
+              </span>
+              <span class="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 rounded-full border-2 border-[#050510] grid place-items:center shadow-lg"><span class="w-2 h-2 bg-white rounded-full animate-[pulseGlow_2s_ease-in-out_infinite]"></span></span>
+            </button>
+            <p class="text-white/60 text-sm animate-[phoneFadeUp_0.6s_ease_0.35s_both]">Hey, I'm</p>
+            <h1 class="text-[26px] font-bold tracking-tight drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)] animate-[phoneFadeUp_0.6s_ease_0.4s_both]" style="font-family:Syne,Inter,sans-serif">Abhishek Jadhav</h1>
+            <p class="text-white/50 text-xs mt-0.5 animate-[phoneFadeUp_0.6s_ease_0.45s_both]">0xAbhi13 • Creative Developer • BCA • Baramati</p>
+            <p class="text-xs text-violet-300 mt-1 font-mono animate-[phoneFadeUp_0.6s_ease_0.5s_both]">C++ • Python • JavaScript • 5 projects →</p>
+          </div>
+          <button onclick="openMobileApp('askabhi')" class="phone-ask-btn w-full flex items-center justify-center gap-2 bg-gradient-to-r from-violet-600 to-indigo-600 p-3 rounded-2xl text-[15px] font-semibold shadow-lg shadow-violet-600/20 active:scale-[0.98] transition-transform relative overflow-hidden group"><span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out"></span><i data-lucide="sparkles" class="w-4 h-4 relative z-10"></i> <span class="relative z-10">Ask Abhi</span></button>
+          <div id="mobileGrid" class="grid grid-cols-4 gap-x-2 gap-y-4 content-start items-start"></div>
         </div>
-        <button onclick="openMobileApp('askabhi')" class="phone-ask-btn w-full flex items-center justify-center gap-2 bg-gradient-to-r from-violet-600 to-indigo-600 p-3 rounded-2xl font-semibold mb-4 shadow-lg shadow-violet-600/20 active:scale-[0.98] transition-transform relative overflow-hidden group"><span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out"></span><i data-lucide="sparkles" class="w-4 h-4 relative z-10"></i> <span class="relative z-10">Ask Abhi</span></button>
-        <div id="mobileGrid" class="grid grid-cols-4 gap-x-2 gap-y-5 content-start items-start"></div>
-        <!-- Spacer absorbs extra vertical space BELOW the grid so both icon rows stay together at top -->
-        <div class="flex-1 min-h-[16px]"></div>
-        <div class="w-32 h-1 bg-white rounded-full mx-auto opacity-90 sm:opacity-100 shrink-0 mt-3"></div>
-        <div class="text-center text-[10px] text-white/30 mt-1.5 mb-1">Tap app to open</div>
+        <!-- Footer pinned right below content, no expanding spacer -->
+        <div class="flex-none pt-1.5">
+          <div class="w-32 h-1 bg-white rounded-full mx-auto opacity-90 sm:opacity-100 shrink-0"></div>
+          <div class="text-center text-[10px] text-white/30 mt-1 mb-0.5">Tap app to open</div>
+        </div>
       </div>
     </div>
   </div>
@@ -216,6 +225,21 @@
       <span class="w-12"></span>
     </div>
     <div id="mobileAppContent" class="flex-1 overflow-auto bg-[#12122a]"></div>
+  </div>
+
+  <!-- Profile picture zoom viewer — fullscreen, tap anywhere or X to close -->
+  <div id="profileViewer" class="fixed inset-0 z-[90] hidden items-center justify-center p-6 bg-black/85 backdrop-blur-md" onclick="if(event.target===this) closeProfileViewer()">
+    <div class="profile-viewer-card relative max-w-[320px] w-full">
+      <div class="absolute -inset-2 bg-gradient-to-br from-violet-600 via-indigo-600 to-cyan-500 rounded-[28px] blur-[18px] opacity-60"></div>
+      <div class="relative rounded-3xl overflow-hidden border-2 border-white/20 shadow-2xl">
+        <img src="assets/profile/profilepic.jpg" alt="Abhishek Jadhav — profile picture" class="w-full h-auto object-cover">
+      </div>
+      <p class="text-center text-sm font-semibold mt-4">Abhishek Jadhav</p>
+      <p class="text-center text-xs text-white/50">0xAbhi13 • Creative Developer</p>
+      <button onclick="closeProfileViewer()" aria-label="Close" class="absolute -top-3 -right-3 w-9 h-9 rounded-full bg-white text-black grid place-items-center shadow-xl hover:scale-105 active:scale-95 transition-transform">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
   </div>
 
   <script src="js/data.js"></script>

@@ -126,7 +126,7 @@
       sourceCode: "https://github.com/0xAbhi13/MyPortfolio",
       builtWith: ["HTML5","CSS3","JavaScript (Vanilla)","Tailwind CDN","GSAP 3.12.5","Lottie","Lucide","Web Audio API","HTML5 Canvas","JetBrains Mono / Syne / Inter"],
       features: ["Desktop OS shell with Windows-style controls on right (_ □ ×)","Single-window manager (drag/resize 8-dir, zIndex, windowIn 0.38s)","Phone 390×780 frame with pop sheet 0.48s for every section","Spotlight search Ctrl+K","Ask Abhi offline AI (no API)","Wallpaper Unsplash + mesh + particles (desktop 56, phone 28)","Wavecont 2:24 audio (file:// + http://)","Briefcase favicon gradient","Universal responsive 320→1536"],
-      sections: ["Finder","About","Projects","Skills","Certifications (9)","Photos (Coming Soon)","Resume (Coming Soon)","Contact","Terminal","Ask Abhi","Music Player","Spotlight"],
+      sections: ["Finder","About","Projects","Skills","Certifications (10)","Photos (Coming Soon)","Resume (Coming Soon)","Contact","Terminal","Ask Abhi","Music Player","Spotlight"],
       design: "Dark theme #050510 / #0a0a1a, violet #8b5cf6→#4f46e5, Windows controls on right, macOS-inspired desktop, cinematic motion",
       animations: ["Boot shimmer 1.2s (3s)","wallpaperPan 30s (desktop)","iconPulseGlow 2.8s + gradientShift 8s","windowIn 0.38s spring","phone pop 0.48s spring 0.34,1.56","msgIn 0.24s","particleCanvas"],
       developerInterests: ["C++ fundamentals","Python automation","JavaScript web","DSA","React","GSAP Advanced","Node.js","System Design Basics"],
@@ -144,7 +144,7 @@
       capabilities: [
         "Answer who is Abhishek / who owns portfolio / who is Ask Abhi",
         "List and explain all projects with stacks, GitHub, features (natural language)",
-        "List and verify all 9 certificates with issuer, ID, verify link",
+        "List and verify all 10 certificates with issuer, ID, verify link",
         "Detail skills by category and currently levelling up",
         "Provide contact & social links (never fake)",
         "Explain portfolio architecture, hosting, sections, design",
@@ -244,7 +244,7 @@
       "Who is Abhishek Jadhav?",
       "What are Abhishek's skills?",
       `Show me his ${this.projects.length} projects`,
-      "List all 9 certifications with verify links",
+      "List all 10 certifications with verify links",
       "Which project uses Flask?",
       ...projs
     ].slice(0,6);
