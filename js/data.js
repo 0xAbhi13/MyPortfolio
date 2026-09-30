@@ -130,7 +130,8 @@ const certifications = [
   { title: "Git GitHub Mastery", issuer: "freeacademy.ai", issued: "Aug 2026", credentialId: "FA-2026-GGM-6NDHKH", image: "assets/certifications/certificate-git-github-mastery.jpg", verifyUrl: "https://freeacademy.ai/verify/FA-2026-GGM-6NDHKH" },
   { title: "SkillUp 101 — Python Certification", issuer: "EDUCBA", issued: "Aug 2026", credentialId: "OSZL2ZKED", image: "assets/certifications/certificate-educba-skillup-python.jpg", verifyUrl: "https://www.educba.com/certificate/?c=OSZL2ZKED" },
   { title: "YUVA AI For All", issuer: "IndiaAI — TCS iON", issued: "Aug 2026", credentialId: "87006977-0545-17505-4", image: "assets/certifications/certificate-yuva-ai-for-all.jpg", verifyUrl: "https://g09.tcsion.com//LX/ecertificate/verification?id=87006977-0545-17505-4" },
-  { title: "AI Fundamentals: Foundations for Understanding AI", issuer: "IBM SkillsBuild", issued: "Sep 2026", credentialId: "e3fpsckg", image: "assets/certifications/certificate-ibm-ai-fundamentals.jpg", verifyUrl: "https://www.credly.com/go/e3fpsckg" }
+  { title: "AI Fundamentals: Foundations for Understanding AI", issuer: "IBM SkillsBuild", issued: "Sep 2026", credentialId: "e3fpsckg", image: "assets/certifications/certificate-ibm-ai-fundamentals.jpg", verifyUrl: "https://www.credly.com/go/e3fpsckg" },
+  { title: "Lifelong Professional Skills", issuer: "IBM SkillsBuild", issued: "Sep 2026", credentialId: "xwe80Hkt", image: "assets/certifications/certificate-ibm-lifelong-professional-skills.jpg", verifyUrl: "https://www.credly.com/go/xwe80Hkt" }
 ];
 
 const playlist = [

@@ -763,7 +763,7 @@ function appPhotos(){
     <div class="flex-1 flex flex-col items-center justify-center p-6 md:p-10 text-center relative">
       <div class="w-20 h-20 md:w-24 md:h-24 rounded-3xl bg-gradient-to-br from-blue-600 to-cyan-600 flex items-center justify-center shadow-2xl shadow-blue-600/30 mb-6 relative">
         <i data-lucide="image" class="w-10 h-10 md:w-12 md:h-12 text-white"></i>
-        <span class="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-blue-500 border-2 border-[#0f0f1e] grid place-items:center"><i data-lucide="clock" class="w-3.5 h-3.5 text-white"></i></span>
+        <span class="absolute -bottom-3.5 -right-3.5 w-7 h-7 rounded-full bg-blue-500 border-2 border-[#0f0f1e] grid place-items:center shadow-lg"><i data-lucide="clock" class="w-3.5 h-3.5 text-white"></i></span>
       </div>
       <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight">Photos — Coming Soon</h2>
       <p class="text-sm md:text-base text-white/60 max-w-md mt-2 leading-relaxed">
@@ -829,7 +829,7 @@ function appResume(){
     <div class="flex-1 flex flex-col items-center justify-center p-6 md:p-10 text-center relative">
       <div class="w-20 h-20 md:w-24 md:h-24 rounded-3xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center shadow-2xl shadow-violet-600/30 mb-6 animate-[windowIn_0.6s_cubic-bezier(0.16,1,0.3,1)]">
         <i data-lucide="file-text" class="w-10 h-10 md:w-12 md:h-12 text-white"></i>
-        <span class="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-amber-500 border-2 border-[#0f0f1e] grid place-items:center"><i data-lucide="clock" class="w-3.5 h-3.5 text-black"></i></span>
+        <span class="absolute -bottom-3.5 -right-3.5 w-7 h-7 rounded-full bg-amber-500 border-2 border-[#0f0f1e] grid place-items:center shadow-lg"><i data-lucide="clock" class="w-3.5 h-3.5 text-black"></i></span>
       </div>
       <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight">Resume — Coming Soon</h2>
       <p class="text-sm md:text-base text-white/60 max-w-md mt-2 leading-relaxed">
@@ -941,7 +941,7 @@ function appAskAbhi(){
         <div class="w-10 h-10 md:w-11 md:h-11 min-w-[40px] min-h-[40px] max-w-[44px] max-h-[44px] rounded-xl overflow-hidden border border-white/10 shadow-lg bg-gradient-to-br from-violet-600 to-indigo-600 p-[1.5px] flex-none">
           <img src="assets/profile/profilepic.jpg" alt="Abhishek" class="w-full h-full object-cover rounded-[10px] border-2 border-[#0a0a1f]">
         </div>
-        <span class="absolute -bottom-1 -right-1 w-3.5 h-3.5 min-w-[14px] min-h-[14px] bg-emerald-500 rounded-full border-2 border-[#0a0a1f] flex items-center justify-center shadow-sm flex-none">
+        <span class="absolute -bottom-[7px] -right-[7px] w-3.5 h-3.5 min-w-[14px] min-h-[14px] bg-emerald-500 rounded-full border-2 border-[#0a0a1f] flex items-center justify-center shadow-sm flex-none">
           <span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>
         </span>
       </div>
@@ -978,10 +978,10 @@ function appAskAbhi(){
               <span class="text-[10px] opacity-40">• Just now</span>
             </div>
             <p class="font-medium">Hi! I'm <span class="text-violet-300">Ask Abhi</span> — your professional guide to <span class="text-white font-semibold">Abhishek Jadhav (0xAbhi13)</span>.</p>
-            <p class="opacity-70 mt-1.5 text-[13px] leading-relaxed">I know <b class="text-white/90 font-semibold">everything</b> in this portfolio: <b>7 projects</b> with stacks & GitHub, <b>10 certifications</b> with verify links, 5 skill categories, BCA 2026 Baramati, contact, photos & architecture. Ask in natural language.</p>
+            <p class="opacity-70 mt-1.5 text-[13px] leading-relaxed">I know <b class="text-white/90 font-semibold">everything</b> in this portfolio: <b>7 projects</b> with stacks & GitHub, <b>11 certifications</b> with verify links, 5 skill categories, BCA 2026 Baramati, contact, photos & architecture. Ask in natural language.</p>
             <div class="flex flex-wrap gap-1.5 mt-3">
               <span class="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-violet-500/12 text-violet-300 rounded-full border border-violet-500/20 font-medium"><i data-lucide="code-2" class="w-3 h-3"></i> 7 projects</span>
-              <span class="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-emerald-500/12 text-emerald-300 rounded-full border border-emerald-500/20 font-medium"><i data-lucide="award" class="w-3 h-3"></i> 10 certs verified</span>
+              <span class="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-emerald-500/12 text-emerald-300 rounded-full border border-emerald-500/20 font-medium"><i data-lucide="award" class="w-3 h-3"></i> 11 certs verified</span>
               <span class="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-white/[0.04] rounded-full border border-white/10 opacity-70"><i data-lucide="lock" class="w-3 h-3"></i> Offline • Private</span>
             </div>
           </div>
@@ -993,7 +993,7 @@ function appAskAbhi(){
       <div id="askStarters" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
         ${(() => {
           const K = (typeof window !== 'undefined' && window.ASK_ABHI_KNOWLEDGE) ? window.ASK_ABHI_KNOWLEDGE : null;
-          const qs = K ? K.getSuggestedQuestions() : ["Who is Abhishek Jadhav?","What are Abhishek's skills?","Show me his 7 projects","List all 10 certifications with verify links","Which project uses Flask?","Tell me about 0xBeatForge"];
+          const qs = K ? K.getSuggestedQuestions() : ["Who is Abhishek Jadhav?","What are Abhishek's skills?","Show me his 7 projects","List all 11 certifications with verify links","Which project uses Flask?","Tell me about 0xBeatForge"];
           const meta = [
             {icon:"user", desc:"Owner • BCA 2026 • Baramati", grad:"from-violet-600/20 to-indigo-600/20", border:"border-violet-500/20"},
             {icon:"cpu", desc:"5 cats • C++/Python/JS", grad:"from-amber-500/15 to-orange-500/15", border:"border-amber-500/20"},
@@ -1021,7 +1021,7 @@ function appAskAbhi(){
     <div class="p-3 border-t border-white/[0.06] bg-[#0a0a1f]/80 backdrop-blur-xl shrink-0">
       <form onsubmit="return askForm(event)" class="flex gap-2 items-end max-w-3xl mx-auto min-w-0">
         <div class="flex-1 min-w-0 relative group">
-          <input id="askInput" placeholder="Ask anything: projects, 10 certs, verify links, skills, contact..." autocomplete="off" class="w-full min-w-0 pl-4 pr-11 py-3 rounded-2xl bg-white/[0.05] border border-white/10 group-hover:border-white/15 focus:border-violet-500/30 focus:bg-white/[0.07] focus:ring-2 focus:ring-violet-500/20 outline-none text-[13px] placeholder-white/35 transition-all">
+          <input id="askInput" placeholder="Ask anything: projects, 11 certs, verify links, skills, contact..." autocomplete="off" class="w-full min-w-0 pl-4 pr-11 py-3 rounded-2xl bg-white/[0.05] border border-white/10 group-hover:border-white/15 focus:border-violet-500/30 focus:bg-white/[0.07] focus:ring-2 focus:ring-violet-500/20 outline-none text-[13px] placeholder-white/35 transition-all">
           <span class="absolute right-1.5 top-1/2 -translate-y-1/2 hidden sm:flex items-center justify-center w-7 h-7 min-w-[28px] min-h-[28px] bg-white/5 border border-white/10 rounded-full opacity-60 group-focus-within:opacity-100 transition flex-none shrink-0">
             <i data-lucide="corner-down-left" class="w-3.5 h-3.5 opacity-60 shrink-0"></i>
           </span>
@@ -1164,7 +1164,7 @@ function getLocalAnswer(q){
     else timeGreet = "Good evening";
     const greetEmoji = timeGreet.includes("morning") ? "🌅" : timeGreet.includes("evening") ? "🌆" : timeGreet.includes("night") ? "🌙" : "👋";
     // respectful, professional, mentions owner
-    return `${timeGreet}! ${greetEmoji} <b>Namaste!</b> I'm <b>Ask Abhi</b> — the official AI assistant for <b>${_identity.ownerName} (${_identity.ownerAlias})</b>.<br><br>It's a pleasure to have you here on <b>${_identity.ownerName}'s</b> portfolio. I have complete knowledge of his <b>${_projects.length} projects</b>, <b>${_certs.length} certifications</b> (with verify links), skills, education (BCA 2026, Baramati), and this website itself.<br><br>How may I help you today? You can ask me things like:<br>• <i>Who is Abhishek?</i><br>• <i>What projects has he built?</i><br>• <i>List all 10 certifications</i><br>• <i>Where is his GitHub?</i><br><br>Feel free to ask in English or casual Indian English — like “<i>bhai who is abhishek?</i>”<br>[OPEN_ABOUT] [OPEN_PROJECTS] [OPEN_CERTIFICATIONS]`;
+    return `${timeGreet}! ${greetEmoji} <b>Namaste!</b> I'm <b>Ask Abhi</b> — the official AI assistant for <b>${_identity.ownerName} (${_identity.ownerAlias})</b>.<br><br>It's a pleasure to have you here on <b>${_identity.ownerName}'s</b> portfolio. I have complete knowledge of his <b>${_projects.length} projects</b>, <b>${_certs.length} certifications</b> (with verify links), skills, education (BCA 2026, Baramati), and this website itself.<br><br>How may I help you today? You can ask me things like:<br>• <i>Who is Abhishek?</i><br>• <i>What projects has he built?</i><br>• <i>List all 11 certifications</i><br>• <i>Where is his GitHub?</i><br><br>Feel free to ask in English or casual Indian English — like “<i>bhai who is abhishek?</i>”<br>[OPEN_ABOUT] [OPEN_PROJECTS] [OPEN_CERTIFICATIONS]`;
   }
   // if greeting + question (e.g., "hi who is abhishek"), strip greeting prefix and continue to other intents
   // (we let it fall through — the other handlers will answer the question, but we still greet respectfully as prefix if needed)
@@ -1199,8 +1199,8 @@ function getLocalAnswer(q){
       return `<b>Abhishek Jadhav</b> ek <b>${_profile.headline}</b> hai.<br>Wo Baramati, Maharashtra se BCA 2026 ka student hai aur C++, Python, JavaScript me kaam karta hai. GitHub: <b>0xAbhi13</b> — <a href="${_links.github}" target="_blank" class="text-violet-300 underline">${_links.github}</a><br>[OPEN_ABOUT]`;
     }
     if(has('kya karta hai','क्या करता है','kay karto','काय करतो','what does') && has('abhishek')){
-      if(lang==='mr') return `<b>Abhishek</b> web applications banavto, modern technologies var prayog karto — <b>7 projects</b> (BeatForge, PDFForge, Emotion, MagicSearch, AirCanvas, VoiceVision + Portfolio) ani <b>10 certifications</b>. Tyache focus C++ fundamentals, Python, JavaScript, DSA ahe.<br>[OPEN_ABOUT]`;
-      return `<b>Abhishek</b> web applications banata hai aur modern technologies par experiment karta hai — <b>7 projects</b> aur <b>10 certifications</b>. Focus: C++ fundamentals, Python, JavaScript, DSA, React.<br>[OPEN_ABOUT]`;
+      if(lang==='mr') return `<b>Abhishek</b> web applications banavto, modern technologies var prayog karto — <b>7 projects</b> (BeatForge, PDFForge, Emotion, MagicSearch, AirCanvas, VoiceVision + Portfolio) ani <b>11 certifications</b>. Tyache focus C++ fundamentals, Python, JavaScript, DSA ahe.<br>[OPEN_ABOUT]`;
+      return `<b>Abhishek</b> web applications banata hai aur modern technologies par experiment karta hai — <b>7 projects</b> aur <b>11 certifications</b>. Focus: C++ fundamentals, Python, JavaScript, DSA, React.<br>[OPEN_ABOUT]`;
     }
     if(has('kya padhta hai','kahan padhta','kuthe shikto','shikshan','education') && (has('abhishek') || has('padhta') || has('shikto'))){
       if(lang==='mr') return `<b>Shikshan:</b> ${_education.degree} — ${_education.institution} (${_education.graduation})<br><span class="opacity-60">${_education.affiliation}</span><br>Thikan: ${_profile.location}<br>[OPEN_ABOUT]`;
@@ -1411,9 +1411,9 @@ function getLocalAnswer(q){
 
   // ── 11. Search fallback — dynamic ──
   const hits = (typeof searchIndex !== 'undefined' ? searchIndex : []).filter(it=> tokens.some(w=> w.length>2 && it.keywords.includes(w))).slice(0,4);
-  if(hits.length) return `<b>Found related to “${raw.replace(/</g,'&lt;')}”:</b><br>${hits.map(h=>`• <b>${h.title}</b> <span class="opacity-60">(${h.category})</span>`).join('<br>')}<br><br>Try: <i>List all 10 certifications</i> • <i>Verify Jio AI</i> • <i>What is CS301?</i>`;
+  if(hits.length) return `<b>Found related to “${raw.replace(/</g,'&lt;')}”:</b><br>${hits.map(h=>`• <b>${h.title}</b> <span class="opacity-60">(${h.category})</span>`).join('<br>')}<br><br>Try: <i>List all 11 certifications</i> • <i>Verify Jio AI</i> • <i>What is CS301?</i>`;
   // ── 12. Unknown — no hallucination ──
-  return `I don't have that information in my portfolio knowledge base yet.<br><br>I can help with: <b>who is Abhishek</b>, <b>10 certifications</b> with verify, <b>7 projects</b> (try “which uses Flask?”), <b>skills</b>, <b>education</b>, <b>contact</b>, <b>hosting</b> (${_website.hosting}), and <b>navigation</b> (say “take me to projects”).<br><span class="opacity-60 text-xs">Knowledge: <code>js/askAbhiKnowledge.js</code> v${K?K.version:'2.1.0'} • ${K?K.lastUpdate:'2026-08-31'} • Never invent — only portfolio data.</span>`;
+  return `I don't have that information in my portfolio knowledge base yet.<br><br>I can help with: <b>who is Abhishek</b>, <b>11 certifications</b> with verify, <b>7 projects</b> (try “which uses Flask?”), <b>skills</b>, <b>education</b>, <b>contact</b>, <b>hosting</b> (${_website.hosting}), and <b>navigation</b> (say “take me to projects”).<br><span class="opacity-60 text-xs">Knowledge: <code>js/askAbhiKnowledge.js</code> v${K?K.version:'2.1.0'} • ${K?K.lastUpdate:'2026-08-31'} • Never invent — only portfolio data.</span>`;
 }
 function renderAskContent(txt){
   const map={"[OPEN_PROJECTS]":["projects","Open Projects"],"[OPEN_SKILLS]":["skills","Open Skills"],"[OPEN_CERTIFICATIONS]":["certifications","Open Certifications"],"[OPEN_PHOTOS]":["photos","Open Photos"],"[OPEN_RESUME]":["resume","Open Resume"],"[OPEN_ABOUT]":["about","Open About"],"[OPEN_CONTACT]":["contact","Open Contact"]};

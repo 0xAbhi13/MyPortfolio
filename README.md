@@ -41,7 +41,7 @@
 |:---:|:---:|:---:|
 | **🖥️ Desktop** | **🪟 Window** | **💬 Ask Abhi** |
 | <img src="https://img.shields.io/badge/Wallpaper-Unsplash+Particles-8b5cf6?style=flat-square"/> | <img src="https://img.shields.io/badge/Controls-_+%E2%96%A1_%C3%97_right-e81123?style=flat-square&labelColor=0a0a1a"/> | <img src="https://img.shields.io/badge/AI-Offline_No_API-34d399?style=flat-square"/> |
-| Lottie boot · 56 dots · GSAP parallax | drag · 8-dir resize · dblclick fullscreen | 7 projects + 10 certs · no hallucination |
+| Lottie boot · 56 dots · GSAP parallax | drag · 8-dir resize · dblclick fullscreen | 7 projects + 11 certs · no hallucination |
 | `ABHISHEK` centered — never floats | `windowIn 0.38s` spring | `Ctrl+K` → search anywhere |
 
 **Try:** `Double-click` icon → `Drag header` → `Double-click header` → `Ctrl+K` → `Ask “which uses Flask?”`
@@ -143,10 +143,10 @@ python -m http.server 8000  # → http://localhost:8000
 MyPortfolio/
 ├─ index.html          # OS shell — wallpaper + Lottie boot + 390×780 phone + search fix
 ├─ css/style.css       # windowIn 0.38s · pop 0.48s · iconPulse + searchRing 2.8s
-├─ js/data.js          # 7 projects · 10 certs · playlist
+├─ js/data.js          # 7 projects · 11 certs · playlist
 ├─ js/askAbhiKnowledge.js  # centralized v2.1
 ├─ js/app.js           # single-window · Spotlight (Ctrl+K) · 8-dir resize
-└─ assets/  profile / projects / certifications (10) / icons (14) / audio wavecont.mp3
+└─ assets/  profile / projects / certifications (11) / icons (14) / audio wavecont.mp3
 ```
 
 </details>

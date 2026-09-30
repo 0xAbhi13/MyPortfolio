@@ -370,9 +370,9 @@ html{font-size:15px}
 /* Short screens: compact widget + hero + grid so everything fits without scroll */
 @media(max-width:768px) and (max-height:740px){
   #phoneWidgetTime{font-size:48px !important}
-  #mobileLayout .phone-profile-btn{width:80px !important; height:80px !important}
-  #mobileLayout .phone-profile-btn .phone-profile-frame{width:80px !important; height:80px !important}
-  #mobileLayout .phone-device h1{font-size:22px !important}
+  #mobileLayout .phone-profile-btn{width:88px !important; height:88px !important}
+  #mobileLayout .phone-profile-btn .phone-profile-frame{width:88px !important; height:88px !important}
+  #mobileLayout .phone-device h1{font-size:24px !important}
   #mobileLayout .phone-device .phone-ask-btn{padding:10px !important}
   #mobileGrid{row-gap:12px !important}
   #mobileGrid button img{width:46px !important; height:46px !important}
@@ -380,9 +380,9 @@ html{font-size:15px}
 @media(max-width:768px) and (max-height:640px){
   #phoneWidgetTime{font-size:40px !important}
   #phoneWidgetDate{font-size:12px !important}
-  #mobileLayout .phone-profile-btn{width:68px !important; height:68px !important}
-  #mobileLayout .phone-profile-btn .phone-profile-frame{width:68px !important; height:68px !important}
-  #mobileLayout .phone-device h1{font-size:20px !important}
+  #mobileLayout .phone-profile-btn{width:76px !important; height:76px !important}
+  #mobileLayout .phone-profile-btn .phone-profile-frame{width:76px !important; height:76px !important}
+  #mobileLayout .phone-device h1{font-size:22px !important}
   #mobileGrid{row-gap:10px !important}
   #mobileGrid button img{width:42px !important; height:42px !important}
 }
