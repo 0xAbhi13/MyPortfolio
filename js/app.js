@@ -763,7 +763,6 @@ function appPhotos(){
     <div class="flex-1 flex flex-col items-center justify-center p-6 md:p-10 text-center relative">
       <div class="w-20 h-20 md:w-24 md:h-24 rounded-3xl bg-gradient-to-br from-blue-600 to-cyan-600 flex items-center justify-center shadow-2xl shadow-blue-600/30 mb-6 relative">
         <i data-lucide="image" class="w-10 h-10 md:w-12 md:h-12 text-white"></i>
-        <span class="absolute -bottom-3.5 -right-3.5 w-7 h-7 rounded-full bg-blue-500 border-2 border-[#0f0f1e] grid place-items:center shadow-lg"><i data-lucide="clock" class="w-3.5 h-3.5 text-white"></i></span>
       </div>
       <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight">Photos — Coming Soon</h2>
       <p class="text-sm md:text-base text-white/60 max-w-md mt-2 leading-relaxed">
@@ -829,7 +828,6 @@ function appResume(){
     <div class="flex-1 flex flex-col items-center justify-center p-6 md:p-10 text-center relative">
       <div class="w-20 h-20 md:w-24 md:h-24 rounded-3xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center shadow-2xl shadow-violet-600/30 mb-6 animate-[windowIn_0.6s_cubic-bezier(0.16,1,0.3,1)]">
         <i data-lucide="file-text" class="w-10 h-10 md:w-12 md:h-12 text-white"></i>
-        <span class="absolute -bottom-3.5 -right-3.5 w-7 h-7 rounded-full bg-amber-500 border-2 border-[#0f0f1e] grid place-items:center shadow-lg"><i data-lucide="clock" class="w-3.5 h-3.5 text-black"></i></span>
       </div>
       <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight">Resume — Coming Soon</h2>
       <p class="text-sm md:text-base text-white/60 max-w-md mt-2 leading-relaxed">
