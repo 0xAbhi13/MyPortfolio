@@ -144,7 +144,7 @@
       capabilities: [
         "Answer who is Abhishek / who owns portfolio / who is Ask Abhi",
         "List and explain all projects with stacks, GitHub, features (natural language)",
-        "List and verify all 11 certificates with issuer, ID, verify link",
+        "List all 11 certificates — all verified — with issuer, ID, verify link",
         "Detail skills by category and currently levelling up",
         "Provide contact & social links (never fake)",
         "Explain portfolio architecture, hosting, sections, design",

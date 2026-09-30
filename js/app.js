@@ -957,10 +957,10 @@ function appAskAbhi(){
       </div>
       <div class="hidden sm:flex items-center gap-1.5 shrink-0">
         <span class="hidden md:inline-flex items-center gap-1.5 text-[10px] px-2 py-1 bg-white/[0.04] border border-white/10 rounded-full text-white/60"><i data-lucide="shield-check" class="w-3 h-3 text-violet-400"></i> No data stored</span>
-        <button onclick="clearAskChat()" title="Clear chat" class="inline-flex items-center gap-1 text-[11px] px-2 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full transition"><i data-lucide="trash-2" class="w-3 h-3"></i> Clear</button>
+        <button onclick="clearAskChat()" title="Clear chat" class="inline-flex items-center gap-1 text-[11px] px-2 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full transition"><i data-lucide="trash-2" class="w-3 h-3 min-w-[12px] min-h-[12px] shrink-0"></i> Clear</button>
         <span class="px-2.5 py-1 bg-gradient-to-r from-violet-600 to-indigo-600 rounded-full text-[11px] font-bold text-white shadow-md shadow-violet-600/20">0xAbhi13</span>
       </div>
-      <button onclick="clearAskChat()" title="Clear chat" class="sm:hidden w-8 h-8 rounded-full bg-white/5 border border-white/10 grid place-items:center shrink-0"><i data-lucide="trash-2" class="w-3.5 h-3.5 opacity-70"></i></button>
+      <button onclick="clearAskChat()" title="Clear chat" class="ask-clear-btn sm:hidden w-8 h-8 min-w-[32px] min-h-[32px] max-w-[32px] max-h-[32px] rounded-full bg-white/5 border border-white/10 shrink-0"><i data-lucide="trash-2" class="w-3.5 h-3.5 min-w-[14px] min-h-[14px] max-w-[14px] max-h-[14px] opacity-70 shrink-0"></i></button>
     </div>
 
     <!-- Messages — subtle mesh + scrollbar — fixed min-h-0 so input stays visible -->
@@ -998,7 +998,7 @@ function appAskAbhi(){
             {icon:"user", desc:"Owner • BCA 2026 • Baramati", grad:"from-violet-600/20 to-indigo-600/20", border:"border-violet-500/20"},
             {icon:"cpu", desc:"5 cats • C++/Python/JS", grad:"from-amber-500/15 to-orange-500/15", border:"border-amber-500/20"},
             {icon:"code-2", desc:"7 shipped • stacks • GitHub", grad:"from-violet-600/20 to-indigo-600/20", border:"border-violet-500/20"},
-            {icon:"award", desc:"9 verified • Saylor • Jio • EDUCBA", grad:"from-emerald-500/15 to-teal-500/15", border:"border-emerald-500/20"},
+            {icon:"award", desc:"11 verified • IBM • Saylor • Jio", grad:"from-emerald-500/15 to-teal-500/15", border:"border-emerald-500/20"},
             {icon:"github", desc:"@0xAbhi13 • Source", grad:"from-zinc-700/20 to-zinc-800/20", border:"border-white/10"},
             {icon:"music", desc:"Web Audio • BeatForge", grad:"from-blue-500/15 to-cyan-500/15", border:"border-blue-500/20"},
           ];
@@ -1215,8 +1215,8 @@ function getLocalAnswer(q){
       return `<b>7 Projects — 0xAbhi13</b><br>${_projects.map(p=> `• <b>${p.name}</b> — ${p.category}`).join('<br>')}<br>[OPEN_PROJECTS]`;
     }
     if(has('certificates kaunse','certificates kaun','konti cert','certificates kay','pramanpatra')){
-      if(lang==='mr') return `<b>9 Certificates:</b><br>${_certs.map(c=> `• <b>${c.title}</b> — ${c.issuer} (${c.issued})`).join('<br>')}<br>[OPEN_CERTIFICATIONS]`;
-      return `<b>9 Certificates:</b><br>${_certs.map(c=> `• <b>${c.title}</b> — ${c.issuer} (${c.issued})`).join('<br>')}<br>[OPEN_CERTIFICATIONS]`;
+      if(lang==='mr') return `<b>${_certs.length} Certificates — All Verified ✅:</b><br>${_certs.map(c=> `• <b>${c.title}</b> — ${c.issuer} (${c.issued})`).join('<br>')}<br>[OPEN_CERTIFICATIONS]`;
+      return `<b>${_certs.length} Certificates — All Verified ✅:</b><br>${_certs.map(c=> `• <b>${c.title}</b> — ${c.issuer} (${c.issued})`).join('<br>')}<br>[OPEN_CERTIFICATIONS]`;
     }
     if(has('contact kaise','contact kasa','kaise contact','kasa contact','sampark kaise','sampark kasa','github kahan','github kuthe','linkedin kahan')){
       if(lang==='mr') return `<b>Sampark:</b><br>Email: <a href="mailto:${_contact.email}" class="text-violet-300 underline">${_contact.email}</a><br>GitHub: <a href="${_contact.github}" target="_blank" class="text-violet-300 underline">${_contact.github}</a><br>LinkedIn: <a href="${_contact.linkedin}" target="_blank" class="text-violet-300 underline">${_contact.linkedin}</a><br>Thikan: ${_contact.location}<br>[OPEN_CONTACT]`;
@@ -1279,7 +1279,7 @@ function getLocalAnswer(q){
   // ── 4. Navigation intents ──
   if( has('take me to') || has('open github') || has('open linkedin') || has('show certificates') || has('show projects') || has('where is the skills section') || has('contact abhishek') || has('show me the projects') || has('take me to about') ){
     if(has('project')) return `Opening <b>Projects</b> for you — 7 shipped. You can also press <code>Ctrl+K</code> → search.<br>[OPEN_PROJECTS]`;
-    if(has('certif')) return `Opening <b>Certifications — 9 verified</b>.<br>[OPEN_CERTIFICATIONS]`;
+    if(has('certif')) return `Opening <b>Certifications — 11 verified</b>.<br>[OPEN_CERTIFICATIONS]`;
     if(has('skill')) return `Opening <b>Skills — 5 categories</b>.<br>[OPEN_SKILLS]`;
     if(has('about')) return `Opening <b>About — Abhishek</b>.<br>[OPEN_ABOUT]`;
     if(has('contact')) return `Opening <b>Contact</b> — email, GitHub, LinkedIn.<br>[OPEN_CONTACT]`;
@@ -1359,10 +1359,10 @@ function getLocalAnswer(q){
   }
   // general cert list covers "what certificates does abhishek have", "show me certificates", "which organization issued", "when did he receive"
   if(has('certificate','certificates','certs','certified') || has('which organization issued') || has('when did abhishek receive')){
-    return `<b>Abhishek — ${_certs.length} Certifications (Systematic)</b><br><br>${allCertsList}<br><br>All images renamed to <code>certificate-*.jpg</code> — View + Verify on each card. Ask “Verify Jio AI” or “What is CS301?” for details.<br>[OPEN_CERTIFICATIONS]`;
+    return `<b>Abhishek — ${_certs.length} Certifications — All Verified ✅</b><br><br>${allCertsList}<br><br>All ${_certs.length} certificates are verified — each has a <b>Verify →</b> link above and View + Verify on its portfolio card. Ask “Verify Jio AI” or “What is CS301?” for details.<br>[OPEN_CERTIFICATIONS]`;
   }
   if(has('what certificates does abhishek have') || has('show me abhisheks certificates')){
-    return `<b>9 Certificates — ${certs.length} Verified</b><br><br>${allCertsList}<br>[OPEN_CERTIFICATIONS]`;
+    return `<b>${_certs.length} Certificates — All Verified ✅</b><br><br>${allCertsList}<br>[OPEN_CERTIFICATIONS]`;
   }
 
   // ── 7. Skills ──
