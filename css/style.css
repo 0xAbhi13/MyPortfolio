@@ -55,6 +55,7 @@ html,body{font-family:Inter,system-ui,sans-serif}
 .desktop-icon-img{width:48px;height:48px;border-radius:12px;display:grid;place-items:center;box-shadow:0 8px 20px rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.12)}
 .desktop-icon-label{font-size:11px;line-height:1.1;text-align:center;text-shadow:0 1px 6px rgba(0,0,0,0.8);word-break:break-word}
 .desktop-icon.is-open .desktop-icon-img{outline:2px solid rgba(255,255,255,0.5)}
+.desktop-icon.is-selected{background:rgba(139,92,246,0.14); border-color:rgba(139,92,246,0.4)}
 @media(max-width:640px){.desktop-icon{width:70px} .desktop-icon-img{width:40px;height:40px}}
 
 /* Windows — with open animation */
@@ -364,6 +365,8 @@ html{font-size:15px}
 /* ===== Phone home — perfect fit, no big empty gap ===== */
 #mobileLayout .phone-device > .flex-1{min-height:0}
 #mobileGrid{flex:none !important; width:100%}
+/* Profile button — double-click to open, no page-zoom on double-tap */
+.phone-profile-btn{touch-action:manipulation; -webkit-tap-highlight-color:transparent}
 /* Time widget */
 #phoneWidgetTime{font-variant-numeric:tabular-nums}
 #phoneWidgetDate{letter-spacing:0.02em}

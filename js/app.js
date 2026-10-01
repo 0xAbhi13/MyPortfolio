@@ -143,10 +143,12 @@ const WINDOW_DEFS = {
 };
 
 /* ---------- Render Desktop & Dock ---------- */
+let selectedIcon=null; // single-click selects, double-click opens (PC paradigm)
 function renderIcons(){
   const c=document.getElementById('desktopIcons');
+  if(!c) return;
   c.innerHTML = APPS.map(a=>`
-    <div class="desktop-icon ${windows[a.id]?.isOpen?'is-open':''}" ondblclick="openApp('${a.id}')" onclick="handleIconClick('${a.id}', this)">
+    <div class="desktop-icon ${windows[a.id]?.isOpen?'is-open':''} ${selectedIcon===a.id?'is-selected':''}" ondblclick="openApp('${a.id}')" onclick="handleIconClick('${a.id}', this)">
       <div class="desktop-icon-img" style="background:transparent;border:none;box-shadow:none;padding:0;width:56px;height:56px;display:grid;place-items:center;">
         <img src="assets/icons/${a.id}.svg" alt="${a.label}" class="w-[56px] h-[56px] object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.35)]" loading="eager" onerror="this.outerHTML='<i data-lucide=&quot;${a.icon}&quot; class=&quot;w-6 h-6&quot; style=&quot;color:${a.accent}&quot;></i>'">
       </div>
@@ -170,9 +172,10 @@ function renderDock(){
   lucide.createIcons();
 }
 function handleIconClick(id, el){
-  // bounce animation then open
-  if(el){ el.classList.add('icon-bounce'); setTimeout(()=>el.classList.remove('icon-bounce'), 400); }
-  openApp(id);
+  // single click = select only (bounce + highlight); double-click opens
+  selectedIcon=id;
+  document.querySelectorAll('.desktop-icon.is-selected').forEach(d=>d.classList.remove('is-selected'));
+  if(el){ el.classList.add('is-selected','icon-bounce'); setTimeout(()=>el.classList.remove('icon-bounce'), 400); }
 }
 function renderTaskbar(){
   const bar=document.getElementById('taskbarApps');
@@ -307,6 +310,7 @@ function initialPos(id){
 }
 function openApp(id, sub){
   const win=windows[id]; if(!win) return;
+  selectedIcon=id; // keep opened icon highlighted
   if(win.isOpen && !win.isMinimized){ focusApp(id); win.sub = sub || null; renderWindows(); renderTaskbar(); return; }
   if(win.isMinimized){ win.isMinimized=false; }
   if(!win.hasOpened){ const p=initialPos(id); win.x=p.x; win.y=p.y; win.w=p.w; win.h=p.h; win.prev={...p}; win.hasOpened=true; }
@@ -1517,6 +1521,14 @@ window.handleWindowBack=typeof handleWindowBack!=='undefined'?handleWindowBack:(
 
 // no auto-open — user must double-click icon/dock
 // setTimeout(()=>{ if(window.innerWidth>=768) openApp('finder'); }, 2200);
+
+// click empty desktop = clear icon selection
+document.getElementById('desktop')?.addEventListener('click', e=>{
+  if(!e.target.closest('.desktop-icon') && selectedIcon){
+    selectedIcon=null;
+    document.querySelectorAll('.desktop-icon.is-selected').forEach(d=>d.classList.remove('is-selected'));
+  }
+});
 
 // universal responsive — clamp windows on resize for any device
 window.addEventListener('resize',()=>{
