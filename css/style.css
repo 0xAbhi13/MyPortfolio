@@ -146,10 +146,10 @@ html,body{font-family:Inter,system-ui,sans-serif}
 .window-content{flex:1;overflow:auto;background:#121225;color:#e8e8ef;position:relative; min-height:0; min-width:0}
 .window-resize{position:absolute;right:0;bottom:0;width:14px;height:14px;cursor:nwse-resize; z-index:5}
 .window-resize-handle{position:absolute; z-index:5; touch-action:none}
-.window-resize-n{top:0; left:8px; right:8px; height:6px; cursor:ns-resize}
-.window-resize-s{bottom:0; left:8px; right:8px; height:6px; cursor:ns-resize}
-.window-resize-e{top:8px; right:0; bottom:8px; width:6px; cursor:ew-resize}
-.window-resize-w{top:8px; left:0; bottom:8px; width:6px; cursor:ew-resize}
+.window-resize-n{top:0; left:8px; right:8px; height:10px; cursor:ns-resize}
+.window-resize-s{bottom:0; left:8px; right:8px; height:10px; cursor:ns-resize}
+.window-resize-e{top:8px; right:0; bottom:8px; width:10px; cursor:ew-resize}
+.window-resize-w{top:8px; left:0; bottom:8px; width:10px; cursor:ew-resize}
 .window-resize-ne{top:0; right:0; width:12px; height:12px; cursor:nesw-resize}
 .window-resize-nw{top:0; left:0; width:12px; height:12px; cursor:nwse-resize}
 .window-resize-se{right:0; bottom:0; width:14px; height:14px; cursor:nwse-resize}
@@ -507,13 +507,6 @@ html{font-size:15px}
 /* Never let any flex item collapse to 0 */
 #menuBar *, #taskbar * { min-width:0; }
 #menuBar button, #taskbar button { min-width:0; }
-
-/* Ask Abhi header actions — exactly one clear control per platform */
-@media(max-width:639px){ .ask-desk-actions{display:none !important} }
-@media(min-width:640px){ .ask-clear-btn{display:none !important} }
-/* Ask Abhi clear-chat button — hard lock: icon always centered, never overlapping */
-.ask-clear-btn{display:flex !important; align-items:center !important; justify-content:center !important; overflow:hidden !important}
-.ask-clear-btn svg{width:14px !important; height:14px !important; min-width:14px !important; min-height:14px !important; max-width:14px !important; max-height:14px !important; display:block !important; flex:none !important; margin:0 !important; padding:0 !important}
 
 /* Utilities */
 .line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}

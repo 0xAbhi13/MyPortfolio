@@ -123,6 +123,8 @@
 
   <!-- Window Layer -->
   <div id="windowLayer" class="fixed inset-0 pt-7 pb-14 pointer-events-none z-20"></div>
+  <!-- Aero Snap preview outline (Windows-like drag-to-snap) -->
+  <div id="snapPreview" class="hidden fixed z-[25] rounded-lg border-2 border-violet-400/70 bg-violet-500/15 backdrop-blur-sm pointer-events-none transition-all duration-150"></div>
 
   <!-- Taskbar — Windows-style with animations, shows every open window -->
   <div id="taskbar" class="fixed bottom-0 left-0 right-0 h-[52px] bg-[#0a0a14]/90 backdrop-blur-2xl border-t border-white/10 flex items-center px-3 gap-2 z-30 shadow-[0_-8px_32px_rgba(0,0,0,0.5)]">
@@ -195,10 +197,10 @@
             <p id="phoneWidgetDate" class="text-white/60 text-sm mt-1">Tuesday, 29 Sep</p>
           </div>
           <div class="text-center animate-[phoneHeroIn_0.7s_cubic-bezier(0.16,1,0.3,1)_0.2s_both]">
-            <button ondblclick="openProfileViewer()" title="Double-click to view profile picture" aria-label="Double-click to view profile picture" class="phone-profile-btn relative w-[100px] h-[100px] mx-auto mb-2.5 block cursor-pointer group active:scale-95 transition-transform">
+            <button onclick="openProfileViewer()" title="View profile picture" aria-label="View profile picture" class="phone-profile-btn relative w-[100px] h-[100px] mx-auto mb-2.5 block cursor-pointer group active:scale-95 transition-transform">
               <span class="absolute -inset-1.5 bg-gradient-to-br from-violet-600 via-indigo-600 to-cyan-500 rounded-[20px] blur-[12px] opacity-70 animate-[pulseGlow_2.5s_ease-in-out_infinite]"></span>
               <span class="phone-profile-frame relative block w-[100px] h-[100px] rounded-2xl overflow-hidden border-2 border-white/15 shadow-xl group-hover:border-violet-400/60 transition-colors">
-                <img src="assets/profile/profilepic.jpg" alt="Abhishek — double-click to zoom" class="w-full h-full object-cover pointer-events-none">
+                <img src="assets/profile/profilepic.jpg" alt="Abhishek — tap to zoom" class="w-full h-full object-cover pointer-events-none">
               </span>
             </button>
             <p class="text-white/60 text-[15px] animate-[phoneFadeUp_0.6s_ease_0.35s_both]">Hey, I'm</p>
@@ -226,15 +228,15 @@
     <div id="mobileAppContent" class="flex-1 overflow-auto bg-[#12122a]"></div>
   </div>
 
-  <!-- Profile picture zoom viewer — fullscreen, tap anywhere or X to close -->
+  <!-- Profile picture fullscreen viewer — one click opens, X / backdrop / Esc closes, above every window incl. maximized -->
   <div id="profileViewer" class="fixed inset-0 z-[90] hidden items-center justify-center p-6 bg-black/85 backdrop-blur-md" onclick="if(event.target===this) closeProfileViewer()">
-    <div class="profile-viewer-card relative max-w-[320px] w-full">
+    <div class="profile-viewer-card relative w-full max-w-[340px] sm:max-w-[480px]">
       <div class="absolute -inset-2 bg-gradient-to-br from-violet-600 via-indigo-600 to-cyan-500 rounded-[28px] blur-[18px] opacity-60"></div>
-      <div class="relative rounded-3xl overflow-hidden border-2 border-white/20 shadow-2xl">
-        <img src="assets/profile/profilepic.jpg" alt="Abhishek Jadhav — profile picture" class="w-full h-auto object-cover">
+      <div class="relative rounded-3xl overflow-hidden border-2 border-white/20 shadow-2xl bg-black/40">
+        <img src="assets/profile/profilepic.jpg" alt="Abhishek Jadhav — profile picture" class="w-full h-auto max-h-[68vh] sm:max-h-[74vh] object-contain mx-auto">
       </div>
-      <p class="text-center text-sm font-semibold mt-4">Abhishek Jadhav</p>
-      <p class="text-center text-xs text-white/50">0xAbhi13 • Creative Developer</p>
+      <p class="text-center text-sm sm:text-base font-semibold mt-4">Abhishek Jadhav</p>
+      <p class="text-center text-xs sm:text-sm text-white/50">0xAbhi13 • Creative Developer</p>
       <button onclick="closeProfileViewer()" aria-label="Close" class="absolute -top-3 -right-3 w-9 h-9 rounded-full bg-white text-black grid place-items-center shadow-xl hover:scale-105 active:scale-95 transition-transform">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </button>

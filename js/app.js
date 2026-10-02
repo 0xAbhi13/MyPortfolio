@@ -1,5 +1,8 @@
 // Abhishek Portfolio — Vanilla JS — Desktop OS — 0xAbhi13
 
+// Safety: if the Lucide CDN fails, stub it so init and icons never crash
+window.lucide = window.lucide || { createIcons: function(){} };
+
 /* ---------- Boot ---------- */
 (function(){
   const boot = document.getElementById('bootScreen');
@@ -330,7 +333,7 @@ function closeApp(id){
   if(id==='finder') finderReset();
   const el=document.querySelector(`.window[data-id="${id}"]`);
   w._closeAnim=true;
-  const commit=()=>{ w._closeAnim=false; w.isOpen=false; w.isMinimized=false; w.isMaximized=false; w.isFocused=false; w.sub=null; w._animDone=false; renderWindows(); renderDock(); renderTaskbar(); renderIcons(); };
+  const commit=()=>{ w._closeAnim=false; w.isOpen=false; w.isMinimized=false; w.isMaximized=false; w.snap=null; w.isFocused=false; w.sub=null; w._animDone=false; renderWindows(); renderDock(); renderTaskbar(); renderIcons(); };
   if(el){ el.classList.remove('mobile-pop-in'); el.classList.add('is-closing'); setTimeout(commit, 175); }
   else commit();
 }
@@ -347,9 +350,10 @@ function maximizeApp(id){
   const el=document.querySelector(`.window[data-id="${id}"]`);
   const r1=el?el.getBoundingClientRect():null;
   if(w.isMaximized){ // restore
-    Object.assign(w, w.prev); w.isMaximized=false;
+    Object.assign(w, w.prev); w.isMaximized=false; w.snap=null;
   } else {
-    w.prev={x:w.x,y:w.y,w:w.w,h:w.h}; const wa=getWorkArea(); w.x=wa.left; w.y=wa.top; w.w=wa.w; w.h=wa.h; w.isMaximized=true;
+    if(!w.snap) w.prev={x:w.x,y:w.y,w:w.w,h:w.h}; // snapped windows already hold the windowed rect
+    const wa=getWorkArea(); w.x=wa.left; w.y=wa.top; w.w=wa.w; w.h=wa.h; w.isMaximized=true; w.snap=null;
   }
   renderWindows();
   renderTaskbar();
@@ -440,16 +444,54 @@ function renderWindows(){
   setTimeout(bindAppEvents,0);
 }
 
-/* ---------- Drag & Resize ---------- */
+/* ---------- Drag & Resize (Windows-accurate: snap, restore-on-drag) ---------- */
 let drag=null, resize=null;
+function snapRect(kind){
+  const wa=getWorkArea();
+  if(kind==='max') return {x:wa.left, y:wa.top, w:wa.w, h:wa.h};
+  const hw=Math.floor(wa.w/2);
+  if(kind==='left') return {x:wa.left, y:wa.top, w:hw, h:wa.h};
+  return {x:wa.left+wa.w-hw, y:wa.top, w:wa.w-hw, h:wa.h};
+}
+function showSnapPreview(kind){
+  const pv=document.getElementById('snapPreview'); if(!pv) return;
+  if(!kind){ pv.classList.add('hidden'); return; }
+  const r=snapRect(kind);
+  pv.style.left=r.x+'px'; pv.style.top=r.y+'px'; pv.style.width=r.w+'px'; pv.style.height=r.h+'px';
+  pv.classList.remove('hidden');
+}
+function hideSnapPreview(){ const pv=document.getElementById('snapPreview'); if(pv) pv.classList.add('hidden'); }
+function applySnap(id, kind){
+  const w=windows[id]; if(!w) return;
+  if(!w.snap && !w.isMaximized) w.prev={x:w.x, y:w.y, w:w.w, h:w.h};
+  const r=snapRect(kind);
+  w.isMaximized=false;
+  if(kind==='max'){ w.x=r.x; w.y=r.y; w.w=r.w; w.h=r.h; w.isMaximized=true; w.snap=null; }
+  else { w.x=r.x; w.y=r.y; w.w=r.w; w.h=r.h; w.snap=kind; }
+  renderWindows(); renderTaskbar();
+}
 function bindDrag(){
   document.querySelectorAll('[data-drag]').forEach(h=>{
     h.onmousedown=(e)=>{
       if(e.target.closest('button')) return;
       const id=h.dataset.drag, win=windows[id];
-      if(win.isMaximized) return;
       focusApp(id);
-      drag={id, sx:e.clientX, sy:e.clientY, ox:win.x, oy:win.y};
+      // Windows: dragging a maximized/snapped window restores it under the cursor
+      if(win.isMaximized || win.snap){
+        const host=h.closest ? h.closest('.window') : null;
+        const r=host && host.getBoundingClientRect ? host.getBoundingClientRect() : null;
+        const wa0=getWorkArea();
+        const pw=Math.min((win.prev && win.prev.w) || 700, wa0.w);
+        const ph=Math.min((win.prev && win.prev.h) || 480, wa0.h);
+        let relX=0.5;
+        if(r && r.width>1) relX=Math.min(0.95, Math.max(0.05, (e.clientX-r.left)/r.width));
+        win.isMaximized=false; win.snap=null;
+        win.w=pw; win.h=ph;
+        win.x=Math.max(wa0.left, Math.min(wa0.right-win.w, e.clientX-win.w*relX));
+        win.y=Math.max(wa0.top, Math.min(e.clientY-18, wa0.bottom-win.h));
+        renderWindows(); renderTaskbar();
+      }
+      drag={id, sx:e.clientX, sy:e.clientY, ox:win.x, oy:win.y, preview:null};
       document.addEventListener('mousemove', onDragMove);
       document.addEventListener('mouseup', onDragEnd);
       e.preventDefault();
@@ -473,14 +515,34 @@ function onDragMove(e){
   win.y=Math.max(wa.top, Math.min(wa.bottom-win.h, win.y));
   const el=document.querySelector(`.window[data-id="${drag.id}"]`);
   if(el){ el.style.left=win.x+'px'; el.style.top=win.y+'px'; }
+  // Aero Snap preview: top = maximize, left/right = half
+  const m=8;
+  let pv=null;
+  if(e.clientY<=wa.top+m) pv='max';
+  else if(e.clientX<=wa.left+m) pv='left';
+  else if(e.clientX>=wa.right-m) pv='right';
+  drag.preview=pv;
+  showSnapPreview(pv);
 }
-function onDragEnd(){ drag=null; document.removeEventListener('mousemove', onDragMove); document.removeEventListener('mouseup', onDragEnd); }
+function onDragEnd(){
+  document.removeEventListener('mousemove', onDragMove);
+  document.removeEventListener('mouseup', onDragEnd);
+  hideSnapPreview();
+  if(drag && drag.preview){
+    const id=drag.id, pv=drag.preview;
+    drag=null;
+    applySnap(id, pv);
+    return;
+  }
+  drag=null;
+}
 
 function bindResize(){
   document.querySelectorAll('[data-resize]').forEach(h=>{
     const start = (e)=>{
       const id=h.dataset.resize, win=windows[id];
       if(!win || win.isMaximized) return;
+      if(win.snap) win.snap=null; // resizing a snapped half frees it (restore target kept in prev)
       const dir=h.dataset.dir || 'se';
       const cx = e.touches ? e.touches[0].clientX : e.clientX;
       const cy = e.touches ? e.touches[0].clientY : e.clientY;
@@ -667,7 +729,9 @@ function appAbout(){
   return `
   <div class="p-6 space-y-6 max-w-3xl mx-auto">
     <div class="flex flex-col sm:flex-row gap-6 items-center sm:items-start">
-      <img src="${p.avatar}" alt="${p.name}" class="w-28 h-28 rounded-2xl object-cover border border-white/15 bg-white/5"/>
+      <button onclick="openProfileViewer()" title="View fullscreen" aria-label="View profile picture fullscreen" class="cursor-pointer group active:scale-95 transition-transform">
+        <img src="${p.avatar}" alt="${p.name} — click for fullscreen" class="w-28 h-28 rounded-2xl object-cover border border-white/15 bg-white/5 group-hover:border-violet-400/60 transition-colors pointer-events-none"/>
+      </button>
       <div class="flex-1 text-center sm:text-left">
         <h1 class="text-2xl font-bold">${p.name} <span class="text-violet-300 text-sm font-mono">${p.alias}</span></h1>
         <p class="text-sm text-white/60 mt-1">${p.headline}</p>
@@ -976,8 +1040,8 @@ function appAskAbhi(){
     <!-- Professional Header — compact, premium — fixed collapsing -->
     <div class="px-3 md:px-4 py-3 border-b border-white/[0.07] flex items-center gap-3 bg-gradient-to-r from-violet-600/[0.08] via-indigo-600/[0.07] to-transparent backdrop-blur-xl shrink-0 min-w-0">
       <div class="relative shrink-0 flex-none">
-        <div class="w-10 h-10 md:w-11 md:h-11 min-w-[40px] min-h-[40px] max-w-[44px] max-h-[44px] rounded-xl overflow-hidden border border-white/10 shadow-lg bg-gradient-to-br from-violet-600 to-indigo-600 p-[1.5px] flex-none">
-          <img src="assets/profile/profilepic.jpg" alt="Abhishek" class="w-full h-full object-cover rounded-[10px] border-2 border-[#0a0a1f]">
+        <div onclick="openProfileViewer()" title="View fullscreen" class="w-10 h-10 md:w-11 md:h-11 min-w-[40px] min-h-[40px] max-w-[44px] max-h-[44px] rounded-xl overflow-hidden border border-white/10 shadow-lg bg-gradient-to-br from-violet-600 to-indigo-600 p-[1.5px] flex-none cursor-pointer active:scale-95 transition-transform">
+          <img src="assets/profile/profilepic.jpg" alt="Abhishek" class="w-full h-full object-cover rounded-[10px] border-2 border-[#0a0a1f] pointer-events-none">
         </div>
         <span class="absolute -bottom-[7px] -right-[7px] w-3.5 h-3.5 min-w-[14px] min-h-[14px] bg-emerald-500 rounded-full border-2 border-[#0a0a1f] flex items-center justify-center shadow-sm flex-none">
           <span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>
@@ -993,12 +1057,11 @@ function appAskAbhi(){
         <p class="text-[11px] leading-none text-white/50 mt-0.5 truncate hidden sm:block">${(typeof ASK_ABHI_KNOWLEDGE !== 'undefined' ? ASK_ABHI_KNOWLEDGE.projects.length : 7)} projects • ${(typeof ASK_ABHI_KNOWLEDGE !== 'undefined' ? ASK_ABHI_KNOWLEDGE.certificates.length : 9)} certs • skills • verified data • private</p>
         <p class="text-[11px] leading-none text-white/50 mt-0.5 sm:hidden">0xAbhi13 • ${(typeof ASK_ABHI_KNOWLEDGE !== 'undefined' ? ASK_ABHI_KNOWLEDGE.projects.length : 7)} projects • ${(typeof ASK_ABHI_KNOWLEDGE !== 'undefined' ? ASK_ABHI_KNOWLEDGE.certificates.length : 9)} certs</p>
       </div>
-      <div class="ask-desk-actions hidden sm:flex items-center gap-1.5 shrink-0">
+      <div class="flex items-center gap-1.5 shrink-0">
         <span class="hidden md:inline-flex items-center gap-1.5 text-[10px] px-2 py-1 bg-white/[0.04] border border-white/10 rounded-full text-white/60"><i data-lucide="shield-check" class="w-3 h-3 text-violet-400"></i> No data stored</span>
         <button onclick="clearAskChat()" title="Clear chat" class="inline-flex items-center gap-1 text-[11px] px-2 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full transition"><i data-lucide="trash-2" class="w-3 h-3 min-w-[12px] min-h-[12px] shrink-0"></i> Clear</button>
-        <span class="px-2.5 py-1 bg-gradient-to-r from-violet-600 to-indigo-600 rounded-full text-[11px] font-bold text-white shadow-md shadow-violet-600/20">0xAbhi13</span>
+        <span class="hidden sm:block px-2.5 py-1 bg-gradient-to-r from-violet-600 to-indigo-600 rounded-full text-[11px] font-bold text-white shadow-md shadow-violet-600/20">0xAbhi13</span>
       </div>
-      <button onclick="clearAskChat()" title="Clear chat" class="ask-clear-btn sm:hidden w-8 h-8 min-w-[32px] min-h-[32px] max-w-[32px] max-h-[32px] rounded-full bg-white/5 border border-white/10 shrink-0"><i data-lucide="trash-2" class="w-3.5 h-3.5 min-w-[14px] min-h-[14px] max-w-[14px] max-h-[14px] opacity-70 shrink-0"></i></button>
     </div>
 
     <!-- Messages — subtle mesh + scrollbar — fixed min-h-0 so input stays visible -->
@@ -1248,9 +1311,15 @@ function getLocalAnswer(q){
   }
 
   const fmtCert = c => `• <b>${c.title}</b> — <span class="text-violet-300">${c.issuer}</span> <span class="opacity-60">(${c.issued})</span><br><span class="text-[11px] opacity-60">ID: <span class="font-mono">${c.credentialId||'—'}</span> • <a href="${c.verifyUrl}" target="_blank" rel="noopener" class="text-violet-300 underline">Verify →</a></span>`;
-  const fmtProj = p => `• <b>${p.name}</b> <span class="text-[11px] px-1.5 py-0.5 bg-emerald-500/12 text-emerald-300 rounded-full border border-emerald-500/20 ml-1">${p.status}</span> <span class="opacity-60">— ${p.category}</span><br><span class="opacity-70 text-xs">${p.purpose}</span><br><span class="text-[11px] opacity-60">Stack: ${p.stack.join(' • ')} • <a href="${p.github}" target="_blank" class="text-violet-300 underline">GitHub →</a></span>`;
+  const fmtProj = p => {
+    const shot = (p.screenshots && p.screenshots[0] && p.screenshots[0].src) || "";
+    const thumb = shot
+      ? `<img src="${shot}" alt="${p.name} screenshot" loading="lazy" onerror="this.style.display='none'" class="w-20 h-14 min-w-[80px] min-h-[56px] max-w-[80px] max-h-[56px] rounded-lg object-cover border border-white/10 bg-white/5 flex-none">`
+      : `<span class="w-20 h-14 min-w-[80px] min-h-[56px] max-w-[80px] max-h-[56px] rounded-lg bg-gradient-to-br from-violet-600/30 to-indigo-600/30 border border-white/10 grid place-items:center text-lg font-bold text-white/70 flex-none">${(p.name || "?")[0]}</span>`;
+    return `<div class="flex gap-2.5 items-start min-w-0 mb-3 p-2 rounded-xl bg-white/[0.03] border border-white/[0.06]">${thumb}<div class="flex-1 min-w-0"><b>${p.name}</b> <span class="text-[11px] px-1.5 py-0.5 bg-emerald-500/12 text-emerald-300 rounded-full border border-emerald-500/20 ml-1">${p.status}</span><br><span class="opacity-60 text-xs">— ${p.category}</span><br><span class="opacity-70 text-xs">${p.purpose}</span><br><span class="text-[11px] opacity-60">Stack: ${p.stack.join(' • ')} • <a href="${p.github}" target="_blank" class="text-violet-300 underline">GitHub →</a></span></div></div>`;
+  };
   const allCertsList = _certs.map(c=> fmtCert(c)).join('<br><br>');
-  const allProjsList = _projects.map(p=> fmtProj(p)).join('<br><br>');
+  const allProjsList = _projects.map(p=> fmtProj(p)).join('');
   const skillsList = _skills.map(s=> `<b>${s.category}</b> ${s.icon||''}: ${s.items.join(' • ')}`).join('<br>');
   const topLangs = (()=>{ const cats=_skills.find(s=> s.category.toLowerCase().includes('programming')); return cats? cats.items.join(', ') : 'C++, Python, JavaScript'; })();
 
@@ -1311,25 +1380,25 @@ function getLocalAnswer(q){
   if( has('which project uses flask') || has('what projects use flask') || (has('flask') && !has('project') && askAbhiContext.lastProject) || (has('which one uses flask')) ){
     if(flaskProjects.length){
       askAbhiContext.lastProject = flaskProjects[0];
-      return `<b>Projects using Flask — ${flaskProjects.length}</b><br><br>${flaskProjects.map(p=> fmtProj(p)).join('<br><br>')}<br>[OPEN_PROJECTS]`;
+      return `<b>Projects using Flask — ${flaskProjects.length}</b><br><br>${flaskProjects.map(p=> fmtProj(p)).join('')}<br>[OPEN_PROJECTS]`;
     } else return `I don't have information about Flask projects in my portfolio knowledge base yet. Current stacks: ${[...new Set(_projects.flatMap(p=> p.stack))].join(', ')}`;
   }
   if( has('which project uses javascript') || has('what projects use javascript') || has('javascript project')){
-    return `<b>Projects using JavaScript — ${jsProjects.length}</b><br><br>${jsProjects.map(p=> fmtProj(p)).join('<br><br>')}<br>[OPEN_PROJECTS]`;
+    return `<b>Projects using JavaScript — ${jsProjects.length}</b><br><br>${jsProjects.map(p=> fmtProj(p)).join('')}<br>[OPEN_PROJECTS]`;
   }
   if( has('which project uses python') || has('what projects use python') || has('python project')){
-    return `<b>Projects using Python — ${pyProjects.length}</b><br><br>${pyProjects.map(p=> fmtProj(p)).join('<br><br>')}<br>[OPEN_PROJECTS]`;
+    return `<b>Projects using Python — ${pyProjects.length}</b><br><br>${pyProjects.map(p=> fmtProj(p)).join('')}<br>[OPEN_PROJECTS]`;
   }
   if( has('sqlite') ){
-    if(sqliteProjects.length) return `<b>Projects using SQLite — ${sqliteProjects.length}</b><br><br>${sqliteProjects.map(p=> fmtProj(p)).join('<br><br>')}<br>[OPEN_PROJECTS]`;
+    if(sqliteProjects.length) return `<b>Projects using SQLite — ${sqliteProjects.length}</b><br><br>${sqliteProjects.map(p=> fmtProj(p)).join('')}<br>[OPEN_PROJECTS]`;
     return `I don't have that information in my portfolio knowledge base yet — no project currently lists <b>SQLite</b> in its stack. Known stacks: ${[...new Set(_projects.flatMap(p=> p.stack))].join(', ')}`;
   }
   if( has('php') ){
-    if(phpProjects.length) return `<b>Projects using PHP — ${phpProjects.length}</b><br><br>${phpProjects.map(p=> fmtProj(p)).join('<br><br>')}<br>[OPEN_PROJECTS]`;
+    if(phpProjects.length) return `<b>Projects using PHP — ${phpProjects.length}</b><br><br>${phpProjects.map(p=> fmtProj(p)).join('')}<br>[OPEN_PROJECTS]`;
     return `I don't have that information in my portfolio knowledge base yet — no project currently lists <b>PHP</b> in its stack. Known stacks: ${[...new Set(_projects.flatMap(p=> p.stack))].join(', ')}`;
   }
   if( has('mysql') ){
-    if(mysqlProjects.length) return `<b>Projects using MySQL — ${mysqlProjects.length}</b><br><br>${mysqlProjects.map(p=> fmtProj(p)).join('<br><br>')}<br>[OPEN_PROJECTS]`;
+    if(mysqlProjects.length) return `<b>Projects using MySQL — ${mysqlProjects.length}</b><br><br>${mysqlProjects.map(p=> fmtProj(p)).join('')}<br>[OPEN_PROJECTS]`;
     return `I don't have that information in my portfolio knowledge base yet — no project currently lists <b>MySQL</b> in its stack. Known stacks: ${[...new Set(_projects.flatMap(p=> p.stack))].join(', ')}`;
   }
   if( has('which project is related to music') || has('music project') || (has('music') && !has('wavecont')) ){
@@ -1358,7 +1427,7 @@ function getLocalAnswer(q){
   }
   if( has('project','projects','shipped') && !has('certif') && !has('skill')){
     // general project list (covers "what projects has abhishek built", "tell me about abhisheks projects", "show me his projects")
-    const list = _projects.map(p=> fmtProj(p)).join('<br><br>');
+    const list = _projects.map(p=> fmtProj(p)).join('');
     // remember first as last
     if(_projects[0]) askAbhiContext.lastProject = _projects[0];
     return `<b>${_projects.length} Projects Shipped — ${_identity.githubUsername}</b><br><br>${list}<br><br>All have View → GitHub and are searchable via <b>Ctrl+K</b>.<br>[OPEN_PROJECTS]`;
@@ -1430,9 +1499,11 @@ function getLocalAnswer(q){
 }
 function renderAskContent(txt){
   const map={"[OPEN_PROJECTS]":["projects","Open Projects"],"[OPEN_SKILLS]":["skills","Open Skills"],"[OPEN_CERTIFICATIONS]":["certifications","Open Certifications"],"[OPEN_PHOTOS]":["photos","Open Photos"],"[OPEN_RESUME]":["resume","Open Resume"],"[OPEN_ABOUT]":["about","Open About"],"[OPEN_CONTACT]":["contact","Open Contact"]};
+  // mobile must open the phone sheet, not a hidden desktop window
+  const opener = (typeof window !== 'undefined' && window.innerWidth < 768) ? 'openMobileApp' : 'openApp';
   let html=txt.replace(/\[OPEN_[A-Z_]+\]/g,m=>{
     const v=map[m]; if(!v) return '';
-    return `<button onclick="openApp('${v[0]}')" class="mt-2 mr-2 px-2.5 py-1 bg-violet-500/20 text-violet-300 rounded-full text-xs border border-violet-500/20 hover:bg-violet-500/30 transition">${v[1]}</button>`;
+    return `<button onclick="${opener}('${v[0]}')" class="mt-2 mr-2 px-2.5 py-1 bg-violet-500/20 text-violet-300 rounded-full text-xs border border-violet-500/20 hover:bg-violet-500/30 transition">${v[1]}</button>`;
   });
   // keep <br> and <b> etc, convert \n
   html = html.replace(/\n/g,'<br>');
