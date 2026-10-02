@@ -152,9 +152,9 @@
         "Context-aware follow-ups (which one uses flask? give me its github)",
         "Detect online/offline — never hallucinate Abhishek's personal presence"
       ],
-      limitations: "Offline, no backend, no hallucination. If unknown: 'I don't have that information in my portfolio knowledge base yet.' / Hindi: 'मेरे पास यह जानकारी नहीं है' / Marathi: 'माझ्याकडे ही माहिती नाही' — Never invent.",
+      limitations: "Offline, no backend, no hallucination. English only — Hindi/Marathi queries are understood but always answered in English. If unknown: 'I don't have that information in my portfolio knowledge base yet.' — Never invent.",
       lastKnowledgeUpdate: LAST_UPDATE,
-      languageSupport: ["English","Casual Indian English (bhai, what does abhi do, show projects)","Hindi (Devanagari & Roman) — understands and replies in Hindi","Marathi (Devanagari & Roman) — understands and replies in Marathi"]
+      languageSupport: ["English","Casual Indian English (bhai, what does abhi do, show projects)"]
     }
   };
 
@@ -237,7 +237,7 @@
     return "I can't confirm Abhishek's personal real-time availability unless a live presence system is connected. Ask Abhi being online does not mean Abhishek is online.";
   };
 
-  // Suggested questions — generated from actual knowledge (dynamic) — education+contact removed per request, Hindi/Marathi supported
+  // Suggested questions — generated from actual knowledge (dynamic) — education+contact removed per request, English only
   knowledge.getSuggestedQuestions = function(){
     const projs = this.projects.slice(0,2).map(p=> `Tell me about ${p.name}`);
     return [

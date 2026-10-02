@@ -206,6 +206,7 @@ function handleTaskbarClick(id){
   if(!w || !w.isOpen) return;
   if(w.isMinimized){
     w.isMinimized=false;
+    w._animDone=false; // restored windows replay the entrance animation
     focusApp(id);
     renderWindows();
     renderTaskbar();
@@ -312,7 +313,7 @@ function openApp(id, sub){
   const win=windows[id]; if(!win) return;
   selectedIcon=id; // keep opened icon highlighted
   if(win.isOpen && !win.isMinimized){ focusApp(id); win.sub = sub || null; renderWindows(); renderTaskbar(); return; }
-  if(win.isMinimized){ win.isMinimized=false; }
+  if(win.isMinimized){ win.isMinimized=false; win._animDone=false; }
   if(!win.hasOpened){ const p=initialPos(id); win.x=p.x; win.y=p.y; win.w=p.w; win.h=p.h; win.prev={...p}; win.hasOpened=true; }
   win.isOpen=true; win.isMinimized=false; win.sub=sub||null;
   zCounter++; win.z=zCounter;
@@ -324,10 +325,27 @@ function openApp(id, sub){
     // optional: maximize on mobile for better UX? currently keep as window but also allow mobile sheet
   }
 }
-function closeApp(id){ const w=windows[id]; if(id==='finder') finderReset(); w.isOpen=false; w.isMinimized=false; w.isMaximized=false; w.isFocused=false; w.sub=null; renderWindows(); renderDock(); renderTaskbar(); renderIcons(); }
-function minimizeApp(id){ windows[id].isMinimized=true; windows[id].isFocused=false; const next=Object.values(windows).filter(v=>v.isOpen&&!v.isMinimized).sort((a,b)=>b.z-a.z)[0]; if(next) next.isFocused=true; renderWindows(); renderDock(); renderTaskbar(); }
+function closeApp(id){
+  const w=windows[id]; if(!w || !w.isOpen || w._closeAnim) return;
+  if(id==='finder') finderReset();
+  const el=document.querySelector(`.window[data-id="${id}"]`);
+  w._closeAnim=true;
+  const commit=()=>{ w._closeAnim=false; w.isOpen=false; w.isMinimized=false; w.isMaximized=false; w.isFocused=false; w.sub=null; w._animDone=false; renderWindows(); renderDock(); renderTaskbar(); renderIcons(); };
+  if(el){ el.classList.remove('mobile-pop-in'); el.classList.add('is-closing'); setTimeout(commit, 175); }
+  else commit();
+}
+function minimizeApp(id){
+  const w=windows[id]; if(!w || !w.isOpen || w.isMinimized || w._minAnim) return;
+  const el=document.querySelector(`.window[data-id="${id}"]`);
+  w._minAnim=true;
+  const commit=()=>{ w._minAnim=false; w.isMinimized=true; w.isFocused=false; const next=Object.values(windows).filter(v=>v.isOpen&&!v.isMinimized).sort((a,b)=>b.z-a.z)[0]; if(next) next.isFocused=true; renderWindows(); renderDock(); renderTaskbar(); };
+  if(el){ el.classList.add('is-minimizing'); setTimeout(commit, 250); }
+  else commit();
+}
 function maximizeApp(id){
-  const w=windows[id];
+  const w=windows[id]; if(!w) return;
+  const el=document.querySelector(`.window[data-id="${id}"]`);
+  const r1=el?el.getBoundingClientRect():null;
   if(w.isMaximized){ // restore
     Object.assign(w, w.prev); w.isMaximized=false;
   } else {
@@ -336,6 +354,21 @@ function maximizeApp(id){
   renderWindows();
   renderTaskbar();
   renderDock();
+  // fluid mac-like zoom: morph from old rect to new rect (suppress entrance animation)
+  const el2=document.querySelector(`.window[data-id="${id}"]`);
+  if(el2) el2.classList.add('no-anim');
+  if(r1 && el2){
+    const r2=el2.getBoundingClientRect();
+    if(r2.width>10 && r2.height>10 && (Math.abs(r1.left-r2.left)>1 || Math.abs(r1.top-r2.top)>1 || Math.abs(r1.width-r2.width)>1 || Math.abs(r1.height-r2.height)>1)){
+      const dx=r1.left-r2.left, dy=r1.top-r2.top, sx=r1.width/r2.width, sy=r1.height/r2.height;
+      try{
+        el2.animate([
+          {transform:`translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`, transformOrigin:'0 0', opacity:0.55},
+          {transform:'translate(0px, 0px) scale(1, 1)', transformOrigin:'0 0', opacity:1}
+        ],{duration:320, easing:'cubic-bezier(0.16,1,0.3,1)'});
+      }catch(e){}
+    }
+  }
 }
 function focusApp(id){
   const win=windows[id]; if(!win || win.isFocused) {
@@ -368,7 +401,10 @@ function renderWindows(){
   const open=Object.values(windows).filter(w=>w.isOpen).sort((a,b)=>a.z-b.z);
   open.forEach(win=>{
     const el=document.createElement('div');
-    el.className=`window ${win.isFocused?'is-focused':''} ${win.isMinimized?'is-minimized':''} ${win.isMaximized?'is-maximized':''}`;
+    // only freshly opened / restored windows play the entrance animation —
+    // sibling windows must not replay it on every re-render
+    el.className=`window ${win.isFocused?'is-focused':''} ${win.isMinimized?'is-minimized':''} ${win.isMaximized?'is-maximized':''} ${win._animDone?'no-anim':''}`;
+    win._animDone=true;
     el.style.left=win.x+'px'; el.style.top=win.y+'px'; el.style.width=win.w+'px'; el.style.height=win.h+'px'; el.style.zIndex=win.z;
     el.dataset.id=win.id;
     el.innerHTML=`
@@ -1172,67 +1208,45 @@ function getLocalAnswer(q){
   // (we let it fall through — the other handlers will answer the question, but we still greet respectfully as prefix if needed)
   // For combined like "hello who is abhishek", the specific handlers below will catch "who is abhishek" and answer correctly.
 
-  // ── Hindi / Marathi — understand and respond in same language ──
+  // ── English only: Hindi/Marathi queries are understood but always answered in English ──
   const wantsHindi = has('hindi me','hindi mai','in hindi','hindi mein','hindi bolo','hindi bol','hindi language','hindi main bolo');
   const wantsMarathi = has('marathi me','marathi mai','marathi mein','in marathi','marathi bolo','marathi sang','marathi bol','marathi main sang');
   const isDevanagari = /[\u0900-\u097F]/.test(raw);
   const hasHindiTokens = has('kaun','kya','kahan','kaise','hai','hain','aap','apka','aapka','mera','tumhara','tum','kya karta','kya padhta','kaunse','uske','usne','uska','batao','hai','ho','kya hai','kaun hai','hame','bhai ye','कौन','क्या','कहाँ','कैसे','है','हैं','आप','आपका','मेरा','तुम्हारा','क्या करता','कौन है','कौन हैं','क्या है');
   const hasMarathiTokens = has('kon','ahe','aahe','kay','kuthe','kontya','kuthun','kasa','kashi','tyache','tyane','tyacha','majha','tumcha','sang','ahet','kuthe','ahe','mala','tula','kon ahe','kay karto','kuthe shikto','konti','कोण','आहे','काय','कुठे','कोणत्या','माझे','तुमचे','त्याचे','त्याने','त्याचा','कोण आहे','काय करतो','कुठे शिकतो','कोणती');
-  let lang = 'en';
-  if(wantsHindi) lang='hi';
-  else if(wantsMarathi) lang='mr';
-  else if(isDevanagari){
-    const marathiDev = ['अहे','आहे','काय','कुठे','कोणत्या','माझे','तुझे','तुमचे','त्याचे','त्याने','त्याचा','कोण','कसा','कशी','कुठून','सांगा'].some(w=> raw.includes(w));
-    lang = marathiDev ? 'mr' : 'hi';
-  } else if(hasMarathiTokens && !hasHindiTokens) lang='mr';
-  else if(hasHindiTokens && !hasMarathiTokens) lang='hi';
-  else if(hasHindiTokens && hasMarathiTokens){
-    if(has('ahe','aahe','kuthe','kontya','majha')) lang='mr'; else lang='hi';
-  }
-  if(lang==='hi' || lang==='mr'){
-    // explicit language request without other content
+  const nonEnglish = wantsHindi || wantsMarathi || isDevanagari || hasHindiTokens || hasMarathiTokens;
+  if(nonEnglish){
+    // explicit language request without other content — English only
     if((wantsHindi || wantsMarathi) && tokens.length <= 3){
-      if(lang==='mr') return `होय, नक्की! आता मी <b>मराठी</b> मध्ये बोलेन. विचारा — <i>अभिषेक कोण आहे?</i>, <i>त्याचे प्रोजेक्ट्स कोणते?</i>, <i>सर्टिफिकेट्स कोणती?</i> किंवा <i>संपर्क कसा करायचा?</i><br><span class="opacity-60 text-xs">भाषा बदलण्यासाठी “hindi me bolo” किंवा “in english” म्हणा.</span>`;
-      return `हां, बिल्कुल! अब मैं <b>हिंदी</b> में जवाब दूंगा। पूछिए — <i>अभिषेक कौन है?</i>, <i>उसके प्रोजेक्ट्स कौन से हैं?</i>, <i>सर्टिफिकेट्स कौन से हैं?</i> या <i>संपर्क कैसे करें?</i><br><span class="opacity-60 text-xs">भाषा बदलने के लिए “marathi me sang” या “in english” कहें।</span>`;
+      return `I speak <b>English only</b> 🙂<br>Please ask in English — try: <i>Who is Abhishek?</i> • <i>Show me his 7 projects</i> • <i>List all 11 certifications</i> • <i>How to contact?</i><br>[OPEN_ABOUT]`;
     }
-    // Hindi/Marathi intents — who is abhishek — handles Roman & Devanagari
-    if(has('kaun hai','कौन है','kon ahe','कोण आहे','abhishek kaun','अभिषेक कौन','abhishek kon','अभिषेक कोण','who is abhishek','अभिषेक कौन है','अभिषेक कोण आहे')){
-      if(lang==='mr') return `<b>Abhishek Jadhav</b> ha <b>${_profile.headline}</b> cha Creative Developer ahe.<br>To Baramati, Maharashtra cha BCA 2026 cha vidyarthi ahe. C++, Python, JavaScript var kaam karto. GitHub: <b>0xAbhi13</b> — <a href="${_links.github}" target="_blank" class="text-violet-300 underline">${_links.github}</a> • Portfolio: <a href="${_links.portfolioWebsite}" target="_blank" class="text-violet-300 underline">${_links.portfolioWebsite}</a><br>[OPEN_ABOUT]`;
-      return `<b>Abhishek Jadhav</b> ek <b>${_profile.headline}</b> hai.<br>Wo Baramati, Maharashtra se BCA 2026 ka student hai aur C++, Python, JavaScript me kaam karta hai. GitHub: <b>0xAbhi13</b> — <a href="${_links.github}" target="_blank" class="text-violet-300 underline">${_links.github}</a><br>[OPEN_ABOUT]`;
+    // who is abhishek (Hindi/Marathi understood, answered in English)
+    if(has('kaun hai','कौन है','kon ahe','कोण आहे','abhishek kaun','अभिषेक कौन','abhishek kon','अभिषेक कोण','अभिषेक कौन है','अभिषेक कोण आहे')){
+      return `<b>Abhishek Jadhav — ${_profile.headline}</b><br><br>${_profile.summary || 'BCA student from Baramati, building web experiences with C++, Python, JavaScript.'}<br><br><b>Alias:</b> ${_identity.ownerAlias} • <b>Location:</b> ${_profile.location} • <b>GitHub:</b> <a href="${_links.github}" target="_blank" class="text-violet-300 underline">${_links.github}</a><br>[OPEN_ABOUT] [OPEN_CONTACT]`;
     }
-    if(has('kya karta hai','क्या करता है','kay karto','काय करतो','what does') && has('abhishek')){
-      if(lang==='mr') return `<b>Abhishek</b> web applications banavto, modern technologies var prayog karto — <b>7 projects</b> (BeatForge, PDFForge, Emotion, MagicSearch, AirCanvas, VoiceVision + Portfolio) ani <b>11 certifications</b>. Tyache focus C++ fundamentals, Python, JavaScript, DSA ahe.<br>[OPEN_ABOUT]`;
-      return `<b>Abhishek</b> web applications banata hai aur modern technologies par experiment karta hai — <b>7 projects</b> aur <b>11 certifications</b>. Focus: C++ fundamentals, Python, JavaScript, DSA, React.<br>[OPEN_ABOUT]`;
+    if(has('kya karta hai','क्या करता है','kay karto','काय करतो') && has('abhishek')){
+      return `<b>${_profile.name} — ${_profile.headline}</b><br><br>${_profile.summary || ''}<br><br><b>Focus:</b> C++ fundamentals, Python shipping, JavaScript web, DSA, React.<br>[OPEN_ABOUT]`;
     }
-    if(has('kya padhta hai','kahan padhta','kuthe shikto','shikshan','education') && (has('abhishek') || has('padhta') || has('shikto'))){
-      if(lang==='mr') return `<b>Shikshan:</b> ${_education.degree} — ${_education.institution} (${_education.graduation})<br><span class="opacity-60">${_education.affiliation}</span><br>Thikan: ${_profile.location}<br>[OPEN_ABOUT]`;
-      return `<b>Padhai:</b> ${_education.degree} — ${_education.institution} (${_education.graduation})<br><span class="opacity-60">${_education.affiliation}</span><br>Location: ${_profile.location}<br>[OPEN_ABOUT]`;
+    if(has('kya padhta hai','kahan padhta','kuthe shikto','shikshan') && (has('abhishek') || has('padhta') || has('shikto'))){
+      return `<b>Education:</b> ${_education.degree} — ${_education.institution} (${_education.graduation})<br><span class="opacity-60">${_education.affiliation}</span><br>Location: ${_profile.location}<br>[OPEN_ABOUT]`;
     }
     if(has('skills kya hai','skills kay','takneek','technologies','kya aata hai','kay yeta')){
-      if(lang==='mr') return `<b>Skills — 5 prakar:</b><br>${_skills.map(s=> `• <b>${s.category}</b>: ${s.items.join(' • ')}`).join('<br>')}<br>[OPEN_SKILLS]`;
-      return `<b>Skills — 5 categories:</b><br>${_skills.map(s=> `• <b>${s.category}</b>: ${s.items.join(' • ')}`).join('<br>')}<br>[OPEN_SKILLS]`;
+      return `<b>Tech Stack — ${_skills.length} Categories</b><br>${_skills.map(s=> `• <b>${s.category}</b>: ${s.items.join(' • ')}`).join('<br>')}<br>[OPEN_SKILLS]`;
     }
     if(has('projects kaunse','projects kaun','konte projects','projects kay','projects kya')){
-      if(lang==='mr') return `<b>7 Projects — 0xAbhi13</b><br>${_projects.map(p=> `• <b>${p.name}</b> — ${p.category}`).join('<br>')}<br>[OPEN_PROJECTS]`;
-      return `<b>7 Projects — 0xAbhi13</b><br>${_projects.map(p=> `• <b>${p.name}</b> — ${p.category}`).join('<br>')}<br>[OPEN_PROJECTS]`;
+      return `<b>${_projects.length} Projects — ${_identity.githubUsername}</b><br>${_projects.map(p=> `• <b>${p.name}</b> — ${p.category}`).join('<br>')}<br>[OPEN_PROJECTS]`;
     }
     if(has('certificates kaunse','certificates kaun','konti cert','certificates kay','pramanpatra')){
-      if(lang==='mr') return `<b>${_certs.length} Certificates — All Verified ✅:</b><br>${_certs.map(c=> `• <b>${c.title}</b> — ${c.issuer} (${c.issued})`).join('<br>')}<br>[OPEN_CERTIFICATIONS]`;
-      return `<b>${_certs.length} Certificates — All Verified ✅:</b><br>${_certs.map(c=> `• <b>${c.title}</b> — ${c.issuer} (${c.issued})`).join('<br>')}<br>[OPEN_CERTIFICATIONS]`;
+      return `<b>${_certs.length} Certificates — All Verified ✅</b><br>${_certs.map(c=> `• <b>${c.title}</b> — ${c.issuer} (${c.issued})`).join('<br>')}<br>[OPEN_CERTIFICATIONS]`;
     }
     if(has('contact kaise','contact kasa','kaise contact','kasa contact','sampark kaise','sampark kasa','github kahan','github kuthe','linkedin kahan')){
-      if(lang==='mr') return `<b>Sampark:</b><br>Email: <a href="mailto:${_contact.email}" class="text-violet-300 underline">${_contact.email}</a><br>GitHub: <a href="${_contact.github}" target="_blank" class="text-violet-300 underline">${_contact.github}</a><br>LinkedIn: <a href="${_contact.linkedin}" target="_blank" class="text-violet-300 underline">${_contact.linkedin}</a><br>Thikan: ${_contact.location}<br>[OPEN_CONTACT]`;
       return `<b>Contact:</b><br>Email: <a href="mailto:${_contact.email}" class="text-violet-300 underline">${_contact.email}</a><br>GitHub: <a href="${_contact.github}" target="_blank" class="text-violet-300 underline">${_contact.github}</a><br>LinkedIn: <a href="${_contact.linkedin}" target="_blank" class="text-violet-300 underline">${_contact.linkedin}</a><br>[OPEN_CONTACT]`;
     }
     if(has('flask') || has('javascript') || has('python') || has('project') || has('sqlite') || has('php') || has('mysql') || has('certificate') || has('cert') || has('skill') || has('contact') || has('github') || has('linkedin') || has('portfolio') || has('hosting') || has('education') || has('padhta') || has('shikto') || has('kaunse') || has('konti') || has('kya') || has('kay')){
-      // let tech/project queries fall through to main handlers (they handle Hindi roman too)
+      // let tech/project queries fall through to main English handlers
     } else {
-      // pure Hindi/Marathi greeting or unclear — respond in that language
-      if(lang==='mr'){
-        return `नमस्कार! 🙏 मी <b>Ask Abhi</b> — <b>${_identity.ownerName}</b> चा portfolio assistant.<br>तुम्ही मराठीत विचारू शकता: <i>अभिषेक कोण आहे?</i>, <i>त्याचे प्रोजेक्ट्स कोणते?</i>, <i>सर्टिफिकेट्स कोणती?</i>, <i>संपर्क कसा करायचा?</i><br><span class="opacity-60 text-xs">इंग्रजीसाठी “in english” म्हणा.</span><br>[OPEN_ABOUT]`;
-      } else {
-        return `नमस्ते! 🙏 मैं <b>Ask Abhi</b> — <b>${_identity.ownerName}</b> का portfolio assistant हूँ।<br>आप हिंदी में पूछ सकते हैं: <i>अभिषेक कौन है?</i>, <i>उसके प्रोजेक्ट्स कौन से हैं?</i>, <i>सर्टिफिकेट्स कौन से हैं?</i>, <i>संपर्क कैसे करें?</i><br><span class="opacity-60 text-xs">For English, say “in english”.</span><br>[OPEN_ABOUT]`;
-      }
+      // unclear non-English input — reply in English only
+      return `I speak <b>English only</b> 🙂<br>Please ask in English — try: <i>Who is Abhishek?</i> • <i>Show me his 7 projects</i> • <i>List all 11 certifications</i> • <i>What are his skills?</i><br>[OPEN_ABOUT]`;
     }
   }
 
