@@ -508,6 +508,9 @@ html{font-size:15px}
 #menuBar *, #taskbar * { min-width:0; }
 #menuBar button, #taskbar button { min-width:0; }
 
+/* Ask Abhi header actions — exactly one clear control per platform */
+@media(max-width:639px){ .ask-desk-actions{display:none !important} }
+@media(min-width:640px){ .ask-clear-btn{display:none !important} }
 /* Ask Abhi clear-chat button — hard lock: icon always centered, never overlapping */
 .ask-clear-btn{display:flex !important; align-items:center !important; justify-content:center !important; overflow:hidden !important}
 .ask-clear-btn svg{width:14px !important; height:14px !important; min-width:14px !important; min-height:14px !important; max-width:14px !important; max-height:14px !important; display:block !important; flex:none !important; margin:0 !important; padding:0 !important}

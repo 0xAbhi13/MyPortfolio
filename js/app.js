@@ -990,10 +990,10 @@ function appAskAbhi(){
           <span class="hidden sm:inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 bg-violet-500/12 text-violet-300 rounded-full border border-violet-500/20">Professional</span>
           <span class="hidden lg:inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 bg-white/5 text-white/60 rounded-full border border-white/10">Offline AI</span>
         </div>
-        <p class="text-[11px] leading-none text-white/50 mt-0.5 truncate hidden sm:block">${(typeof ASK_ABHI_KNOWLEDGE !== 'undefined' ? ASK_ABHI_KNOWLEDGE.projects.length : 7)} projects • ${(typeof ASK_ABHI_KNOWLEDGE !== 'undefined' ? ASK_ABHI_KNOWLEDGE.certificates.length : 9)} certs • skills • architecture • replies instantly • private</p>
+        <p class="text-[11px] leading-none text-white/50 mt-0.5 truncate hidden sm:block">${(typeof ASK_ABHI_KNOWLEDGE !== 'undefined' ? ASK_ABHI_KNOWLEDGE.projects.length : 7)} projects • ${(typeof ASK_ABHI_KNOWLEDGE !== 'undefined' ? ASK_ABHI_KNOWLEDGE.certificates.length : 9)} certs • skills • verified data • private</p>
         <p class="text-[11px] leading-none text-white/50 mt-0.5 sm:hidden">0xAbhi13 • ${(typeof ASK_ABHI_KNOWLEDGE !== 'undefined' ? ASK_ABHI_KNOWLEDGE.projects.length : 7)} projects • ${(typeof ASK_ABHI_KNOWLEDGE !== 'undefined' ? ASK_ABHI_KNOWLEDGE.certificates.length : 9)} certs</p>
       </div>
-      <div class="hidden sm:flex items-center gap-1.5 shrink-0">
+      <div class="ask-desk-actions hidden sm:flex items-center gap-1.5 shrink-0">
         <span class="hidden md:inline-flex items-center gap-1.5 text-[10px] px-2 py-1 bg-white/[0.04] border border-white/10 rounded-full text-white/60"><i data-lucide="shield-check" class="w-3 h-3 text-violet-400"></i> No data stored</span>
         <button onclick="clearAskChat()" title="Clear chat" class="inline-flex items-center gap-1 text-[11px] px-2 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full transition"><i data-lucide="trash-2" class="w-3 h-3 min-w-[12px] min-h-[12px] shrink-0"></i> Clear</button>
         <span class="px-2.5 py-1 bg-gradient-to-r from-violet-600 to-indigo-600 rounded-full text-[11px] font-bold text-white shadow-md shadow-violet-600/20">0xAbhi13</span>
@@ -1015,8 +1015,8 @@ function appAskAbhi(){
               <span class="text-[10px] px-1.5 py-0.5 bg-white/5 border border-white/10 rounded-full opacity-60">Professional</span>
               <span class="text-[10px] opacity-40">• Just now</span>
             </div>
-            <p class="font-medium">Hi! I'm <span class="text-violet-300">Ask Abhi</span> — your professional guide to <span class="text-white font-semibold">Abhishek Jadhav (0xAbhi13)</span>.</p>
-            <p class="opacity-70 mt-1.5 text-[13px] leading-relaxed">I know <b class="text-white/90 font-semibold">everything</b> in this portfolio: <b>7 projects</b> with stacks & GitHub, <b>11 certifications</b> with verify links, 5 skill categories, BCA 2026 Baramati, contact, photos & architecture. Ask in natural language.</p>
+            <p class="font-medium"><span class="text-violet-300">Ask Abhi</span> — Portfolio Assistant for <span class="text-white font-semibold">Abhishek Jadhav (0xAbhi13)</span>.</p>
+            <p class="opacity-70 mt-1.5 text-[13px] leading-relaxed">Direct answers from this portfolio: <b>7 projects</b> with stacks and GitHub, <b>11 verified certifications</b>, 5 skill categories, education, and contact. Ask a question below.</p>
             <div class="flex flex-wrap gap-1.5 mt-3">
               <span class="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-violet-500/12 text-violet-300 rounded-full border border-violet-500/20 font-medium"><i data-lucide="code-2" class="w-3 h-3"></i> 7 projects</span>
               <span class="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-emerald-500/12 text-emerald-300 rounded-full border border-emerald-500/20 font-medium"><i data-lucide="award" class="w-3 h-3"></i> 11 certs verified</span>
@@ -1034,7 +1034,7 @@ function appAskAbhi(){
           const qs = K ? K.getSuggestedQuestions() : ["Who is Abhishek Jadhav?","What are Abhishek's skills?","Show me his 7 projects","List all 11 certifications with verify links","Which project uses Flask?","Tell me about 0xBeatForge"];
           const meta = [
             {icon:"user", desc:"Owner • BCA 2026 • Baramati", grad:"from-violet-600/20 to-indigo-600/20", border:"border-violet-500/20"},
-            {icon:"cpu", desc:"5 cats • C++/Python/JS", grad:"from-amber-500/15 to-orange-500/15", border:"border-amber-500/20"},
+            {icon:"cpu", desc:"5 areas • C++/Python/JS", grad:"from-amber-500/15 to-orange-500/15", border:"border-amber-500/20"},
             {icon:"code-2", desc:"7 shipped • stacks • GitHub", grad:"from-violet-600/20 to-indigo-600/20", border:"border-violet-500/20"},
             {icon:"award", desc:"11 verified • IBM • Saylor • Jio", grad:"from-emerald-500/15 to-teal-500/15", border:"border-emerald-500/20"},
             {icon:"github", desc:"@0xAbhi13 • Source", grad:"from-zinc-700/20 to-zinc-800/20", border:"border-white/10"},
@@ -1097,7 +1097,7 @@ function askForm(e){
       // store raw text for copy
       const rawForCopy = ans.replace(/<[^>]*>/g,'').replace(/\[OPEN_[^\]]+\]/g,'').trim().slice(0,4000);
       const escCopy = rawForCopy.replace(/'/g,"\\'").replace(/"/g,'&quot;');
-      el.outerHTML=`<div class="flex gap-2 msg-user min-w-0 group/msg"><div class="w-6 h-6 min-w-[24px] min-h-[24px] max-w-[24px] max-h-[24px] rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center flex-none shrink-0 mt-0.5 overflow-hidden"><i data-lucide="bot" class="w-3 h-3 min-w-[12px] min-h-[12px] text-violet-400 shrink-0"></i></div><div class="flex-1 min-w-0 relative px-3.5 py-2.5 rounded-2xl rounded-tl-sm bg-white/[0.06] border border-white/[0.08] text-sm whitespace-pre-wrap leading-relaxed backdrop-blur shadow-sm break-words overflow-hidden"><button onclick="copyAskResponse(this, '${escCopy.replace(/\n/g,'\\n')}')" title="Copy response" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center opacity-60 hover:opacity-100 transition flex"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button><div class="pr-8">${content}</div></div></div>`;
+       el.outerHTML=`<div class="flex gap-2 msg-user min-w-0 group/msg"><div class="w-6 h-6 min-w-[24px] min-h-[24px] max-w-[24px] max-h-[24px] rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center flex-none shrink-0 mt-0.5 overflow-hidden"><i data-lucide="bot" class="w-3 h-3 min-w-[12px] min-h-[12px] text-violet-400 shrink-0"></i></div><div class="flex-1 min-w-0 relative px-3.5 py-2.5 rounded-2xl rounded-tl-sm bg-white/[0.06] border border-white/[0.08] text-sm whitespace-pre-wrap leading-relaxed backdrop-blur shadow-sm break-words overflow-hidden"><button onclick="copyAskResponse(this, '${escCopy.replace(/\n/g,'\\n')}')" title="Copy response" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center opacity-60 hover:opacity-100 transition flex"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button><div class="flex items-center gap-1.5 mb-1.5 pr-8"><span class="text-[11px] font-bold tracking-wide text-violet-300">Ask Abhi</span><span class="text-[9px] px-1.5 py-px bg-violet-500/15 text-violet-300/90 rounded-full border border-violet-500/20 font-medium">Assistant</span></div><div class="pr-8">${content}</div></div></div>`;
       lucide.createIcons();
       box.scrollTop=box.scrollHeight;
       // update context with assistant answer
@@ -1170,6 +1170,13 @@ function getLocalAnswer(q){
   });
   const hasAny = (...ks) => has(...ks);
   const hasAll = (...ks) => ks.every(k=> clean.includes(k.toLowerCase()) || lower.includes(k.toLowerCase()));
+  // strict word matcher for Indian-language detection — avoids English collisions
+  // (e.g. 'ho' inside 'who'/'how'/'show' must NOT count as Hindi)
+  const hasWord = (...ks) => ks.some(k=> {
+    const lk = k.toLowerCase();
+    if(lk.includes(' ') || /[\u0900-\u097F]/.test(lk)) return clean.includes(lk) || lower.includes(lk);
+    return tokens.includes(lk);
+  });
   // casual Indian English normalization: bhai, bro, yaar, abhi, abhishek
   const isCasual = has('bhai','bro','yaar','abhi','abhishek');
   // track history
@@ -1200,26 +1207,21 @@ function getLocalAnswer(q){
     else if(hour < 12) timeGreet = "Good morning";
     else if(hour < 17) timeGreet = "Good afternoon";
     else timeGreet = "Good evening";
-    const greetEmoji = timeGreet.includes("morning") ? "🌅" : timeGreet.includes("evening") ? "🌆" : timeGreet.includes("night") ? "🌙" : "👋";
-    // respectful, professional, mentions owner
-    return `${timeGreet}! ${greetEmoji} <b>Namaste!</b> I'm <b>Ask Abhi</b> — the official AI assistant for <b>${_identity.ownerName} (${_identity.ownerAlias})</b>.<br><br>It's a pleasure to have you here on <b>${_identity.ownerName}'s</b> portfolio. I have complete knowledge of his <b>${_projects.length} projects</b>, <b>${_certs.length} certifications</b> (with verify links), skills, education (BCA 2026, Baramati), and this website itself.<br><br>How may I help you today? You can ask me things like:<br>• <i>Who is Abhishek?</i><br>• <i>What projects has he built?</i><br>• <i>List all 11 certifications</i><br>• <i>Where is his GitHub?</i><br><br>Feel free to ask in English or casual Indian English — like “<i>bhai who is abhishek?</i>”<br>[OPEN_ABOUT] [OPEN_PROJECTS] [OPEN_CERTIFICATIONS]`;
+    // professional greeting — no emojis, no filler
+    return `${timeGreet}. I'm <b>Ask Abhi</b> — portfolio assistant for <b>${_identity.ownerName} (${_identity.ownerAlias})</b>.<br><br>Coverage: <b>${_projects.length} projects</b> (stacks, GitHub) • <b>${_certs.length} verified certifications</b> • skills • education (BCA 2026, Baramati) • contact.<br><br>Ask:<br>• <i>Who is Abhishek?</i><br>• <i>What projects has he built?</i><br>• <i>List all 11 certifications</i><br>• <i>Where is his GitHub?</i><br>[OPEN_ABOUT] [OPEN_PROJECTS] [OPEN_CERTIFICATIONS]`;
   }
   // if greeting + question (e.g., "hi who is abhishek"), strip greeting prefix and continue to other intents
   // (we let it fall through — the other handlers will answer the question, but we still greet respectfully as prefix if needed)
   // For combined like "hello who is abhishek", the specific handlers below will catch "who is abhishek" and answer correctly.
 
   // ── English only: Hindi/Marathi queries are understood but always answered in English ──
-  const wantsHindi = has('hindi me','hindi mai','in hindi','hindi mein','hindi bolo','hindi bol','hindi language','hindi main bolo');
-  const wantsMarathi = has('marathi me','marathi mai','marathi mein','in marathi','marathi bolo','marathi sang','marathi bol','marathi main sang');
+  const wantsHindi = hasWord('hindi me','hindi mai','in hindi','hindi mein','hindi bolo','hindi bol','hindi language','hindi main bolo');
+  const wantsMarathi = hasWord('marathi me','marathi mai','marathi mein','in marathi','marathi bolo','marathi sang','marathi bol','marathi main sang');
   const isDevanagari = /[\u0900-\u097F]/.test(raw);
-  const hasHindiTokens = has('kaun','kya','kahan','kaise','hai','hain','aap','apka','aapka','mera','tumhara','tum','kya karta','kya padhta','kaunse','uske','usne','uska','batao','hai','ho','kya hai','kaun hai','hame','bhai ye','कौन','क्या','कहाँ','कैसे','है','हैं','आप','आपका','मेरा','तुम्हारा','क्या करता','कौन है','कौन हैं','क्या है');
-  const hasMarathiTokens = has('kon','ahe','aahe','kay','kuthe','kontya','kuthun','kasa','kashi','tyache','tyane','tyacha','majha','tumcha','sang','ahet','kuthe','ahe','mala','tula','kon ahe','kay karto','kuthe shikto','konti','कोण','आहे','काय','कुठे','कोणत्या','माझे','तुमचे','त्याचे','त्याने','त्याचा','कोण आहे','काय करतो','कुठे शिकतो','कोणती');
+  const hasHindiTokens = hasWord('kaun','kya','kahan','kaise','hai','hain','aap','apka','aapka','mera','tumhara','tum','kya karta','kya padhta','kaunse','uske','usne','uska','batao','hai','ho','kya hai','kaun hai','hame','bhai ye','कौन','क्या','कहाँ','कैसे','है','हैं','आप','आपका','मेरा','तुम्हारा','क्या करता','कौन है','कौन हैं','क्या है');
+  const hasMarathiTokens = hasWord('kon','ahe','aahe','kay','kuthe','kontya','kuthun','kasa','kashi','tyache','tyane','tyacha','majha','tumcha','sang','ahet','kuthe','ahe','mala','tula','kon ahe','kay karto','kuthe shikto','konti','कोण','आहे','काय','कुठे','कोणत्या','माझे','तुमचे','त्याचे','त्याने','त्याचा','कोण आहे','काय करतो','कुठे शिकतो','कोणती');
   const nonEnglish = wantsHindi || wantsMarathi || isDevanagari || hasHindiTokens || hasMarathiTokens;
   if(nonEnglish){
-    // explicit language request without other content — English only
-    if((wantsHindi || wantsMarathi) && tokens.length <= 3){
-      return `I speak <b>English only</b> 🙂<br>Please ask in English — try: <i>Who is Abhishek?</i> • <i>Show me his 7 projects</i> • <i>List all 11 certifications</i> • <i>How to contact?</i><br>[OPEN_ABOUT]`;
-    }
     // who is abhishek (Hindi/Marathi understood, answered in English)
     if(has('kaun hai','कौन है','kon ahe','कोण आहे','abhishek kaun','अभिषेक कौन','abhishek kon','अभिषेक कोण','अभिषेक कौन है','अभिषेक कोण आहे')){
       return `<b>Abhishek Jadhav — ${_profile.headline}</b><br><br>${_profile.summary || 'BCA student from Baramati, building web experiences with C++, Python, JavaScript.'}<br><br><b>Alias:</b> ${_identity.ownerAlias} • <b>Location:</b> ${_profile.location} • <b>GitHub:</b> <a href="${_links.github}" target="_blank" class="text-violet-300 underline">${_links.github}</a><br>[OPEN_ABOUT] [OPEN_CONTACT]`;
@@ -1237,17 +1239,12 @@ function getLocalAnswer(q){
       return `<b>${_projects.length} Projects — ${_identity.githubUsername}</b><br>${_projects.map(p=> `• <b>${p.name}</b> — ${p.category}`).join('<br>')}<br>[OPEN_PROJECTS]`;
     }
     if(has('certificates kaunse','certificates kaun','konti cert','certificates kay','pramanpatra')){
-      return `<b>${_certs.length} Certificates — All Verified ✅</b><br>${_certs.map(c=> `• <b>${c.title}</b> — ${c.issuer} (${c.issued})`).join('<br>')}<br>[OPEN_CERTIFICATIONS]`;
+      return `<b>${_certs.length} Certificates — All Verified</b><br>${_certs.map(c=> `• <b>${c.title}</b> — ${c.issuer} (${c.issued})`).join('<br>')}<br>[OPEN_CERTIFICATIONS]`;
     }
     if(has('contact kaise','contact kasa','kaise contact','kasa contact','sampark kaise','sampark kasa','github kahan','github kuthe','linkedin kahan')){
       return `<b>Contact:</b><br>Email: <a href="mailto:${_contact.email}" class="text-violet-300 underline">${_contact.email}</a><br>GitHub: <a href="${_contact.github}" target="_blank" class="text-violet-300 underline">${_contact.github}</a><br>LinkedIn: <a href="${_contact.linkedin}" target="_blank" class="text-violet-300 underline">${_contact.linkedin}</a><br>[OPEN_CONTACT]`;
     }
-    if(has('flask') || has('javascript') || has('python') || has('project') || has('sqlite') || has('php') || has('mysql') || has('certificate') || has('cert') || has('skill') || has('contact') || has('github') || has('linkedin') || has('portfolio') || has('hosting') || has('education') || has('padhta') || has('shikto') || has('kaunse') || has('konti') || has('kya') || has('kay')){
-      // let tech/project queries fall through to main English handlers
-    } else {
-      // unclear non-English input — reply in English only
-      return `I speak <b>English only</b> 🙂<br>Please ask in English — try: <i>Who is Abhishek?</i> • <i>Show me his 7 projects</i> • <i>List all 11 certifications</i> • <i>What are his skills?</i><br>[OPEN_ABOUT]`;
-    }
+    // anything else falls through to the main English handlers below
   }
 
   const fmtCert = c => `• <b>${c.title}</b> — <span class="text-violet-300">${c.issuer}</span> <span class="opacity-60">(${c.issued})</span><br><span class="text-[11px] opacity-60">ID: <span class="font-mono">${c.credentialId||'—'}</span> • <a href="${c.verifyUrl}" target="_blank" rel="noopener" class="text-violet-300 underline">Verify →</a></span>`;
@@ -1272,7 +1269,7 @@ function getLocalAnswer(q){
     return `<b>${_identity.ownerName} created and owns this portfolio.</b><br>It is his personal portfolio website (repository <code>${_identity.portfolioRepository}</code>) built with vanilla HTML/CSS/JS and deployed to <b>${_website.hosting}</b>.<br>Source: <a href="${_links.githubPortfolio}" target="_blank" class="text-violet-300 underline">${_links.githubPortfolio}</a> • Live: <a href="${_links.portfolioWebsite}" target="_blank" class="text-violet-300 underline">${_links.portfolioWebsite}</a><br>[OPEN_ABOUT]`;
   }
   if( has('who is ask abhi') || has('what is ask abhi') || has('who created ask abhi') || has('why was ask abhi created') || has('what can ask abhi do') ){
-    return `<b>Ask Abhi</b> is the official AI assistant for <b>${_identity.ownerName}'s</b> portfolio.<br><br><b>Created by:</b> ${_identity.creator}<br><b>Purpose:</b> ${(K && K.assistant && K.assistant.purpose) || 'Help visitors learn about Abhishek, his portfolio, projects, skills, education, certificates and website features'}<br><b>What I can do:</b> ${(K && K.assistant && K.assistant.capabilities) ? K.assistant.capabilities.map(c=> `• ${c}`).join('<br>') : '• Answer about projects, skills, certificates, education, contact, architecture, navigation'}<br><br>I understand natural language, casual Indian English (bhai, bro, show projects), and context from previous messages. All answers come from the centralized knowledge at <code>js/askAbhiKnowledge.js</code> + live portfolio data.<br>[OPEN_ABOUT]`;
+    return `<b>Ask Abhi</b> is the official AI assistant for <b>${_identity.ownerName}'s</b> portfolio.<br><br><b>Created by:</b> ${_identity.creator}<br><b>Purpose:</b> ${(K && K.assistant && K.assistant.purpose) || 'Help visitors learn about Abhishek, his portfolio, projects, skills, education, certificates and website features'}<br><b>What I can do:</b> ${(K && K.assistant && K.assistant.capabilities) ? K.assistant.capabilities.map(c=> `• ${c}`).join('<br>') : '• Answer about projects, skills, certificates, education, contact, architecture, navigation'}<br><br>I understand natural-language questions, including short queries, and keep context from previous messages. All answers come from the centralized knowledge at <code>js/askAbhiKnowledge.js</code> + live portfolio data.<br>[OPEN_ABOUT]`;
   }
 
   // ── 2. Online / Offline awareness ──
@@ -1375,10 +1372,10 @@ function getLocalAnswer(q){
   }
   // general cert list covers "what certificates does abhishek have", "show me certificates", "which organization issued", "when did he receive"
   if(has('certificate','certificates','certs','certified') || has('which organization issued') || has('when did abhishek receive')){
-    return `<b>Abhishek — ${_certs.length} Certifications — All Verified ✅</b><br><br>${allCertsList}<br><br>All ${_certs.length} certificates are verified — each has a <b>Verify →</b> link above and View + Verify on its portfolio card. Ask “Verify Jio AI” or “What is CS301?” for details.<br>[OPEN_CERTIFICATIONS]`;
+    return `<b>Abhishek — ${_certs.length} Certifications — All Verified</b><br><br>${allCertsList}<br><br>All ${_certs.length} certificates are verified — each has a <b>Verify →</b> link above and View + Verify on its portfolio card. Ask “Verify Jio AI” or “What is CS301?” for details.<br>[OPEN_CERTIFICATIONS]`;
   }
   if(has('what certificates does abhishek have') || has('show me abhisheks certificates')){
-    return `<b>${_certs.length} Certificates — All Verified ✅</b><br><br>${allCertsList}<br>[OPEN_CERTIFICATIONS]`;
+    return `<b>${_certs.length} Certificates — All Verified</b><br><br>${allCertsList}<br>[OPEN_CERTIFICATIONS]`;
   }
 
   // ── 7. Skills ──

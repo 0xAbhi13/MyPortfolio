@@ -154,7 +154,7 @@
       ],
       limitations: "Offline, no backend, no hallucination. English only — Hindi/Marathi queries are understood but always answered in English. If unknown: 'I don't have that information in my portfolio knowledge base yet.' — Never invent.",
       lastKnowledgeUpdate: LAST_UPDATE,
-      languageSupport: ["English","Casual Indian English (bhai, what does abhi do, show projects)"]
+      languageSupport: ["English"]
     }
   };
 
