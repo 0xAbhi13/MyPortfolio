@@ -347,32 +347,16 @@ function minimizeApp(id){
 }
 function maximizeApp(id){
   const w=windows[id]; if(!w) return;
-  const el=document.querySelector(`.window[data-id="${id}"]`);
-  const r1=el?el.getBoundingClientRect():null;
   if(w.isMaximized){ // restore
     Object.assign(w, w.prev); w.isMaximized=false; w.snap=null;
   } else {
     if(!w.snap) w.prev={x:w.x,y:w.y,w:w.w,h:w.h}; // snapped windows already hold the windowed rect
     const wa=getWorkArea(); w.x=wa.left; w.y=wa.top; w.w=wa.w; w.h=wa.h; w.isMaximized=true; w.snap=null;
   }
+  w._animDone=false; // replay the pure-CSS entrance so the switch feels smooth
   renderWindows();
   renderTaskbar();
   renderDock();
-  // fluid mac-like zoom: morph from old rect to new rect (suppress entrance animation)
-  const el2=document.querySelector(`.window[data-id="${id}"]`);
-  if(el2) el2.classList.add('no-anim');
-  if(r1 && el2){
-    const r2=el2.getBoundingClientRect();
-    if(r2.width>10 && r2.height>10 && (Math.abs(r1.left-r2.left)>1 || Math.abs(r1.top-r2.top)>1 || Math.abs(r1.width-r2.width)>1 || Math.abs(r1.height-r2.height)>1)){
-      const dx=r1.left-r2.left, dy=r1.top-r2.top, sx=r1.width/r2.width, sy=r1.height/r2.height;
-      try{
-        el2.animate([
-          {transform:`translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`, transformOrigin:'0 0', opacity:0.55},
-          {transform:'translate(0px, 0px) scale(1, 1)', transformOrigin:'0 0', opacity:1}
-        ],{duration:320, easing:'cubic-bezier(0.16,1,0.3,1)'});
-      }catch(e){}
-    }
-  }
 }
 function focusApp(id){
   const win=windows[id]; if(!win || win.isFocused) {
@@ -476,22 +460,12 @@ function bindDrag(){
       if(e.target.closest('button')) return;
       const id=h.dataset.drag, win=windows[id];
       focusApp(id);
-      // Windows: dragging a maximized/snapped window restores it under the cursor
-      if(win.isMaximized || win.snap){
-        const host=h.closest ? h.closest('.window') : null;
-        const r=host && host.getBoundingClientRect ? host.getBoundingClientRect() : null;
-        const wa0=getWorkArea();
-        const pw=Math.min((win.prev && win.prev.w) || 700, wa0.w);
-        const ph=Math.min((win.prev && win.prev.h) || 480, wa0.h);
-        let relX=0.5;
-        if(r && r.width>1) relX=Math.min(0.95, Math.max(0.05, (e.clientX-r.left)/r.width));
-        win.isMaximized=false; win.snap=null;
-        win.w=pw; win.h=ph;
-        win.x=Math.max(wa0.left, Math.min(wa0.right-win.w, e.clientX-win.w*relX));
-        win.y=Math.max(wa0.top, Math.min(e.clientY-18, wa0.bottom-win.h));
-        renderWindows(); renderTaskbar();
-      }
-      drag={id, sx:e.clientX, sy:e.clientY, ox:win.x, oy:win.y, preview:null};
+      // Windows: a maximized/snapped window restores only once you actually
+      // MOVE the mouse (a plain click must NOT un-maximize it)
+      const host=h.closest ? h.closest('.window') : null;
+      const r=host && host.getBoundingClientRect ? host.getBoundingClientRect() : null;
+      drag={id, sx:e.clientX, sy:e.clientY, ox:win.x, oy:win.y, preview:null,
+            pendingRestore:(win.isMaximized || !!win.snap), restoreRect:r};
       document.addEventListener('mousemove', onDragMove);
       document.addEventListener('mouseup', onDragEnd);
       e.preventDefault();
@@ -507,6 +481,24 @@ function bindDrag(){
 function onDragMove(e){
   if(!drag) return;
   const win=windows[drag.id];
+  if(drag.pendingRestore){
+    // ignore tiny jitter: only a real drag restores (plain clicks keep fullscreen)
+    if(Math.hypot(e.clientX-drag.sx, e.clientY-drag.sy)<4) return;
+    const wa0=getWorkArea(), r=drag.restoreRect;
+    const pw=Math.min((win.prev && win.prev.w) || 700, wa0.w);
+    const ph=Math.min((win.prev && win.prev.h) || 480, wa0.h);
+    let relX=0.5;
+    if(r && r.width>1) relX=Math.min(0.95, Math.max(0.05, (e.clientX-r.left)/r.width));
+    win.isMaximized=false; win.snap=null;
+    win.w=pw; win.h=ph;
+    win.x=Math.max(wa0.left, Math.min(wa0.right-win.w, e.clientX-win.w*relX));
+    win.y=Math.max(wa0.top, Math.min(e.clientY-18, wa0.bottom-win.h));
+    renderWindows(); renderTaskbar();
+    // restart the drag origin post-restore so the window never jumps
+    drag.ox=win.x; drag.oy=win.y; drag.sx=e.clientX; drag.sy=e.clientY;
+    drag.pendingRestore=false;
+    return;
+  }
   win.x=drag.ox + (e.clientX-drag.sx);
   win.y=drag.oy + (e.clientY-drag.sy);
   // clamp
