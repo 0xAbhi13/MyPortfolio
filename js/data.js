@@ -153,11 +153,7 @@ const events = [
       { name: "Dr. Prashant Suryawanshi", role: "Associate Dean, Faculty of Commerce & Management, SPPU" },
       { name: "Rajeev Sawant", role: "Director of Finance, Ferrero India" },
       { name: "Shyamlal Giridhar", role: "General Manager–HR, Piaggio Vehicles Pvt. Ltd." },
-<<<<<<< HEAD
-      { name: "Hemant Malsange", role: "Director–IT, Piaggio Vehicles Pvt. Ltd." }
-=======
       { name: "Hemant Mudaliar", role: "Director–IT, Piaggio Vehicles Pvt. Ltd." }
->>>>>>> 846ce4b (New Event Added - EVOLVE 2026)
     ],
     representatives: [
       { name: "Dr. Anand A. Deshmukh", role: "Director, VIIT Baramati" },
