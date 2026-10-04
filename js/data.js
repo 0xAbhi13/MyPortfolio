@@ -33,7 +33,7 @@ const projects = [
     github: "https://github.com/0xAbhi13/MyPortfolio",
     demo: "https://0xabhi13.github.io/MyPortfolio/",
     stack: ["HTML5","CSS3","JavaScript","Tailwind CDN","GSAP 3.12.5","Lottie","Lucide","Web Audio API"],
-    facts: ["Desktop OS: ABHISHEK centered + 0xAbhi13 menu + Unsplash wallpaper + particleCanvas 56 + GSAP parallax","Single-window manager: drag/resize/zIndex/traffic (close/min/max) + windowIn 0.38s spring — 1 at a time","Ask Abhi Pro: avatar Online, 6 starters, local searchIndex 45, offline — no API","MusicBar: Wavecont 2:24 assets/audio/wavecont.mp3 5.7MB — preload metadata, crossOrigin='', file:// + http:// both, View→GitHub","Professional icons: 14× 96×96 SVG linearGradient #8b5cf6→#4f46e5 — iconPulseGlow 2.8s + gradientShift 8s","7 projects (BeatForge/PDFForge/MyPortfolio + 4 AI/CV) • Spotlight Ctrl+K • Terminal • Photos masonry • Resume Coming Soon 85%","Fully vanilla — CDN Tailwind + lucide + lottie-player + gsap — deployed on GitHub Pages (no build)"],
+    facts: ["Desktop OS: ABHISHEK centered + 0xAbhi13 menu + Unsplash wallpaper + particleCanvas 56 + GSAP parallax","Single-window manager: drag/resize/zIndex/traffic (close/min/max) + windowIn 0.38s spring — 1 at a time","Ask Abhi Pro: avatar Online, 6 starters, local searchIndex 45, offline — no API","MusicBar: Wavecont 2:24 assets/audio/wavecont.mp3 5.7MB — preload metadata, crossOrigin='', file:// + http:// both, View→GitHub","Professional icons: 14× 96×96 SVG linearGradient #8b5cf6→#4f46e5 — iconPulseGlow 2.8s + gradientShift 8s","7 projects (BeatForge/PDFForge/MyPortfolio + 4 AI/CV) • Spotlight Ctrl+K • Terminal • Events gallery • Resume Coming Soon 85%","Fully vanilla — CDN Tailwind + lucide + lottie-player + gsap — deployed on GitHub Pages (no build)"],
     screenshots: [{label:"Hero — Desktop OS", src:"assets/projects/developer-portfolio/hero.png"}, {label:"Overview — Window Manager", src:"assets/projects/developer-portfolio/overview.png"}]
   },
   {
@@ -134,6 +134,42 @@ const certifications = [
   { title: "Lifelong Professional Skills", issuer: "IBM SkillsBuild", issued: "Sep 2026", credentialId: "xwe80Hkt", image: "assets/certifications/certificate-ibm-lifelong-professional-skills.jpg", verifyUrl: "https://www.credly.com/go/xwe80Hkt" }
 ];
 
+// ── Events — expandable data, presentation lives in js/app.js ──
+// To add an event later (Hackathon, Workshop, Seminar, Fest), append one
+// object with the same shape. Photos live in assets/events/ — replace the
+// evolve-2026-*.jpeg files with real photographs, keep the same filenames.
+const events = [
+  {
+    id: "evolve-2026",
+    year: 2026,
+    title: "EVOLVE 2026",
+    subtitle: "BBA & BCA Induction Program",
+    location: "VIIT Baramati",
+    venue: "Vidya Pratishthan's Institute of Information Technology, Baramati",
+    cover: "assets/events/evolve-2026-01.jpeg",
+    journeyTitle: "The Journey Begins: From Student to Professional",
+    description: "EVOLVE 2026 was the induction program for BBA and BCA students at Vidya Pratishthan's Institute of Information Technology, Baramati. The program marked the beginning of my BCA journey and provided an opportunity to interact with academic leaders, industry professionals, and experienced speakers.",
+    speakers: [
+      { name: "Dr. Prashant Suryawanshi", role: "Associate Dean, Faculty of Commerce & Management, SPPU" },
+      { name: "Rajeev Sawant", role: "Director of Finance, Ferrero India" },
+      { name: "Shyamlal Giridhar", role: "General Manager–HR, Piaggio Vehicles Pvt. Ltd." },
+      { name: "Hemant Malsange", role: "Director–IT, Piaggio Vehicles Pvt. Ltd." }
+    ],
+    representatives: [
+      { name: "Dr. Anand A. Deshmukh", role: "Director, VIIT Baramati" },
+      { name: "Dr. Yuvraj Dattatraya Nalwade", role: "HoD, BBA & BCA" },
+      { name: "Mr. Sagar Gajanan Nimbalkar", role: "Assistant Professor" }
+    ],
+    photos: [
+      { src: "assets/events/evolve-2026-01.jpeg", label: "EVOLVE 2026 — 01" },
+      { src: "assets/events/evolve-2026-02.jpeg", label: "EVOLVE 2026 — 02" },
+      { src: "assets/events/evolve-2026-03.jpeg", label: "EVOLVE 2026 — 03" }
+    ]
+  }
+  // ── Add future events here, e.g. ──
+  // { id: "hackathon-2027", year: 2027, title: "Hackathon 2027", subtitle: "...", location: "VIIT Baramati", venue: "...", cover: "assets/events/hackathon-2027-01.jpeg", journeyTitle: "...", description: "...", speakers: [], representatives: [], photos: [{ src: "assets/events/hackathon-2027-01.jpeg", label: "Hackathon 2027 — 01" }] },
+];
+
 const playlist = [
   // Local MP3 — same audio as https://youtu.be/yNXkRYhcH3c — works on file:// and http://
   // Original long file copied to wavecont.mp3 to avoid spaces/brackets encoding (kept both)
@@ -159,3 +195,7 @@ certifications.forEach(c => searchIndex.push({ title:c.title, category:"Certific
 searchIndex.push({ title:"Abhishek Jadhav", category:"Profile", appId:"about", keywords:"abhishek jadhav 0xabhi13 about bca creative developer baramati" });
 searchIndex.push({ title:"Resume", category:"Document", appId:"resume", keywords:"resume cv pdf download" });
 searchIndex.push({ title:"Contact", category:"Contact", appId:"contact", keywords:"contact email linkedin github baramati" });
+events.forEach(ev => {
+  searchIndex.push({ title: ev.title, category: "Event", appId: "events", subRoute: ev.id, keywords: [ev.title, ev.subtitle, ev.location, ev.venue, ev.year].join(" ").toLowerCase() });
+  (ev.photos || []).forEach((ph, i) => searchIndex.push({ title: `${ev.title} — Photo ${String(i + 1).padStart(2, "0")}`, category: "Event Photo", appId: "events", subRoute: ev.id, keywords: (ev.title + " photo gallery " + ph.label).toLowerCase() }));
+});

@@ -1,0 +1,25 @@
+<svg width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Events">
+  <defs>
+    <linearGradient id="g-events" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+    <filter id="shadow-events" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#d97706" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <rect width="96" height="96" rx="22" fill="url(#g-events)" filter="url(#shadow-events)"/>
+  <!-- subtle inner highlight -->
+  <rect x="1" y="1" width="94" height="94" rx="21" fill="none" stroke="white" stroke-opacity="0.12"/>
+  <g transform="translate(24 24)">
+    <g transform="scale(2)">
+      <rect x="3" y="4.5" width="18" height="16" rx="2.5" fill="none" stroke="white" stroke-width="1.8" opacity="0.96"/>
+      <path d="M3 9.5h18 M8 2.5v4 M16 2.5v4" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" opacity="0.96"/>
+      <circle cx="12" cy="14.5" r="2.2" fill="white" opacity="0.92"/>
+    </g>
+  </g>
+  <!-- professional badge: small 0x -->
+  <g font-family="JetBrains Mono, monospace" font-size="7" font-weight="700" fill="white" opacity="0.0">
+    <text x="48" y="88" text-anchor="middle">0x</text>
+  </g>
+</svg>
