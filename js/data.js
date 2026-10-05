@@ -157,7 +157,7 @@ const events = [
     ],
     representatives: [
       { name: "Dr. Anand A. Deshmukh", role: "Director, VIIT Baramati" },
-      { name: "Dr. Yuvraj Dattatraya Nalwade", role: "HoD, BBA & BCA" },
+      { name: "Dr. Yuvraj Dattatraya Nalwade", role: "HoD, BCA" },
       { name: "Mr. Sagar Gajanan Nimbalkar", role: "Assistant Professor" }
     ],
     photos: [
