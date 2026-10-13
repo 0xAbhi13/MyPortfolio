@@ -756,60 +756,100 @@ function appAbout(){
   </div>`;
 }
 
-function appProjects(){
+function projectCard(p){
+  const cover = (p.screenshots && p.screenshots[0] && p.screenshots[0].src)
+    ? `<img src="${p.screenshots[0].src}" alt="${p.name} — thumbnail" loading="lazy" decoding="async" sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw" class="proj-thumb" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;" onerror="this.style.display='none'">`
+    : `<div class="w-full h-full grid place-items-center bg-gradient-to-br from-violet-900/60 via-indigo-900/40 to-black"><span class="text-4xl font-extrabold text-white/25">${(p.name||'?')[0]}</span></div>`;
+  const viewHref = p.github || p.demo || '';
   return `
-  <div class="p-4">
-    <div class="grid-projects">
-      ${projects.map(p=>`
-        <div class="card card-hover cursor-pointer flex flex-col overflow-hidden p-0" onclick="openApp('projects','${p.id}')">
-          <div class="h-36 bg-gradient-to-br from-gray-800 to-black relative overflow-hidden">
-            ${p.screenshots[0]?`<img src="${p.screenshots[0].src}" alt="${p.name}" class="w-full h-full object-cover opacity-80 hover:opacity-100 transition">`:`<div class="grid place-items:center h-full text-4xl opacity-20">${p.name[0]}</div>`}
-            <span class="absolute top-2 right-2 chip chip-live text-[10px]">${p.status}</span>
-            <span class="absolute bottom-2 left-2 chip text-[10px]">${p.category}</span>
-          </div>
-          <div class="p-3 flex-1 flex flex-col">
-            <h3 class="font-bold text-sm">${p.name}</h3>
-            <p class="text-xs text-white/60 line-clamp-2 mt-1 flex-1">${p.purpose}</p>
-            <div class="flex flex-wrap gap-1 mt-2">${p.stack.slice(0,3).map(s=>`<span class="chip text-[9px]">${s}</span>`).join('')}${p.stack.length>3?`<span class="chip text-[9px]">+${p.stack.length-3}</span>`:''}</div>
-            <div class="flex gap-2 mt-2">
-              ${p.github?`<a href="${p.github}" target="_blank" onclick="event.stopPropagation()" class="p-1.5 bg-white/10 rounded hover:bg-white/20"><i data-lucide="github" class="w-3 h-3"></i></a>`:''}
-              ${p.demo?`<a href="${p.demo}" target="_blank" onclick="event.stopPropagation()" class="p-1.5 bg-white/10 rounded hover:bg-white/20"><i data-lucide="external-link" class="w-3 h-3"></i></a>`:''}
-              ${p.github?`<a href="${p.github}" target="_blank" onclick="event.stopPropagation()" class="ml-auto text-[11px] text-violet-300 hover:text-violet-200 hover:underline">View →</a>`:`<span class="ml-auto text-[11px] text-violet-300">View →</span>`}
-            </div>
-          </div>
+    <div class="card card-hover cursor-pointer flex flex-col overflow-hidden p-0" onclick="openApp('projects','${p.id}')">
+      <div class="proj-cover relative overflow-hidden bg-gradient-to-br from-gray-800 to-black" style="width:100%;aspect-ratio:16/10;max-height:220px;">
+        ${cover}
+        <span class="absolute top-2 right-2 chip chip-live text-[10px]">${p.status}</span>
+        <span class="absolute bottom-2 left-2 chip text-[10px]">${p.category}</span>
+      </div>
+      <div class="p-3 flex-1 flex flex-col">
+        <h3 class="font-bold text-sm">${p.name}</h3>
+        <p class="text-xs text-white/60 line-clamp-2 mt-1 flex-1">${p.purpose}</p>
+        <div class="flex flex-wrap gap-1 mt-2">${(p.stack||[]).slice(0,3).map(s=>`<span class="chip text-[9px]">${s}</span>`).join('')}${(p.stack||[]).length>3?`<span class="chip text-[9px]">+${p.stack.length-3}</span>`:''}</div>
+        <div class="flex gap-2 mt-2 items-center">
+          ${p.github?`<a href="${p.github}" target="_blank" onclick="event.stopPropagation()" class="p-1.5 bg-white/10 rounded hover:bg-white/20"><i data-lucide="github" class="w-3 h-3"></i></a>`:''}
+          ${p.demo?`<a href="${p.demo}" target="_blank" onclick="event.stopPropagation()" class="p-1.5 bg-white/10 rounded hover:bg-white/20" title="Open live demo"><i data-lucide="external-link" class="w-3 h-3"></i></a>`:''}
+          ${viewHref?`<a href="${viewHref}" target="_blank" onclick="event.stopPropagation()" class="ml-auto text-[11px] text-violet-300 hover:text-violet-200 hover:underline">View →</a>`:`<span class="ml-auto text-[11px] text-violet-300">View →</span>`}
         </div>
-      `).join('')}
+      </div>
+    </div>`;
+}
+function appProjects(){
+  const veda = projects.filter(p=>p.folder==='veda');
+  const py = projects.filter(p=>p.folder==='python');
+  const web = projects.filter(p=>!p.folder || p.folder==='web');
+  const svgWrap = (inner)=>`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c4b5fd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;display:block;">${inner}</svg>`;
+  const ICONS = {
+    briefcase: svgWrap('<rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>'),
+    terminal: svgWrap('<path d="m4 17 6-6-6-6"/><path d="M12 19h8"/>'),
+    code: svgWrap('<path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/>')
+  };
+  const folderHead = (key, title, count, desc)=>`
+    <div style="display:flex;align-items:center;gap:10px;margin:8px 0 12px;min-width:0;">
+      <span style="width:36px;height:36px;min-width:36px;min-height:36px;max-width:36px;max-height:36px;border-radius:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">${ICONS[key]||''}</span>
+      <div style="min-width:0;flex:1;">
+        <h2 style="font-weight:700;font-size:14px;display:flex;align-items:center;gap:8px;margin:0;">${title} <span style="font-size:10px;padding:2px 8px;background:rgba(255,255,255,0.1);border-radius:9999px;font-family:monospace;">${count}</span></h2>
+        <p style="font-size:11px;color:rgba(255,255,255,0.5);margin:2px 0 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${desc}</p>
+      </div>
+    </div>`;
+  return `
+  <div class="p-4 space-y-6">
+    <div class="flex items-center justify-between">
+      <p class="text-xs text-white/50"><b class="text-white">${projects.length} projects</b> in <b class="text-white">3 folders</b> — pick a folder</p>
+      <span class="text-[10px] px-2 py-1 bg-white/5 border border-white/10 rounded-full opacity-60 hidden sm:block">Ctrl+K to search</span>
     </div>
+    <section>
+      ${folderHead('briefcase', 'VEDA Technology Internship', veda.length, 'Web Development internship tasks (excl. task-1/2/3) — live demos inside portfolio')}
+      <div class="grid-projects">${veda.map(projectCard).join('') || '<p class="text-xs opacity-50">No VEDA tasks yet.</p>'}</div>
+    </section>
+    <section>
+      ${folderHead('terminal', 'Python Projects', py.length, 'Flask • OpenCV • AI/CV — offline, no cloud')}
+      <div class="grid-projects">${py.map(projectCard).join('')}</div>
+    </section>
+    <section>
+      ${folderHead('code', 'Web & Creative', web.length, 'Portfolio OS • Audio • PDF — vanilla JS')}
+      <div class="grid-projects">${web.map(projectCard).join('')}</div>
+    </section>
   </div>`;
 }
 function appProjectDetail(id){
   const p=projects.find(x=>x.id===id); if(!p) return appProjects();
+  const folderLabel = p.folder==='veda' ? 'VEDA Technology Internship' : (p.folder==='python' ? 'Python Projects' : 'Web & Creative');
+  const shots = Array.isArray(p.screenshots) ? p.screenshots : [];
+  const stack = Array.isArray(p.stack) ? p.stack : [];
+  const facts = Array.isArray(p.facts) ? p.facts : [];
   return `
   <div class="h-full overflow-auto">
     <button onclick="openApp('projects')" class="m-3 text-xs px-2 py-1 bg-white/10 rounded hover:bg-white/20 flex items-center gap-1"><i data-lucide="arrow-left" class="w-3 h-3"></i> Back</button>
     <div class="px-4 pb-6 space-y-4">
       <div class="rounded-xl overflow-hidden border border-white/10 bg-black/20">
-        ${p.screenshots[0]?`<img src="${p.screenshots[0].src}" class="w-full h-48 object-cover">`:`<div class="h-48 grid place-items:center bg-gradient-to-br from-violet-900/30 to-indigo-900/30 text-3xl">${p.name}</div>`}
+        ${shots[0] && shots[0].src ?`<img src="${shots[0].src}" alt="${p.name} — hero" loading="lazy" decoding="async" sizes="(max-width:640px) 100vw, 800px" style="width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;object-position:top center;display:block;" onerror="this.style.display='none'">`:`<div class="h-48 grid place-items-center bg-gradient-to-br from-violet-900/30 to-indigo-900/30 text-3xl">${p.name}</div>`}
       </div>
       <div>
         <h2 class="text-xl font-bold">${p.name} <span class="chip chip-live ml-2 align-middle">${p.status}</span></h2>
-        <p class="text-xs opacity-60">${p.category}</p>
+        <p class="text-xs opacity-60">${p.category} • 📁 ${folderLabel}</p>
         <p class="text-sm text-white/70 mt-2">${p.purpose}</p>
       </div>
       <div>
         <h3 class="text-xs font-semibold opacity-60 uppercase tracking-wide">Stack</h3>
-        <div class="flex flex-wrap gap-1.5 mt-1">${p.stack.map(s=>`<span class="chip">${s}</span>`).join('')}</div>
+        <div class="flex flex-wrap gap-1.5 mt-1">${stack.map(s=>`<span class="chip">${s}</span>`).join('')}</div>
       </div>
       <div>
         <h3 class="text-xs font-semibold opacity-60 uppercase tracking-wide">Facts</h3>
-        <ul class="list-disc list-inside text-sm text-white/70 mt-1 space-y-0.5">${p.facts.map(f=>`<li>${f}</li>`).join('')}</ul>
+        <ul class="list-disc list-inside text-sm text-white/70 mt-1 space-y-0.5">${facts.map(f=>`<li>${f}</li>`).join('')}</ul>
       </div>
       ${p.limitations?`<div class="text-xs p-2 bg-amber-500/10 border border-amber-500/20 rounded text-amber-200">⚠ ${p.limitations}</div>`:''}
       <div class="flex gap-2">
         ${p.github?`<a href="${p.github}" target="_blank" class="flex-1 text-center py-2 bg-white text-black rounded-full text-sm font-medium">GitHub ↗</a>`:''}
-        ${p.demo?`<a href="${p.demo}" target="_blank" class="flex-1 text-center py-2 bg-white/10 rounded-full text-sm">Live Demo ↗</a>`:''}
+        ${p.demo?`<a href="${p.demo}" target="_blank" class="flex-1 text-center py-2 ${p.github?'bg-white/10':'bg-white text-black'} rounded-full text-sm font-medium">Live Demo ↗</a>`:''}
       </div>
-      ${p.screenshots.length>1?`<div class="grid grid-cols-2 gap-2">${p.screenshots.slice(1).map(s=>`<img src="${s.src}" class="rounded-lg border border-white/10">`).join('')}</div>`:''}
+      ${shots.length>1?`<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">${shots.slice(1).map(s=>`<img src="${s.src}" alt="${s.label||p.name}" loading="lazy" decoding="async" sizes="(max-width:640px) 100vw, 400px" style="width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top center;display:block;" class="rounded-lg border border-white/10">`).join('')}</div>`:''}
     </div>
   </div>`;
 }
@@ -1204,8 +1244,8 @@ function appAskAbhi(){
           <span class="hidden sm:inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 bg-violet-500/12 text-violet-300 rounded-full border border-violet-500/20">Professional</span>
           <span class="hidden lg:inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 bg-white/5 text-white/60 rounded-full border border-white/10">Offline AI</span>
         </div>
-        <p class="text-[11px] leading-none text-white/50 mt-0.5 truncate hidden sm:block">${(typeof ASK_ABHI_KNOWLEDGE !== 'undefined' ? ASK_ABHI_KNOWLEDGE.projects.length : 7)} projects • ${(typeof ASK_ABHI_KNOWLEDGE !== 'undefined' ? ASK_ABHI_KNOWLEDGE.certificates.length : 9)} certs • skills • verified data • private</p>
-        <p class="text-[11px] leading-none text-white/50 mt-0.5 sm:hidden">0xAbhi13 • ${(typeof ASK_ABHI_KNOWLEDGE !== 'undefined' ? ASK_ABHI_KNOWLEDGE.projects.length : 7)} projects • ${(typeof ASK_ABHI_KNOWLEDGE !== 'undefined' ? ASK_ABHI_KNOWLEDGE.certificates.length : 9)} certs</p>
+        <p class="text-[11px] leading-none text-white/50 mt-0.5 truncate hidden sm:block">${(typeof ASK_ABHI_KNOWLEDGE !== 'undefined' ? ASK_ABHI_KNOWLEDGE.projects.length : 11)} projects • ${(typeof ASK_ABHI_KNOWLEDGE !== 'undefined' ? ASK_ABHI_KNOWLEDGE.certificates.length : 11)} certs • skills • verified data • private</p>
+        <p class="text-[11px] leading-none text-white/50 mt-0.5 sm:hidden">0xAbhi13 • ${(typeof ASK_ABHI_KNOWLEDGE !== 'undefined' ? ASK_ABHI_KNOWLEDGE.projects.length : 11)} projects • ${(typeof ASK_ABHI_KNOWLEDGE !== 'undefined' ? ASK_ABHI_KNOWLEDGE.certificates.length : 11)} certs</p>
       </div>
       <div class="flex items-center gap-1.5 shrink-0">
         <span class="hidden md:inline-flex items-center gap-1.5 text-[10px] px-2 py-1 bg-white/[0.04] border border-white/10 rounded-full text-white/60"><i data-lucide="shield-check" class="w-3 h-3 text-violet-400"></i> No data stored</span>
@@ -1229,9 +1269,9 @@ function appAskAbhi(){
               <span class="text-[10px] opacity-40">• Just now</span>
             </div>
             <p class="font-medium"><span class="text-violet-300">Ask Abhi</span> — Portfolio Assistant for <span class="text-white font-semibold">Abhishek Jadhav (0xAbhi13)</span>.</p>
-            <p class="opacity-70 mt-1.5 text-[13px] leading-relaxed">Direct answers from this portfolio: <b>7 projects</b> with stacks and GitHub, <b>11 verified certifications</b>, 5 skill categories, education, and contact. Ask a question below.</p>
+            <p class="opacity-70 mt-1.5 text-[13px] leading-relaxed">Direct answers from this portfolio: <b>11 projects</b> with stacks and GitHub, <b>11 verified certifications</b>, 5 skill categories, education, and contact. Ask a question below.</p>
             <div class="flex flex-wrap gap-1.5 mt-3">
-              <span class="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-violet-500/12 text-violet-300 rounded-full border border-violet-500/20 font-medium"><i data-lucide="code-2" class="w-3 h-3"></i> 7 projects</span>
+              <span class="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-violet-500/12 text-violet-300 rounded-full border border-violet-500/20 font-medium"><i data-lucide="code-2" class="w-3 h-3"></i> 11 projects</span>
               <span class="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-emerald-500/12 text-emerald-300 rounded-full border border-emerald-500/20 font-medium"><i data-lucide="award" class="w-3 h-3"></i> 11 certs verified</span>
               <span class="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-white/[0.04] rounded-full border border-white/10 opacity-70"><i data-lucide="lock" class="w-3 h-3"></i> Offline • Private</span>
             </div>
@@ -1244,11 +1284,11 @@ function appAskAbhi(){
       <div id="askStarters" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
         ${(() => {
           const K = (typeof window !== 'undefined' && window.ASK_ABHI_KNOWLEDGE) ? window.ASK_ABHI_KNOWLEDGE : null;
-          const qs = K ? K.getSuggestedQuestions() : ["Who is Abhishek Jadhav?","What are Abhishek's skills?","Show me his 7 projects","List all 11 certifications with verify links","Which project uses Flask?","Tell me about 0xBeatForge"];
+          const qs = K ? K.getSuggestedQuestions() : ["Who is Abhishek Jadhav?","What are Abhishek's skills?","Show me his 11 projects","List all 11 certifications with verify links","Which project uses Flask?","Tell me about 0xBeatForge"];
           const meta = [
             {icon:"user", desc:"Owner • BCA 2026 • Baramati", grad:"from-violet-600/20 to-indigo-600/20", border:"border-violet-500/20"},
             {icon:"cpu", desc:"5 areas • C++/Python/JS", grad:"from-amber-500/15 to-orange-500/15", border:"border-amber-500/20"},
-            {icon:"code-2", desc:"7 shipped • stacks • GitHub", grad:"from-violet-600/20 to-indigo-600/20", border:"border-violet-500/20"},
+            {icon:"code-2", desc:"11 shipped • stacks • GitHub", grad:"from-violet-600/20 to-indigo-600/20", border:"border-violet-500/20"},
             {icon:"award", desc:"11 verified • IBM • Saylor • Jio", grad:"from-emerald-500/15 to-teal-500/15", border:"border-emerald-500/20"},
             {icon:"github", desc:"@0xAbhi13 • Source", grad:"from-zinc-700/20 to-zinc-800/20", border:"border-white/10"},
             {icon:"music", desc:"Web Audio • BeatForge", grad:"from-blue-500/15 to-cyan-500/15", border:"border-blue-500/20"},
@@ -1510,7 +1550,7 @@ function getLocalAnswer(q){
 
   // ── 4. Navigation intents ──
   if( has('take me to') || has('open github') || has('open linkedin') || has('show certificates') || has('show projects') || has('where is the skills section') || has('contact abhishek') || has('show me the projects') || has('take me to about') ){
-    if(has('project')) return `Opening <b>Projects</b> for you — 7 shipped. You can also press <code>Ctrl+K</code> → search.<br>[OPEN_PROJECTS]`;
+    if(has('project')) return `Opening <b>Projects</b> for you — ${_projects.length} shipped in 3 folders (VEDA • Python • Web). You can also press <code>Ctrl+K</code> → search.<br>[OPEN_PROJECTS]`;
     if(has('certif')) return `Opening <b>Certifications — 11 verified</b>.<br>[OPEN_CERTIFICATIONS]`;
     if(has('skill')) return `Opening <b>Skills — 5 categories</b>.<br>[OPEN_SKILLS]`;
     if(has('about')) return `Opening <b>About — Abhishek</b>.<br>[OPEN_ABOUT]`;
@@ -1647,7 +1687,7 @@ function getLocalAnswer(q){
   const hits = (typeof searchIndex !== 'undefined' ? searchIndex : []).filter(it=> tokens.some(w=> w.length>2 && it.keywords.includes(w))).slice(0,4);
   if(hits.length) return `<b>Found related to “${raw.replace(/</g,'&lt;')}”:</b><br>${hits.map(h=>`• <b>${h.title}</b> <span class="opacity-60">(${h.category})</span>`).join('<br>')}<br><br>Try: <i>List all 11 certifications</i> • <i>Verify Jio AI</i> • <i>What is CS301?</i>`;
   // ── 12. Unknown — no hallucination ──
-  return `I don't have that information in my portfolio knowledge base yet.<br><br>I can help with: <b>who is Abhishek</b>, <b>11 certifications</b> with verify, <b>7 projects</b> (try “which uses Flask?”), <b>skills</b>, <b>education</b>, <b>contact</b>, <b>hosting</b> (${_website.hosting}), and <b>navigation</b> (say “take me to projects”).<br><span class="opacity-60 text-xs">Knowledge: <code>js/askAbhiKnowledge.js</code> v${K?K.version:'2.1.0'} • ${K?K.lastUpdate:'2026-08-31'} • Never invent — only portfolio data.</span>`;
+  return `I don't have that information in my portfolio knowledge base yet.<br><br>I can help with: <b>who is Abhishek</b>, <b>11 certifications</b> with verify, <b>${_projects.length} projects</b> (try “which uses Flask?”), <b>skills</b>, <b>education</b>, <b>contact</b>, <b>hosting</b> (${_website.hosting}), and <b>navigation</b> (say “take me to projects”).<br><span class="opacity-60 text-xs">Knowledge: <code>js/askAbhiKnowledge.js</code> v${K?K.version:'2.1.0'} • ${K?K.lastUpdate:'2026-08-31'} • Never invent — only portfolio data.</span>`;
 }
 function renderAskContent(txt){
   const map={"[OPEN_PROJECTS]":["projects","Open Projects"],"[OPEN_SKILLS]":["skills","Open Skills"],"[OPEN_CERTIFICATIONS]":["certifications","Open Certifications"],"[OPEN_PHOTOS]":["events","Open Events"],"[OPEN_EVENTS]":["events","Open Events"],"[OPEN_RESUME]":["resume","Open Resume"],"[OPEN_ABOUT]":["about","Open About"],"[OPEN_CONTACT]":["contact","Open Contact"]};

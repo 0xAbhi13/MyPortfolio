@@ -29,11 +29,12 @@ const projects = [
     name: "Developer Portfolio — Abhishek OS",
     status: "Live",
     category: "Web • OS • Editorial",
+    folder: "web",
     purpose: "This portfolio itself — a macOS-inspired desktop OS built as a fully interactive operating system. Vanilla HTML/CSS/JS only — no frameworks, no build — featuring draggable single-window manager, Spotlight (Ctrl+K), Ask Abhi offline AI, Wavecont 2:24 music bar (file:// + http://), and universal responsive phone 390×780. Every pixel is cinematic motion with zero dependencies.",
     github: "https://github.com/0xAbhi13/MyPortfolio",
     demo: "https://0xabhi13.github.io/MyPortfolio/",
     stack: ["HTML5","CSS3","JavaScript","Tailwind CDN","GSAP 3.12.5","Lottie","Lucide","Web Audio API"],
-    facts: ["Desktop OS: ABHISHEK centered + 0xAbhi13 menu + Unsplash wallpaper + particleCanvas 56 + GSAP parallax","Single-window manager: drag/resize/zIndex/traffic (close/min/max) + windowIn 0.38s spring — 1 at a time","Ask Abhi Pro: avatar Online, 6 starters, local searchIndex 45, offline — no API","MusicBar: Wavecont 2:24 assets/audio/wavecont.mp3 5.7MB — preload metadata, crossOrigin='', file:// + http:// both, View→GitHub","Professional icons: 14× 96×96 SVG linearGradient #8b5cf6→#4f46e5 — iconPulseGlow 2.8s + gradientShift 8s","7 projects (BeatForge/PDFForge/MyPortfolio + 4 AI/CV) • Spotlight Ctrl+K • Terminal • Events gallery • Resume Coming Soon 85%","Fully vanilla — CDN Tailwind + lucide + lottie-player + gsap — deployed on GitHub Pages (no build)"],
+    facts: ["Desktop OS: ABHISHEK centered + 0xAbhi13 menu + Unsplash wallpaper + particleCanvas 56 + GSAP parallax","Single-window manager: drag/resize/zIndex/traffic (close/min/max) + windowIn 0.38s spring — 1 at a time","Ask Abhi Pro: avatar Online, 6 starters, local searchIndex 45, offline — no API","MusicBar: Wavecont 2:24 assets/audio/wavecont.mp3 5.7MB — preload metadata, crossOrigin='', file:// + http:// both, View→GitHub","Professional icons: 14× 96×96 SVG linearGradient #8b5cf6→#4f46e5 — iconPulseGlow 2.8s + gradientShift 8s","11 projects (BeatForge/PDFForge/MyPortfolio + 4 AI/CV Python + 4 VEDA internship) • Spotlight Ctrl+K • Terminal • Events gallery • Resume Coming Soon 85%","Fully vanilla — CDN Tailwind + lucide + lottie-player + gsap — deployed on GitHub Pages (no build)"],
     screenshots: [{label:"Hero — Desktop OS", src:"assets/projects/developer-portfolio/hero.png"}, {label:"Overview — Window Manager", src:"assets/projects/developer-portfolio/overview.png"}]
   },
   {
@@ -41,6 +42,7 @@ const projects = [
     name: "0xBeatForge",
     status: "Live",
     category: "Web Audio • Music",
+    folder: "web",
     purpose: "A cinematic browser-based beat sequencer where music is built layer by layer using the Web Audio API. Craft patterns, stack layers, and shape rhythms in a tactile, studio-inspired interface.",
     github: "https://github.com/0xAbhi13/0xBeatForge",
     demo: "",
@@ -53,6 +55,7 @@ const projects = [
     name: "0xPDFForge",
     status: "Live",
     category: "PDF • Automation",
+    folder: "web",
     purpose: "A creative PDF generation platform that transforms web projects and content into beautifully designed PDF documents using customizable templates and automated analysis. Ideal for portfolios, reports, and docs.",
     github: "https://github.com/0xAbhi13/0xPDFForge",
     demo: "",
@@ -65,6 +68,7 @@ const projects = [
     name: "0xEmotion",
     status: "Live",
     category: "AI • Vision",
+    folder: "python",
     purpose: "AI facial expression recognition that runs entirely offline. Flask + OpenCV detect faces from webcam or upload and classify the visible expression.",
     github: "https://github.com/0xAbhi13/0xEmotion",
     demo: "",
@@ -77,6 +81,7 @@ const projects = [
     name: "0xMagicSearch",
     status: "Live",
     category: "Vision • Real-time",
+    folder: "python",
     purpose: "Local AI object detection that turns your webcam into a scanner. Lightweight YOLOv4-tiny via OpenCV identifies objects in real time.",
     github: "https://github.com/0xAbhi13/0xMagicSearch",
     demo: "",
@@ -89,6 +94,7 @@ const projects = [
     name: "0xAirCanvas",
     status: "Live",
     category: "Interaction • Vision",
+    folder: "python",
     purpose: "Draw in thin air. OpenCV and MediaPipe track your hand through the webcam, turning your fingertip into a smooth digital pen.",
     github: "https://github.com/0xAbhi13/0xAirCanvas",
     demo: "",
@@ -101,12 +107,66 @@ const projects = [
     name: "0xVoiceVision",
     status: "Live",
     category: "Voice • Search",
+    folder: "python",
     purpose: "Speak a word and see it. Web Speech API transcribes your voice, Flask cleans the query, and Openverse pulls a matching image.",
     github: "https://github.com/0xAbhi13/0xVoiceVision",
     demo: "",
     stack: ["Python","Flask","Web Speech API","Openverse API"],
     facts: ["Voice → text via Web Speech API","Flask routes query to Openverse","Free Openverse — no API key","Animated reveal"],
     screenshots: [{label:"Voice", src:"assets/projects/0xvoicevision/voice.png"}, {label:"Result", src:"assets/projects/0xvoicevision/result.png"}]
+  },
+  // ── VEDA Technology Internship — Web Development (excludes internship-task-1/2/3) ──
+  {
+    id: "veda-tribute-page",
+    name: "Tribute Page — Dr. A. P. J. Abdul Kalam",
+    status: "Live",
+    category: "VEDA Internship • Web",
+    folder: "veda",
+    purpose: "VEDA Technology Web Development Internship Task 1 — tribute to Dr. A. P. J. Abdul Kalam (1931–2015): scientist, 11th President of India, teacher. Biography, achievements, timeline and verified quotes with accessible semantic HTML.",
+    github: "https://github.com/0xAbhi13/tribute-page",
+    demo: "projects/veda-internship/tribute-page/index.html",
+    stack: ["HTML5","CSS3","Accessible","Responsive"],
+    facts: ["Semantic tribute layout — hero + biography + achievements + timeline + quotes", "Official portrait with attribution (Govt. of India / Wikimedia)", "Topbar nav to page sections", "Fully responsive, no framework"],
+    screenshots: [{label:"Hero", src:"assets/projects/veda-tribute-page/hero.png"}, {label:"Overview", src:"assets/projects/veda-tribute-page/overview.png"}]
+  },
+  {
+    id: "veda-personal-intro",
+    name: "Personal Introduction Page",
+    status: "Live",
+    category: "VEDA Internship • Web",
+    folder: "veda",
+    purpose: "VEDA Technology internship personal introduction page of Abhishek Shahaji Jadhav — first-year BCA student and aspiring Web Developer from Baramati. Hero, about, skills, hobbies and contact in clean HTML/CSS with a little JavaScript.",
+    github: "https://github.com/0xAbhi13/personal-introduction-page",
+    demo: "projects/veda-internship/personal-introduction-page/index.html",
+    stack: ["HTML5","CSS3","JavaScript","Responsive"],
+    facts: ["Hero with quick facts — BCA VIIT Baramati", "Sections: Home • About • Skills • Hobbies • Contact", "Mobile nav toggle, skip-link accessible", "GitHub CTA to @0xAbhi13"],
+    screenshots: [{label:"Hero", src:"assets/projects/veda-personal-intro/hero.png"}, {label:"Overview", src:"assets/projects/veda-personal-intro/overview.png"}]
+  },
+  {
+    id: "veda-simple-resume",
+    name: "Simple Resume Website",
+    status: "Live",
+    category: "VEDA Internship • Web",
+    folder: "veda",
+    purpose: "VEDA Technology Internship Day 3 of 45 — online resume of Abhishek Shahaji Jadhav (Web Developer & BCA student, VIIT Baramati). Skills, education, projects, internship and contact links plus downloadable resume.pdf.",
+    github: "https://github.com/0xAbhi13/simple-resume-website",
+    demo: "projects/veda-internship/simple-resume-website/index.html",
+    stack: ["HTML5","CSS3","Responsive","Resume PDF"],
+    facts: ["Hero: VEDA Internship Day 3 of 45", "Sections: About • Education • Skills • Projects • Contact", "Download Resume button (resume.pdf)", "Clean header nav + accessible skip-link"],
+    screenshots: [{label:"Hero", src:"assets/projects/veda-simple-resume/hero.png"}, {label:"Overview", src:"assets/projects/veda-simple-resume/overview.png"}]
+  },
+  {
+    id: "veda-digital-clock",
+    name: "Digital Clock",
+    status: "Live",
+    category: "VEDA Internship • Web",
+    folder: "veda",
+    purpose: "VEDA Technology Web Development Internship Task 4 — real-time digital clock powered by JavaScript. Syncs from device clock every second, 12H/24H toggle, start/stop/reset, live date, no backend required.",
+    github: "https://github.com/0xAbhi13/digital-clock",
+    demo: "projects/veda-internship/digital-clock/index.html",
+    stack: ["HTML5","CSS3","JavaScript","Realtime"],
+    facts: ["Real-time clock — updates every second", "12H / 24H segmented toggle", "Start / Stop / Reset controls + live status dot", "GitHub Pages compatible relative paths"],
+    screenshots: [{label:"Hero", src:"assets/projects/veda-digital-clock/hero.png"}, {label:"Overview", src:"assets/projects/veda-digital-clock/overview.png"}]
   }
 ];
 
@@ -183,13 +243,17 @@ const galleryImages = [
   { src: "assets/projects/0xmagicsearch/scanner.png", label: "0xMagicSearch — Scanner" },
   { src: "assets/projects/0xaircanvas/canvas.png", label: "0xAirCanvas — Air Canvas" },
   { src: "assets/projects/0xvoicevision/voice.png", label: "0xVoiceVision — Voice Search" },
+  { src: "assets/projects/veda-tribute-page/hero.png", label: "VEDA Tribute Page — Hero" },
+  { src: "assets/projects/veda-personal-intro/hero.png", label: "VEDA Personal Intro — Hero" },
+  { src: "assets/projects/veda-simple-resume/hero.png", label: "VEDA Resume Website — Hero" },
+  { src: "assets/projects/veda-digital-clock/hero.png", label: "VEDA Digital Clock — Hero" },
   { src: "assets/certifications/certificate-cpp.jpg", label: "Complete C++ — Sheryians" },
   { src: "assets/certifications/certificate-html-css-js.jpg", label: "HTML CSS JS — Educative" }
 ];
 
 // Search index for Spotlight
 const searchIndex = [];
-projects.forEach(p => searchIndex.push({ title:p.name, category:"Project", appId:"projects", subRoute:p.id, keywords:[p.name, p.category, ...p.stack, ...p.facts].join(" ").toLowerCase() }));
+projects.forEach(p => searchIndex.push({ title:p.name, category:(p.folder==='veda' ? "Project — VEDA Internship" : (p.folder==='python' ? "Project — Python" : "Project — Web")), appId:"projects", subRoute:p.id, keywords:[p.name, p.category, p.folder||'', ...(p.stack||[]), ...(p.facts||[])].join(" ").toLowerCase() }));
 skills.forEach(s => s.items.forEach(item => searchIndex.push({ title:item, category:`Skill — ${s.category}`, appId:"skills", keywords:(item+" "+s.category).toLowerCase() })));
 certifications.forEach(c => searchIndex.push({ title:c.title, category:"Certification", appId:"certifications", keywords:[c.title,c.issuer,c.issued].join(" ").toLowerCase() }));
 searchIndex.push({ title:"Abhishek Jadhav", category:"Profile", appId:"about", keywords:"abhishek jadhav 0xabhi13 about bca creative developer baramati" });
