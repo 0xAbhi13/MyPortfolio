@@ -805,7 +805,7 @@ function appProjects(){
       <span class="text-[10px] px-2 py-1 bg-white/5 border border-white/10 rounded-full opacity-60 hidden sm:block">Ctrl+K to search</span>
     </div>
     <section>
-      ${folderHead('briefcase', 'VEDA Technology Internship', veda.length, 'Web Development internship tasks (excl. task-1/2/3) — live demos inside portfolio')}
+      ${folderHead('briefcase', 'VEDA Technology Internship', veda.length, 'Web Development internship tasks (excl. task-1/2/3) — live on GitHub Pages')}
       <div class="grid-projects">${veda.map(projectCard).join('') || '<p class="text-xs opacity-50">No VEDA tasks yet.</p>'}</div>
     </section>
     <section>

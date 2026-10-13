@@ -124,7 +124,7 @@ const projects = [
     folder: "veda",
     purpose: "VEDA Technology Web Development Internship Task 1 — tribute to Dr. A. P. J. Abdul Kalam (1931–2015): scientist, 11th President of India, teacher. Biography, achievements, timeline and verified quotes with accessible semantic HTML.",
     github: "https://github.com/0xAbhi13/tribute-page",
-    demo: "projects/veda-internship/tribute-page/index.html",
+    demo: "https://0xabhi13.github.io/tribute-page/",
     stack: ["HTML5","CSS3","Accessible","Responsive"],
     facts: ["Semantic tribute layout — hero + biography + achievements + timeline + quotes", "Official portrait with attribution (Govt. of India / Wikimedia)", "Topbar nav to page sections", "Fully responsive, no framework"],
     screenshots: [{label:"Hero", src:"assets/projects/veda-tribute-page/hero.png"}, {label:"Overview", src:"assets/projects/veda-tribute-page/overview.png"}]
@@ -137,7 +137,7 @@ const projects = [
     folder: "veda",
     purpose: "VEDA Technology internship personal introduction page of Abhishek Shahaji Jadhav — first-year BCA student and aspiring Web Developer from Baramati. Hero, about, skills, hobbies and contact in clean HTML/CSS with a little JavaScript.",
     github: "https://github.com/0xAbhi13/personal-introduction-page",
-    demo: "projects/veda-internship/personal-introduction-page/index.html",
+    demo: "https://0xabhi13.github.io/personal-introduction-page/",
     stack: ["HTML5","CSS3","JavaScript","Responsive"],
     facts: ["Hero with quick facts — BCA VIIT Baramati", "Sections: Home • About • Skills • Hobbies • Contact", "Mobile nav toggle, skip-link accessible", "GitHub CTA to @0xAbhi13"],
     screenshots: [{label:"Hero", src:"assets/projects/veda-personal-intro/hero.png"}, {label:"Overview", src:"assets/projects/veda-personal-intro/overview.png"}]
@@ -150,7 +150,7 @@ const projects = [
     folder: "veda",
     purpose: "VEDA Technology Internship Day 3 of 45 — online resume of Abhishek Shahaji Jadhav (Web Developer & BCA student, VIIT Baramati). Skills, education, projects, internship and contact links plus downloadable resume.pdf.",
     github: "https://github.com/0xAbhi13/simple-resume-website",
-    demo: "projects/veda-internship/simple-resume-website/index.html",
+    demo: "https://0xabhi13.github.io/simple-resume-website/",
     stack: ["HTML5","CSS3","Responsive","Resume PDF"],
     facts: ["Hero: VEDA Internship Day 3 of 45", "Sections: About • Education • Skills • Projects • Contact", "Download Resume button (resume.pdf)", "Clean header nav + accessible skip-link"],
     screenshots: [{label:"Hero", src:"assets/projects/veda-simple-resume/hero.png"}, {label:"Overview", src:"assets/projects/veda-simple-resume/overview.png"}]
@@ -163,7 +163,7 @@ const projects = [
     folder: "veda",
     purpose: "VEDA Technology Web Development Internship Task 4 — real-time digital clock powered by JavaScript. Syncs from device clock every second, 12H/24H toggle, start/stop/reset, live date, no backend required.",
     github: "https://github.com/0xAbhi13/digital-clock",
-    demo: "projects/veda-internship/digital-clock/index.html",
+    demo: "https://0xabhi13.github.io/digital-clock/",
     stack: ["HTML5","CSS3","JavaScript","Realtime"],
     facts: ["Real-time clock — updates every second", "12H / 24H segmented toggle", "Start / Stop / Reset controls + live status dot", "GitHub Pages compatible relative paths"],
     screenshots: [{label:"Hero", src:"assets/projects/veda-digital-clock/hero.png"}, {label:"Overview", src:"assets/projects/veda-digital-clock/overview.png"}]
