@@ -34,7 +34,7 @@ const projects = [
     github: "https://github.com/0xAbhi13/MyPortfolio",
     demo: "https://0xabhi13.github.io/MyPortfolio/",
     stack: ["HTML5","CSS3","JavaScript","Tailwind CDN","GSAP 3.12.5","Lottie","Lucide","Web Audio API"],
-    facts: ["Desktop OS: ABHISHEK centered + 0xAbhi13 menu + Unsplash wallpaper + particleCanvas 56 + GSAP parallax","Single-window manager: drag/resize/zIndex/traffic (close/min/max) + windowIn 0.38s spring — 1 at a time","Ask Abhi Pro: avatar Online, 6 starters, local searchIndex 45, offline — no API","MusicBar: Wavecont 2:24 assets/audio/wavecont.mp3 5.7MB — preload metadata, crossOrigin='', file:// + http:// both, View→GitHub","Professional icons: 14× 96×96 SVG linearGradient #8b5cf6→#4f46e5 — iconPulseGlow 2.8s + gradientShift 8s","11 projects (BeatForge/PDFForge/MyPortfolio + 4 AI/CV Python + 4 VEDA internship) • Spotlight Ctrl+K • Terminal • Events gallery • Resume Coming Soon 85%","Fully vanilla — CDN Tailwind + lucide + lottie-player + gsap — deployed on GitHub Pages (no build)"],
+    facts: ["Desktop OS: ABHISHEK centered + 0xAbhi13 menu + Unsplash wallpaper + particleCanvas 56 + GSAP parallax","Single-window manager: drag/resize/zIndex/traffic (close/min/max) + windowIn 0.38s spring — 1 at a time","Ask Abhi Pro: avatar Online, 6 starters, local searchIndex 45, offline — no API","MusicBar: Wavecont 2:24 assets/audio/wavecont.mp3 5.7MB — preload metadata, crossOrigin='', file:// + http:// both, View→GitHub","Professional icons: 14× 96×96 SVG linearGradient #8b5cf6→#4f46e5 — iconPulseGlow 2.8s + gradientShift 8s","12 projects (BeatForge/PDFForge/MyPortfolio + 4 AI/CV Python + 5 VEDA internship) • Spotlight Ctrl+K • Terminal • Events gallery • Resume Coming Soon 85%","Fully vanilla — CDN Tailwind + lucide + lottie-player + gsap — deployed on GitHub Pages (no build)"],
     screenshots: [{label:"Hero — Desktop OS", src:"assets/projects/developer-portfolio/hero.png"}, {label:"Overview — Window Manager", src:"assets/projects/developer-portfolio/overview.png"}]
   },
   {
@@ -167,6 +167,19 @@ const projects = [
     stack: ["HTML5","CSS3","JavaScript","Realtime"],
     facts: ["Real-time clock — updates every second", "12H / 24H segmented toggle", "Start / Stop / Reset controls + live status dot", "GitHub Pages compatible relative paths"],
     screenshots: [{label:"Hero", src:"assets/projects/veda-digital-clock/hero.png"}, {label:"Overview", src:"assets/projects/veda-digital-clock/overview.png"}]
+  },
+  {
+    id: "veda-temp-converter",
+    name: "Temperature Converter",
+    status: "Live",
+    category: "VEDA Internship • Web",
+    folder: "veda",
+    purpose: "VEDA Technology Web Development Internship Task 5 — instant temperature converter between Celsius, Fahrenheit and Kelvin. Validated input, unit swap, copy-result, common reference presets, no backend required.",
+    github: "https://github.com/0xAbhi13/temperature-converter",
+    demo: "https://0xabhi13.github.io/temperature-converter/",
+    stack: ["HTML5","CSS3","JavaScript","Realtime"],
+    facts: ["Celsius ⇄ Fahrenheit ⇄ Kelvin — instant conversion", "From/To selectors with one-click swap", "Copy result + clear controls", "Common references presets (freezing/boiling point, absolute zero, body temp)"],
+    screenshots: [{label:"Hero", src:"assets/projects/veda-temp-converter/hero.png"}, {label:"Overview", src:"assets/projects/veda-temp-converter/overview.png"}]
   }
 ];
 
@@ -247,6 +260,7 @@ const galleryImages = [
   { src: "assets/projects/veda-personal-intro/hero.png", label: "VEDA Personal Intro — Hero" },
   { src: "assets/projects/veda-simple-resume/hero.png", label: "VEDA Resume Website — Hero" },
   { src: "assets/projects/veda-digital-clock/hero.png", label: "VEDA Digital Clock — Hero" },
+  { src: "assets/projects/veda-temp-converter/hero.png", label: "VEDA Temperature Converter — Hero" },
   { src: "assets/certifications/certificate-cpp.jpg", label: "Complete C++ — Sheryians" },
   { src: "assets/certifications/certificate-html-css-js.jpg", label: "HTML CSS JS — Educative" }
 ];

@@ -1269,9 +1269,9 @@ function appAskAbhi(){
               <span class="text-[10px] opacity-40">• Just now</span>
             </div>
             <p class="font-medium"><span class="text-violet-300">Ask Abhi</span> — Portfolio Assistant for <span class="text-white font-semibold">Abhishek Jadhav (0xAbhi13)</span>.</p>
-            <p class="opacity-70 mt-1.5 text-[13px] leading-relaxed">Direct answers from this portfolio: <b>11 projects</b> with stacks and GitHub, <b>11 verified certifications</b>, 5 skill categories, education, and contact. Ask a question below.</p>
+            <p class="opacity-70 mt-1.5 text-[13px] leading-relaxed">Direct answers from this portfolio: <b>12 projects</b> with stacks and GitHub, <b>11 verified certifications</b>, 5 skill categories, education, and contact. Ask a question below.</p>
             <div class="flex flex-wrap gap-1.5 mt-3">
-              <span class="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-violet-500/12 text-violet-300 rounded-full border border-violet-500/20 font-medium"><i data-lucide="code-2" class="w-3 h-3"></i> 11 projects</span>
+              <span class="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-violet-500/12 text-violet-300 rounded-full border border-violet-500/20 font-medium"><i data-lucide="code-2" class="w-3 h-3"></i> 12 projects</span>
               <span class="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-emerald-500/12 text-emerald-300 rounded-full border border-emerald-500/20 font-medium"><i data-lucide="award" class="w-3 h-3"></i> 11 certs verified</span>
               <span class="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-white/[0.04] rounded-full border border-white/10 opacity-70"><i data-lucide="lock" class="w-3 h-3"></i> Offline • Private</span>
             </div>
@@ -1284,11 +1284,11 @@ function appAskAbhi(){
       <div id="askStarters" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
         ${(() => {
           const K = (typeof window !== 'undefined' && window.ASK_ABHI_KNOWLEDGE) ? window.ASK_ABHI_KNOWLEDGE : null;
-          const qs = K ? K.getSuggestedQuestions() : ["Who is Abhishek Jadhav?","What are Abhishek's skills?","Show me his 11 projects","List all 11 certifications with verify links","Which project uses Flask?","Tell me about 0xBeatForge"];
+          const qs = K ? K.getSuggestedQuestions() : ["Who is Abhishek Jadhav?","What are Abhishek's skills?","Show me his 12 projects","List all 11 certifications with verify links","Which project uses Flask?","Tell me about 0xBeatForge"];
           const meta = [
             {icon:"user", desc:"Owner • BCA 2026 • Baramati", grad:"from-violet-600/20 to-indigo-600/20", border:"border-violet-500/20"},
             {icon:"cpu", desc:"5 areas • C++/Python/JS", grad:"from-amber-500/15 to-orange-500/15", border:"border-amber-500/20"},
-            {icon:"code-2", desc:"11 shipped • stacks • GitHub", grad:"from-violet-600/20 to-indigo-600/20", border:"border-violet-500/20"},
+            {icon:"code-2", desc:"12 shipped • stacks • GitHub", grad:"from-violet-600/20 to-indigo-600/20", border:"border-violet-500/20"},
             {icon:"award", desc:"11 verified • IBM • Saylor • Jio", grad:"from-emerald-500/15 to-teal-500/15", border:"border-emerald-500/20"},
             {icon:"github", desc:"@0xAbhi13 • Source", grad:"from-zinc-700/20 to-zinc-800/20", border:"border-white/10"},
             {icon:"music", desc:"Web Audio • BeatForge", grad:"from-blue-500/15 to-cyan-500/15", border:"border-blue-500/20"},
