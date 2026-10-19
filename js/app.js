@@ -760,288 +760,9 @@ function projectCard(p){
   const cover = (p.screenshots && p.screenshots[0] && p.screenshots[0].src)
     ? `<img src="${p.screenshots[0].src}" alt="${p.name} — thumbnail" loading="lazy" decoding="async" sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw" class="proj-thumb" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;" onerror="this.style.display='none'">`
     : `<div class="w-full h-full grid place-items-center bg-gradient-to-br from-violet-900/60 via-indigo-900/40 to-black"><span class="text-4xl font-extrabold text-white/25">${(p.name||'?')[0]}</span></div>`;
-  const viewHref = p.github || p.demo || '';
+  const viewHref = p.demo || p.github || '';
   return `
-    <div class="card card-hover cursor-pointer flex flex-col overflow-hidden p-0" onclick="openApp('projects','${p.id}')">
-      <div class="proj-cover relative overflow-hidden bg-gradient-to-br from-gray-800 to-black" style="width:100%;aspect-ratio:16/10;max-height:220px;">
-        ${cover}
-        <span class="absolute top-2 right-2 chip chip-live text-[10px]">${p.status}</span>
-        <span class="absolute bottom-2 left-2 chip text-[10px]">${p.category}</span>
-      </div>
-      <div class="p-3 flex-1 flex flex-col">
-        <h3 class="font-bold text-sm">${p.name}</h3>
-        <p class="text-xs text-white/60 line-clamp-2 mt-1 flex-1">${p.purpose}</p>
-        <div class="flex flex-wrap gap-1 mt-2">${(p.stack||[]).slice(0,3).map(s=>`<span class="chip text-[9px]">${s}</span>`).join('')}${(p.stack||[]).length>3?`<span class="chip text-[9px]">+${p.stack.length-3}</span>`:''}</div>
-        <div class="flex gap-2 mt-2 items-center">
-          ${p.github?`<a href="${p.github}" target="_blank" onclick="event.stopPropagation()" class="p-1.5 bg-white/10 rounded hover:bg-white/20"><i data-lucide="github" class="w-3 h-3"></i></a>`:''}
-          ${p.demo?`<a href="${p.demo}" target="_blank" onclick="event.stopPropagation()" class="p-1.5 bg-white/10 rounded hover:bg-white/20" title="Open live demo"><i data-lucide="external-link" class="w-3 h-3"></i></a>`:''}
-          ${viewHref?`<a href="${viewHref}" target="_blank" onclick="event.stopPropagation()" class="ml-auto text-[11px] text-violet-300 hover:text-violet-200 hover:underline">View →</a>`:`<span class="ml-auto text-[11px] text-violet-300">View →</span>`}
-        </div>
-      </div>
-    </div>`;
-}
-function appProjects(){
-  const veda = projects.filter(p=>p.folder==='veda');
-  const py = projects.filter(p=>p.folder==='python');
-  const web = projects.filter(p=>!p.folder || p.folder==='web');
-  const svgWrap = (inner)=>`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c4b5fd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;display:block;">${inner}</svg>`;
-  const ICONS = {
-    briefcase: svgWrap('<rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>'),
-    terminal: svgWrap('<path d="m4 17 6-6-6-6"/><path d="M12 19h8"/>'),
-    code: svgWrap('<path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/>')
-  };
-  const folderHead = (key, title, count, desc)=>`
-    <div style="display:flex;align-items:center;gap:10px;margin:8px 0 12px;min-width:0;">
-      <span style="width:36px;height:36px;min-width:36px;min-height:36px;max-width:36px;max-height:36px;border-radius:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">${ICONS[key]||''}</span>
-      <div style="min-width:0;flex:1;">
-        <h2 style="font-weight:700;font-size:14px;display:flex;align-items:center;gap:8px;margin:0;">${title} <span style="font-size:10px;padding:2px 8px;background:rgba(255,255,255,0.1);border-radius:9999px;font-family:monospace;">${count}</span></h2>
-        <p style="font-size:11px;color:rgba(255,255,255,0.5);margin:2px 0 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${desc}</p>
-      </div>
-    </div>`;
-  return `
-  <div class="p-4 space-y-6">
-    <div class="flex items-center justify-between">
-      <p class="text-xs text-white/50"><b class="text-white">${projects.length} projects</b> in <b class="text-white">3 folders</b> — pick a folder</p>
-      <span class="text-[10px] px-2 py-1 bg-white/5 border border-white/10 rounded-full opacity-60 hidden sm:block">Ctrl+K to search</span>
-    </div>
-    <section>
-      ${folderHead('briefcase', 'VEDA Technology Internship', veda.length, 'Web Development internship tasks (excl. task-1/2/3) — live on GitHub Pages')}
-      <div class="grid-projects">${veda.map(projectCard).join('') || '<p class="text-xs opacity-50">No VEDA tasks yet.</p>'}</div>
-    </section>
-    <section>
-      ${folderHead('terminal', 'Python Projects', py.length, 'Flask • OpenCV • AI/CV — offline, no cloud')}
-      <div class="grid-projects">${py.map(projectCard).join('')}</div>
-    </section>
-    <section>
-      ${folderHead('code', 'Web & Creative', web.length, 'Portfolio OS • Audio • PDF — vanilla JS')}
-      <div class="grid-projects">${web.map(projectCard).join('')}</div>
-    </section>
-  </div>`;
-}
-function appProjectDetail(id){
-  const p=projects.find(x=>x.id===id); if(!p) return appProjects();
-  const folderLabel = p.folder==='veda' ? 'VEDA Technology Internship' : (p.folder==='python' ? 'Python Projects' : 'Web & Creative');
-  const shots = Array.isArray(p.screenshots) ? p.screenshots : [];
-  const stack = Array.isArray(p.stack) ? p.stack : [];
-  const facts = Array.isArray(p.facts) ? p.facts : [];
-  return `
-  <div class="h-full overflow-auto">
-    <button onclick="openApp('projects')" class="m-3 text-xs px-2 py-1 bg-white/10 rounded hover:bg-white/20 flex items-center gap-1"><i data-lucide="arrow-left" class="w-3 h-3"></i> Back</button>
-    <div class="px-4 pb-6 space-y-4">
-      <div class="rounded-xl overflow-hidden border border-white/10 bg-black/20">
-        ${shots[0] && shots[0].src ?`<img src="${shots[0].src}" alt="${p.name} — hero" loading="lazy" decoding="async" sizes="(max-width:640px) 100vw, 800px" style="width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;object-position:top center;display:block;" onerror="this.style.display='none'">`:`<div class="h-48 grid place-items-center bg-gradient-to-br from-violet-900/30 to-indigo-900/30 text-3xl">${p.name}</div>`}
-      </div>
-      <div>
-        <h2 class="text-xl font-bold">${p.name} <span class="chip chip-live ml-2 align-middle">${p.status}</span></h2>
-        <p class="text-xs opacity-60">${p.category} • 📁 ${folderLabel}</p>
-        <p class="text-sm text-white/70 mt-2">${p.purpose}</p>
-      </div>
-      <div>
-        <h3 class="text-xs font-semibold opacity-60 uppercase tracking-wide">Stack</h3>
-        <div class="flex flex-wrap gap-1.5 mt-1">${stack.map(s=>`<span class="chip">${s}</span>`).join('')}</div>
-      </div>
-      <div>
-        <h3 class="text-xs font-semibold opacity-60 uppercase tracking-wide">Facts</h3>
-        <ul class="list-disc list-inside text-sm text-white/70 mt-1 space-y-0.5">${facts.map(f=>`<li>${f}</li>`).join('')}</ul>
-      </div>
-      ${p.limitations?`<div class="text-xs p-2 bg-amber-500/10 border border-amber-500/20 rounded text-amber-200">⚠ ${p.limitations}</div>`:''}
-      <div class="flex gap-2">
-        ${p.github?`<a href="${p.github}" target="_blank" class="flex-1 text-center py-2 bg-white text-black rounded-full text-sm font-medium">GitHub ↗</a>`:''}
-        ${p.demo?`<a href="${p.demo}" target="_blank" class="flex-1 text-center py-2 ${p.github?'bg-white/10':'bg-white text-black'} rounded-full text-sm font-medium">Live Demo ↗</a>`:''}
-      </div>
-      ${shots.length>1?`<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">${shots.slice(1).map(s=>`<img src="${s.src}" alt="${s.label||p.name}" loading="lazy" decoding="async" sizes="(max-width:640px) 100vw, 400px" style="width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top center;display:block;" class="rounded-lg border border-white/10">`).join('')}</div>`:''}
-    </div>
-  </div>`;
-}
-
-function appSkills(){
-  return `
-  <div class="p-4 grid gap-3">
-    ${skills.map(s=>`
-      <div class="card">
-        <h3 class="font-semibold text-sm flex items-center gap-2"><span>${s.icon}</span> ${s.category}</h3>
-        <div class="flex flex-wrap gap-1.5 mt-2">${s.items.map(it=>`<span class="chip">${it}</span>`).join('')}</div>
-      </div>
-    `).join('')}
-  </div>`;
-}
-
-function appCertifications(){
-  return `
-  <div class="p-4 grid gap-3 max-w-3xl mx-auto">
-    ${certifications.map(c=>`
-      <div class="card flex gap-3 min-w-0 overflow-hidden">
-        <img src="${c.image}" class="w-24 h-16 min-w-[96px] min-h-[64px] max-w-[96px] max-h-[64px] rounded-lg object-cover border border-white/10 bg-white/5 flex-none shrink-0">
-        <div class="flex-1 min-w-0">
-          <h3 class="font-semibold text-sm leading-tight">${c.title}</h3>
-          <p class="text-xs text-violet-300">${c.issuer} • ${c.issued}</p>
-          ${c.credentialId?`<p class="text-[11px] opacity-50 font-mono truncate">${c.credentialId}</p>`:''}
-          <div class="flex gap-2 mt-2">
-            <button onclick="window.open('${c.image}','_blank')" class="flex-1 text-xs px-3 py-1.5 bg-white/10 border border-white/10 rounded-full hover:bg-white/20 flex items-center justify-center gap-1.5 font-medium transition">
-              <i data-lucide="eye" class="w-3.5 h-3.5"></i> View
-            </button>
-            ${c.verifyUrl ? `<a href="${c.verifyUrl}" target="_blank" rel="noopener" class="flex-1 text-xs px-3 py-1.5 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white rounded-full flex items-center justify-center gap-1.5 font-semibold shadow-md shadow-emerald-500/20 transition text-center"> <i data-lucide="badge-check" class="w-3.5 h-3.5"></i> Verify</a>` : `<span class="flex-1 text-xs px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-white/30 text-center">No verify</span>`}
-          </div>
-        </div>
-      </div>
-    `).join('')}
-  </div>`;
-}
-
-/* ---------- Events.app — OS-native event browser ---------- */
-let eventsState = { selectedId: null };
-function getEvents(){ return (typeof events !== 'undefined' && Array.isArray(events)) ? events : []; }
-function getEventById(id){ const list=getEvents(); if(!list.length) return null; return list.find(e=>e.id===id) || list[0]; }
-function eventYears(){ const ys=[]; getEvents().forEach(e=>{ if(!ys.includes(e.year)) ys.push(e.year); }); return ys.sort((a,b)=>b-a); }
-function eventsByYear(y){ return getEvents().filter(e=>e.year===y); }
-function reducedMotion(){ return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; }
-function animateEventSwitch(){
-  if(reducedMotion()) return;
-  const mains=document.querySelectorAll('[data-event-main]');
-  if(!mains.length) return;
-  if(window.gsap){
-    try{ gsap.fromTo(mains, {opacity:0, y:8}, {opacity:1, y:0, duration:0.22, ease:'power2.out', overwrite:true}); }catch(e){}
-  } else {
-    mains.forEach(m=>{ m.classList.remove('event-switch'); void m.offsetWidth; m.classList.add('event-switch'); });
-  }
-}
-function handleEventSelect(id, el){
-  eventsState.selectedId=id;
-  const scope = el && el.closest ? el.closest('[id]') : null;
-  const scopeId = scope ? scope.id : '';
-  if(scopeId==='win-finder'){ navigateFinder('events', id); animateEventSwitch(); return; }
-  if(scopeId==='mobileAppContent'){ renderMobileEvents(); animateEventSwitch(); return; }
-  openApp('events', id);
-  animateEventSwitch();
-}
-function renderMobileEvents(){
-  const content=document.getElementById('mobileAppContent');
-  if(!content) return;
-  content.innerHTML=getAppHTML('events', eventsState.selectedId);
-  lucide.createIcons();
-}
-function appEvents(sub){
-  const list=getEvents();
-  if(!list.length){
-    return `<div class="p-6 text-center text-sm opacity-60">No events yet — add one in <span class="font-mono">js/data.js</span> → <span class="font-mono">events</span>.</div>`;
-  }
-  const ev=getEventById(sub || eventsState.selectedId);
-  eventsState.selectedId=ev.id;
-  const photos=Array.isArray(ev.photos)?ev.photos:[];
-  const personRow = p=>`<div class="event-person"><div class="event-person-name">${p.name}</div><div class="event-person-role">${p.role}</div></div>`;
-  const navBtn = e2=>{
-    const sel=e2.id===ev.id;
-    return `<button onclick="handleEventSelect('${e2.id}', this)" class="flex items-center gap-2 px-2 py-1.5 rounded-md ${sel?'bg-white/10 text-white':'hover:bg-white/10 text-white/80'} text-sm text-left w-full transition-colors"><span class="event-dot ${sel?'on':''}">${sel?'●':'○'}</span><span class="truncate">${e2.title}</span></button>`;
-  };
-  return `
-  <div class="flex h-full events-app">
-    <div class="w-[200px] bg-black/30 border-r border-white/10 p-2 hidden sm:flex flex-col gap-1 shrink-0 overflow-auto">
-      <div class="text-[11px] opacity-50 px-2 py-1 uppercase tracking-wider">Events</div>
-      ${eventYears().map(y=>`
-        <div class="text-[11px] opacity-50 px-2 pt-2 font-mono">${y}</div>
-        ${eventsByYear(y).map(navBtn).join('')}
-      `).join('')}
-    </div>
-    <div class="flex-1 flex flex-col min-w-0 min-h-0 bg-[#0a0a1a]/20">
-      <div class="sm:hidden flex items-center gap-2 px-3 py-2 border-b border-white/10 bg-white/[0.03] shrink-0 overflow-x-auto">
-        <span class="text-[10px] uppercase tracking-wider opacity-50 shrink-0 font-mono">Events</span>
-        ${list.map(e2=>`<button onclick="handleEventSelect('${e2.id}', this)" class="shrink-0 text-xs px-3 py-1.5 rounded-full border transition-colors ${e2.id===ev.id?'bg-white text-black border-white font-semibold':'bg-white/[0.06] border-white/10 text-white/80'}">${e2.year} · ${e2.title}</button>`).join('')}
-      </div>
-      <div class="flex-1 overflow-auto min-h-0" data-event-main>
-        <div class="p-4 sm:p-6 max-w-3xl mx-auto">
-          <p class="text-[11px] font-mono opacity-50">${ev.year} · ${ev.location}</p>
-          <h2 class="text-xl font-bold mt-0.5">${ev.title}</h2>
-          <p class="text-sm text-white/70 mt-0.5">${ev.subtitle}</p>
-          <p class="text-xs opacity-60 mt-0.5">${ev.venue ? ev.venue + ' · ' : ''}${ev.year}</p>
-          ${ev.cover?`<button onclick="openEventGallery('${ev.id}', 0)" class="event-cover group block w-full mt-4 rounded-xl overflow-hidden border border-white/10 bg-black/20 text-left" title="Open gallery">
-            <img src="${ev.cover}" alt="${ev.title} — cover photo" class="w-full h-56 sm:h-72 md:h-80 object-cover group-hover:scale-[1.01] transition-transform duration-300" loading="eager" onerror="this.style.display='none'">
-          </button>`:''}
-          <h3 class="text-sm font-semibold mt-5">${ev.journeyTitle || 'About this event'}</h3>
-          <p class="text-sm text-white/70 mt-1.5 leading-relaxed">${ev.description}</p>
-          <div class="flex items-center gap-3 mt-4">
-            <button onclick="openEventGallery('${ev.id}', 0)" ${photos.length?'':'disabled'} class="px-5 py-2.5 ${photos.length?'bg-white text-black hover:bg-white/90':'bg-white/10 text-white/40 cursor-not-allowed'} rounded-full text-sm font-semibold flex items-center gap-2 transition">
-              <i data-lucide="images" class="w-4 h-4"></i> View Gallery
-            </button>
-            <span class="text-xs opacity-50">${photos.length} photo${photos.length===1?'':'s'}</span>
-          </div>
-          <div class="mt-5 space-y-2">
-            ${(ev.speakers&&ev.speakers.length)?`<details class="event-info" open>
-              <summary>Guest Speakers <span class="opacity-50">(${ev.speakers.length})</span></summary>
-              <div class="event-info-body">${ev.speakers.map(personRow).join('')}</div>
-            </details>`:''}
-            ${(ev.representatives&&ev.representatives.length)?`<details class="event-info">
-              <summary>VIIT Baramati Representatives <span class="opacity-50">(${ev.representatives.length})</span></summary>
-              <div class="event-info-body">${ev.representatives.map(personRow).join('')}</div>
-            </details>`:''}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>`;
-}
-
-/* ---------- Events photo viewer — OS-style modal ---------- */
-let eventViewer = { eventId:null, index:0, touchX:null };
-function openEventGallery(eventId, idx){
-  const ev=getEventById(eventId);
-  if(!ev || !ev.photos || !ev.photos.length) return;
-  eventViewer.eventId=ev.id;
-  eventViewer.index=Math.max(0, Math.min(idx||0, ev.photos.length-1));
-  renderEventViewer(true);
-}
-function closeEventGallery(){
-  const v=document.getElementById('eventViewer');
-  if(!v || v.classList.contains('hidden')) return;
-  const done=()=>{ v.classList.add('hidden'); v.innerHTML=''; };
-  if(!reducedMotion() && window.gsap){
-    try{
-      const card=v.querySelector('.event-viewer');
-      if(card){ gsap.to(card, {opacity:0, scale:0.97, y:8, duration:0.16, ease:'power2.in', onComplete:done}); return; }
-    }catch(e){}
-  }
-  done();
-}
-function stepEventGallery(dir){
-  const ev=getEventById(eventViewer.eventId);
-  if(!ev || !ev.photos) return;
-  const n=ev.photos.length;
-  showEventPhoto((eventViewer.index+dir+n)%n);
-}
-function showEventPhoto(i){
-  const ev=getEventById(eventViewer.eventId);
-  if(!ev || !ev.photos || !ev.photos.length) return;
-  eventViewer.index=Math.max(0, Math.min(i, ev.photos.length-1));
-  renderEventViewer(false);
-}
-function toggleEventFullscreen(){
-  const card=document.querySelector('#eventViewer .event-viewer');
-  if(!card) return;
-  try{
-    if(document.fullscreenElement){ document.exitFullscreen(); }
-    else if(card.requestFullscreen){ card.requestFullscreen(); }
-  }catch(e){}
-}
-function renderEventViewer(firstOpen){
-  const ev=getEventById(eventViewer.eventId);
-  if(!ev) return;
-  const photos=ev.photos, i=eventViewer.index, ph=photos[i];
-  let v=document.getElementById('eventViewer');
-  if(!v){
-    v=document.createElement('div');
-    v.id='eventViewer';
-    document.body.appendChild(v);
-    v.addEventListener('touchstart', e=>{ if(e.touches && e.touches.length===1) eventViewer.touchX=e.touches[0].clientX; }, {passive:true});
-    v.addEventListener('touchend', e=>{
-      if(eventViewer.touchX==null || !e.changedTouches || !e.changedTouches.length) return;
-      const dx=e.changedTouches[0].clientX-eventViewer.touchX;
-      eventViewer.touchX=null;
-      if(Math.abs(dx)>40) stepEventGallery(dx<0?1:-1);
-    }, {passive:true});
-  }
-  const pad=n=>String(n).padStart(2,'0');
-  v.classList.remove('hidden');
-  v.innerHTML=`
-    <div class="event-viewer-backdrop" onclick="closeEventGallery()"></div>
+    <div class="card card-hover cursor-pointer flex flex-col overflow-hidden p-0" onclick="window.innerWidth<768?openMobileProject(''):window.innerWidth<768?openMobileProject(''):openApp('projects','')></div>
     <div class="event-viewer" role="dialog" aria-modal="true" aria-label="${ev.title} photo viewer">
       <div class="window-header">
         <div class="window-title">${ev.title} <span class="opacity-50 font-normal">— ${pad(i+1)} / ${pad(photos.length)}</span></div>
@@ -1269,9 +990,9 @@ function appAskAbhi(){
               <span class="text-[10px] opacity-40">• Just now</span>
             </div>
             <p class="font-medium"><span class="text-violet-300">Ask Abhi</span> — Portfolio Assistant for <span class="text-white font-semibold">Abhishek Jadhav (0xAbhi13)</span>.</p>
-            <p class="opacity-70 mt-1.5 text-[13px] leading-relaxed">Direct answers from this portfolio: <b>12 projects</b> with stacks and GitHub, <b>11 verified certifications</b>, 5 skill categories, education, and contact. Ask a question below.</p>
+            <p class="opacity-70 mt-1.5 text-[13px] leading-relaxed">Direct answers from this portfolio: <b>16 projects</b> with stacks and GitHub, <b>11 verified certifications</b>, 5 skill categories, education, and contact. Ask a question below.</p>
             <div class="flex flex-wrap gap-1.5 mt-3">
-              <span class="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-violet-500/12 text-violet-300 rounded-full border border-violet-500/20 font-medium"><i data-lucide="code-2" class="w-3 h-3"></i> 12 projects</span>
+              <span class="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-violet-500/12 text-violet-300 rounded-full border border-violet-500/20 font-medium"><i data-lucide="code-2" class="w-3 h-3"></i> 16 projects</span>
               <span class="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-emerald-500/12 text-emerald-300 rounded-full border border-emerald-500/20 font-medium"><i data-lucide="award" class="w-3 h-3"></i> 11 certs verified</span>
               <span class="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-white/[0.04] rounded-full border border-white/10 opacity-70"><i data-lucide="lock" class="w-3 h-3"></i> Offline • Private</span>
             </div>
@@ -1284,11 +1005,11 @@ function appAskAbhi(){
       <div id="askStarters" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
         ${(() => {
           const K = (typeof window !== 'undefined' && window.ASK_ABHI_KNOWLEDGE) ? window.ASK_ABHI_KNOWLEDGE : null;
-          const qs = K ? K.getSuggestedQuestions() : ["Who is Abhishek Jadhav?","What are Abhishek's skills?","Show me his 12 projects","List all 11 certifications with verify links","Which project uses Flask?","Tell me about 0xBeatForge"];
+          const qs = K ? K.getSuggestedQuestions() : ["Who is Abhishek Jadhav?","What are Abhishek's skills?","Show me his 16 projects","List all 11 certifications with verify links","Which project uses Flask?","Tell me about 0xBeatForge"];
           const meta = [
             {icon:"user", desc:"Owner • BCA 2026 • Baramati", grad:"from-violet-600/20 to-indigo-600/20", border:"border-violet-500/20"},
             {icon:"cpu", desc:"5 areas • C++/Python/JS", grad:"from-amber-500/15 to-orange-500/15", border:"border-amber-500/20"},
-            {icon:"code-2", desc:"12 shipped • stacks • GitHub", grad:"from-violet-600/20 to-indigo-600/20", border:"border-violet-500/20"},
+            {icon:"code-2", desc:"16 shipped • stacks • GitHub", grad:"from-violet-600/20 to-indigo-600/20", border:"border-violet-500/20"},
             {icon:"award", desc:"11 verified • IBM • Saylor • Jio", grad:"from-emerald-500/15 to-teal-500/15", border:"border-emerald-500/20"},
             {icon:"github", desc:"@0xAbhi13 • Source", grad:"from-zinc-700/20 to-zinc-800/20", border:"border-white/10"},
             {icon:"music", desc:"Web Audio • BeatForge", grad:"from-blue-500/15 to-cyan-500/15", border:"border-blue-500/20"},
@@ -1756,6 +1477,56 @@ function openMobileApp(id){
     view.addEventListener('animationend', onEnd);
   } else {
     // already open — pop content for section switch
+    content.style.animation='none';
+    void content.offsetHeight;
+    content.style.animation='mobilePopInContent 0.34s cubic-bezier(0.16,1,0.3,1) both';
+    setTimeout(()=>{ content.style.animation=''; }, 400);
+  }
+}
+function openMobileProject(id){
+  const view=document.getElementById('mobileAppView'), title=document.getElementById('mobileAppTitle'), content=document.getElementById('mobileAppContent');
+  if(!view || !title || !content) return;
+  const p=(typeof projects!=='undefined'?projects:[]).find(x=>x.id===id);
+  title.textContent = (p && p.name) ? p.name : 'Project';
+  let html = getAppHTML('projects', id);
+  html = html.replace(/openApp\('projects'\)/g, "openMobileApp('projects')");
+  content.innerHTML = html;
+  lucide.createIcons();
+  bindAppEvents();
+  if(view.classList.contains('hidden')){
+    view.classList.remove('hidden','mobile-pop-out');
+    view.classList.add('flex');
+    view.classList.remove('mobile-pop-in');
+    void view.offsetWidth;
+    view.classList.add('mobile-pop-in');
+    const onEnd=(e)=>{ if(e.target===view && e.animationName==='mobilePopIn'){ view.classList.remove('mobile-pop-in'); view.removeEventListener('animationend',onEnd); } };
+    view.addEventListener('animationend', onEnd);
+  } else {
+    content.style.animation='none';
+    void content.offsetHeight;
+    content.style.animation='mobilePopInContent 0.34s cubic-bezier(0.16,1,0.3,1) both';
+    setTimeout(()=>{ content.style.animation=''; }, 400);
+  }
+}
+function openMobileProject(id){
+  const view=document.getElementById('mobileAppView'), title=document.getElementById('mobileAppTitle'), content=document.getElementById('mobileAppContent');
+  if(!view || !title || !content) return;
+  const p=(typeof projects!=='undefined'?projects:[]).find(x=>x.id===id);
+  title.textContent = (p && p.name) ? p.name : 'Project';
+  let html = getAppHTML('projects', id);
+  html = html.replace(/openApp\('projects'\)/g, "openMobileApp('projects')");
+  content.innerHTML = html;
+  lucide.createIcons();
+  bindAppEvents();
+  if(view.classList.contains('hidden')){
+    view.classList.remove('hidden','mobile-pop-out');
+    view.classList.add('flex');
+    view.classList.remove('mobile-pop-in');
+    void view.offsetWidth;
+    view.classList.add('mobile-pop-in');
+    const onEnd=(e)=>{ if(e.target===view && e.animationName==='mobilePopIn'){ view.classList.remove('mobile-pop-in'); view.removeEventListener('animationend',onEnd); } };
+    view.addEventListener('animationend', onEnd);
+  } else {
     content.style.animation='none';
     void content.offsetHeight;
     content.style.animation='mobilePopInContent 0.34s cubic-bezier(0.16,1,0.3,1) both';

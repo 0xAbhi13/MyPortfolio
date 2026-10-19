@@ -34,7 +34,7 @@ const projects = [
     github: "https://github.com/0xAbhi13/MyPortfolio",
     demo: "https://0xabhi13.github.io/MyPortfolio/",
     stack: ["HTML5","CSS3","JavaScript","Tailwind CDN","GSAP 3.12.5","Lottie","Lucide","Web Audio API"],
-    facts: ["Desktop OS: ABHISHEK centered + 0xAbhi13 menu + Unsplash wallpaper + particleCanvas 56 + GSAP parallax","Single-window manager: drag/resize/zIndex/traffic (close/min/max) + windowIn 0.38s spring — 1 at a time","Ask Abhi Pro: avatar Online, 6 starters, local searchIndex 45, offline — no API","MusicBar: Wavecont 2:24 assets/audio/wavecont.mp3 5.7MB — preload metadata, crossOrigin='', file:// + http:// both, View→GitHub","Professional icons: 14× 96×96 SVG linearGradient #8b5cf6→#4f46e5 — iconPulseGlow 2.8s + gradientShift 8s","12 projects (BeatForge/PDFForge/MyPortfolio + 4 AI/CV Python + 5 VEDA internship) • Spotlight Ctrl+K • Terminal • Events gallery • Resume Coming Soon 85%","Fully vanilla — CDN Tailwind + lucide + lottie-player + gsap — deployed on GitHub Pages (no build)"],
+    facts: ["Desktop OS: ABHISHEK centered + 0xAbhi13 menu + Unsplash wallpaper + particleCanvas 56 + GSAP parallax","Single-window manager: drag/resize/zIndex/traffic (close/min/max) + windowIn 0.38s spring — 1 at a time","Ask Abhi Pro: avatar Online, 6 starters, local searchIndex 45, offline — no API","MusicBar: Wavecont 2:24 assets/audio/wavecont.mp3 5.7MB — preload metadata, crossOrigin='', file:// + http:// both, View→GitHub","Professional icons: 14× 96×96 SVG linearGradient #8b5cf6→#4f46e5 — iconPulseGlow 2.8s + gradientShift 8s","17 projects (BeatForge/PDFForge/MyPortfolio + 4 AI/CV Python + 10 VEDA internship) • Spotlight Ctrl+K • Terminal • Events gallery • Resume Coming Soon 85%","Fully vanilla — CDN Tailwind + lucide + lottie-player + gsap — deployed on GitHub Pages (no build)"],
     screenshots: [{label:"Hero — Desktop OS", src:"assets/projects/developer-portfolio/hero.png"}, {label:"Overview — Window Manager", src:"assets/projects/developer-portfolio/overview.png"}]
   },
   {
@@ -180,6 +180,71 @@ const projects = [
     stack: ["HTML5","CSS3","JavaScript","Realtime"],
     facts: ["Celsius ⇄ Fahrenheit ⇄ Kelvin — instant conversion", "From/To selectors with one-click swap", "Copy result + clear controls", "Common references presets (freezing/boiling point, absolute zero, body temp)"],
     screenshots: [{label:"Hero", src:"assets/projects/veda-temp-converter/hero.png"}, {label:"Overview", src:"assets/projects/veda-temp-converter/overview.png"}]
+  },
+  {
+    id: "veda-bmi-calculator",
+    name: "BMI Calculator",
+    status: "Live",
+    category: "VEDA Internship • Web",
+    folder: "veda",
+    purpose: "VEDA Technology Web Development Internship Task 6 — instant Body Mass Index calculator with weight category, visual BMI scale and per-field validation. No backend, no frameworks.",
+    github: "https://github.com/0xAbhi13/BMI-calculator",
+    demo: "https://0xabhi13.github.io/BMI-calculator/",
+    stack: ["HTML5","CSS3","JavaScript","Validation"],
+    facts: ["Standard BMI math — weight / (height in metres²), via one shared calculateBMI() path", "Category badges — Underweight / Normal / Overweight / Obesity with colour coding", "Visual BMI scale — four-segment indicator (14–40) with result marker and boundary ticks", "Inline validation — rejects empty, abc, NaN, Infinity, zero/negative and out-of-range height/weight"],
+    screenshots: [{label:"Hero", src:"assets/projects/veda-bmi-calculator/hero.png"}, {label:"Overview", src:"assets/projects/veda-bmi-calculator/overview.png"}]
+  },
+  {
+    id: "veda-basic-calculator",
+    name: "Basic Calculator",
+    status: "Live",
+    category: "VEDA Internship • Web",
+    folder: "veda",
+    purpose: "VEDA Technology Web Development Internship Task 7 — four-operation calculator (add, subtract, multiply, divide) with keyboard support, no eval(), divide-by-zero guard and floating-point cleanup.",
+    github: "https://github.com/0xAbhi13/basic-calculator",
+    demo: "https://0xabhi13.github.io/basic-calculator/",
+    stack: ["HTML5","CSS3","JavaScript","Realtime"],
+    facts: ["Four operations via one shared operate() code path — no eval(), no Function()", "Digit entry with overflow guard — 12 digits per number, leading zeros collapsed", "Safe decimals — second dot ignored, leading dot becomes 0.", "Accurate equals — floating-point artefacts cleaned (0.1+0.2=0.3), chained left-to-right model"],
+    screenshots: [{label:"Hero", src:"assets/projects/veda-basic-calculator/hero.png"}, {label:"Overview", src:"assets/projects/veda-basic-calculator/overview.png"}]
+  },
+  {
+    id: "veda-quote-generator",
+    name: "Random Quote Generator",
+    status: "Live",
+    category: "VEDA Internship • Web",
+    folder: "veda",
+    purpose: "VEDA Technology Web Development Internship Task 8 — random quote generator with 35 hand-picked quotes across 8 categories, no quote API, no immediate repeats, copy and native Web Share.",
+    github: "https://github.com/0xAbhi13/random-quote-generator",
+    demo: "https://0xabhi13.github.io/random-quote-generator/",
+    stack: ["HTML5","CSS3","JavaScript","Offline"],
+    facts: ["35 hand-picked quotes across 8 categories — no quote API, zero runtime network requests", "No immediate repeats — on-screen quote excluded from next draw", "Instant first quote — valid quote on screen at page load", "Copy to clipboard + native Web Share API where supported"],
+    screenshots: [{label:"Hero", src:"assets/projects/veda-quote-generator/hero.png"}, {label:"Overview", src:"assets/projects/veda-quote-generator/overview.png"}]
+  },
+  {
+    id: "veda-image-gallery",
+    name: "Responsive Image Gallery",
+    status: "Live",
+    category: "VEDA Internship • Web",
+    folder: "veda",
+    purpose: "VEDA Technology Web Development Internship Task 9 — responsive image gallery with 16 photographs in a fluid CSS Grid, accessible dialog lightbox, full keyboard control and image failure handling.",
+    github: "https://github.com/0xAbhi13/image-gallery",
+    demo: "https://0xabhi13.github.io/image-gallery/",
+    stack: ["HTML5","CSS3","JavaScript","Accessible"],
+    facts: ["16 photographs across 5 themes — Mountains, Nature, Wildlife, Architecture, Travel", "Fluid CSS Grid — repeat(auto-fill, minmax(240px,1fr)), no hard-coded column counts", "Accessible lightbox — <dialog showModal()> with Escape handling and focus return", "Full keyboard control — Tab inside preview, arrow keys move images, Esc closes"],
+    screenshots: [{label:"Hero", src:"assets/projects/veda-image-gallery/hero.png"}, {label:"Overview", src:"assets/projects/veda-image-gallery/overview.png"}]
+  },
+  {
+    id: "veda-faq-accordion",
+    name: "FAQ Accordion",
+    status: "Live",
+    category: "VEDA Internship • Web",
+    folder: "veda",
+    purpose: "VEDA Technology Web Development Internship Task 10 — professional, responsive FAQ accordion with 10 questions. Click to expand/collapse, single-open mode by default, fully accessible (aria-expanded, aria-controls, unique panel IDs, keyboard operable), smooth CSS transitions, vanilla JavaScript only — no frameworks, no build step, no backend.",
+    github: "https://github.com/0xAbhi13/FAQ-accordion",
+    demo: "https://0xabhi13.github.io/FAQ-accordion/",
+    stack: ["HTML5","CSS3","JavaScript","Accessible"],
+    facts: ["10 FAQ questions with meaningful answers — web development, HTML/CSS/JS, responsiveness, DOM, reusability", "Expand / collapse with smooth max-height transitions measured from scrollHeight", "Single-open mode (toggle to multi-open via one flag)", "Accessible: aria-expanded, aria-controls, unique panel IDs, visible focus rings", "Keyboard operable: Tab, Enter, Space", "Responsive: 320 px to desktop, no horizontal scroll", "Works fully offline — zero dependencies"],
+    screenshots: [{label:"Hero", src:"assets/projects/veda-faq-accordion/hero.png"}, {label:"Overview", src:"assets/projects/veda-faq-accordion/overview.png"}]
   }
 ];
 
@@ -261,6 +326,11 @@ const galleryImages = [
   { src: "assets/projects/veda-simple-resume/hero.png", label: "VEDA Resume Website — Hero" },
   { src: "assets/projects/veda-digital-clock/hero.png", label: "VEDA Digital Clock — Hero" },
   { src: "assets/projects/veda-temp-converter/hero.png", label: "VEDA Temperature Converter — Hero" },
+  { src: "assets/projects/veda-bmi-calculator/hero.png", label: "VEDA BMI Calculator — Hero" },
+  { src: "assets/projects/veda-basic-calculator/hero.png", label: "VEDA Basic Calculator — Hero" },
+  { src: "assets/projects/veda-quote-generator/hero.png", label: "VEDA Quote Generator — Hero" },
+  { src: "assets/projects/veda-image-gallery/hero.png", label: "VEDA Image Gallery — Hero" },
+  { src: "assets/projects/veda-faq-accordion/hero.png", label: "VEDA FAQ Accordion — Hero" },
   { src: "assets/certifications/certificate-cpp.jpg", label: "Complete C++ — Sheryians" },
   { src: "assets/certifications/certificate-html-css-js.jpg", label: "HTML CSS JS — Educative" }
 ];
