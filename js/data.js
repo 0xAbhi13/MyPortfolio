@@ -34,7 +34,7 @@ const projects = [
     github: "https://github.com/0xAbhi13/MyPortfolio",
     demo: "https://0xabhi13.github.io/MyPortfolio/",
     stack: ["HTML5","CSS3","JavaScript","Tailwind CDN","GSAP 3.12.5","Lottie","Lucide","Web Audio API"],
-    facts: ["Desktop OS: ABHISHEK centered + 0xAbhi13 menu + Unsplash wallpaper + particleCanvas 56 + GSAP parallax","Single-window manager: drag/resize/zIndex/traffic (close/min/max) + windowIn 0.38s spring — 1 at a time","Ask Abhi Pro: avatar Online, 6 starters, local searchIndex 45, offline — no API","MusicBar: Wavecont 2:24 assets/audio/wavecont.mp3 5.7MB — preload metadata, crossOrigin='', file:// + http:// both, View→GitHub","Professional icons: 14× 96×96 SVG linearGradient #8b5cf6→#4f46e5 — iconPulseGlow 2.8s + gradientShift 8s","17 projects (BeatForge/PDFForge/MyPortfolio + 4 AI/CV Python + 10 VEDA internship) • Spotlight Ctrl+K • Terminal • Events gallery • Resume Coming Soon 85%","Fully vanilla — CDN Tailwind + lucide + lottie-player + gsap — deployed on GitHub Pages (no build)"],
+    facts: ["Desktop OS: ABHISHEK centered + 0xAbhi13 menu + Unsplash wallpaper + particleCanvas 56 + GSAP parallax","Single-window manager: drag/resize/zIndex/traffic (close/min/max) + windowIn 0.38s spring — 1 at a time","Ask Abhi Pro: avatar Online, 6 starters, local searchIndex 45, offline — no API","MusicBar: Wavecont 2:24 assets/audio/wavecont.mp3 5.7MB — preload metadata, crossOrigin='', file:// + http:// both, View→GitHub","Professional icons: 14× 96×96 SVG linearGradient #8b5cf6→#4f46e5 — iconPulseGlow 2.8s + gradientShift 8s","18 projects (BeatForge/PDFForge/MyPortfolio + 4 AI/CV Python + 11 VEDA internship) • Spotlight Ctrl+K • Terminal • Events gallery • Resume Coming Soon 85%","Fully vanilla — CDN Tailwind + lucide + lottie-player + gsap — deployed on GitHub Pages (no build)"],
     screenshots: [{label:"Hero — Desktop OS", src:"assets/projects/developer-portfolio/hero.png"}, {label:"Overview — Window Manager", src:"assets/projects/developer-portfolio/overview.png"}]
   },
   {
@@ -245,6 +245,19 @@ const projects = [
     stack: ["HTML5","CSS3","JavaScript","Accessible"],
     facts: ["10 FAQ questions with meaningful answers — web development, HTML/CSS/JS, responsiveness, DOM, reusability", "Expand / collapse with smooth max-height transitions measured from scrollHeight", "Single-open mode (toggle to multi-open via one flag)", "Accessible: aria-expanded, aria-controls, unique panel IDs, visible focus rings", "Keyboard operable: Tab, Enter, Space", "Responsive: 320 px to desktop, no horizontal scroll", "Works fully offline — zero dependencies"],
     screenshots: [{label:"Hero", src:"assets/projects/veda-faq-accordion/hero.png"}, {label:"Overview", src:"assets/projects/veda-faq-accordion/overview.png"}]
+  },
+  {
+    id: "veda-pricing-table",
+    name: "Responsive Pricing Table",
+    status: "Live",
+    category: "VEDA Internship \u2022 Web",
+    folder: "veda",
+    purpose: "VEDA Technology Web Development Internship Task 12 \u2014 responsive pricing table with Basic, Pro and Premium plans, a highlighted Most Popular Pro card, feature lists with checkmarks, smooth button hover/focus states, CSS Grid layout and mobile stacking. HTML5 + CSS3 only, no frameworks, no build step.",
+    github: "https://github.com/0xAbhi13/pricing-table",
+    demo: "https://0xabhi13.github.io/pricing-table/",
+    stack: ["HTML5","CSS3","Responsive","CSS Grid"],
+    facts: ["Three plans \u2014 Basic \u20B90, Pro \u20B9499 (Most Popular), Premium \u20B9999 per month", "Highlighted Pro card \u2014 orange border, stronger shadow, Most Popular badge", "Feature lists with checkmark bullets for every plan", "Hover and focus states on all CTA buttons", "CSS Grid \u2014 3 columns desktop, single column mobile, no horizontal scroll", "Demo signup section \u2014 no fake payments or registration"],
+    screenshots: [{label:"Hero", src:"assets/projects/veda-pricing-table/hero.png"}, {label:"Overview", src:"assets/projects/veda-pricing-table/overview.png"}]
   }
 ];
 
@@ -331,6 +344,7 @@ const galleryImages = [
   { src: "assets/projects/veda-quote-generator/hero.png", label: "VEDA Quote Generator — Hero" },
   { src: "assets/projects/veda-image-gallery/hero.png", label: "VEDA Image Gallery — Hero" },
   { src: "assets/projects/veda-faq-accordion/hero.png", label: "VEDA FAQ Accordion — Hero" },
+  { src: "assets/projects/veda-pricing-table/hero.png", label: "VEDA Pricing Table - Hero" },
   { src: "assets/certifications/certificate-cpp.jpg", label: "Complete C++ — Sheryians" },
   { src: "assets/certifications/certificate-html-css-js.jpg", label: "HTML CSS JS — Educative" }
 ];
